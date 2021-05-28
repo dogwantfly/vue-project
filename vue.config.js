@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: '/dist/'
+  publicPath: '/vue-week6/dist/'
 }
