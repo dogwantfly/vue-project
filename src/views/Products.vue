@@ -59,7 +59,6 @@
 }
 </style>
 <script>
-import axios from 'axios'
 import pagination from '@/components/Pagination.vue'
 import userProductModal from '@/components/UserProductModal.vue'
 export default ({
@@ -79,7 +78,7 @@ export default ({
     // 取得商品列表
     getProduct (page = 1) {
       const api = `/api/${process.env.VUE_APP_APIPATH}/products?page=${page}`
-      axios.get(api)
+      this.$http.get(api)
         .then(response => {
           if (!response.data.success) return
           this.products = response.data.products
@@ -95,7 +94,7 @@ export default ({
       const id = this.tempProduct.id
       const api = `/api/${process.env.VUE_APP_APIPATH}/product/${id}`
       this.loadingStatus.loadingItem = id
-      axios.get(api)
+      this.$http.get(api)
         .then(response => {
           if (!response.data.success) {
             alert(response.data.message)
@@ -126,7 +125,7 @@ export default ({
         this.loadingStatus.loadingCart = id
       }
       this.$refs.userProductModal.hideModal()
-      axios.post(api, { data })
+      this.$http.post(api, { data })
         .then(response => {
           if (!response.data.success) {
             alert(response.data.message)
@@ -141,7 +140,7 @@ export default ({
     }
   },
   mounted () {
-    axios.defaults.baseURL = process.env.VUE_APP_API
+    this.$http.defaults.baseURL = process.env.VUE_APP_API
     this.getProduct()
   }
 })

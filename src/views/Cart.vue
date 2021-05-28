@@ -141,7 +141,6 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
 export default ({
   data () {
     return {
@@ -181,8 +180,8 @@ export default ({
       if (e.target.nodeName === 'BUTTON') {
         this.loadingStatus.loadingCart = id
       }
-      this.$refs.productModal.hideModal()
-      axios.post(api, { data })
+      // this.$refs.productModal.hideModal()
+      this.$http.post(api, { data })
         .then(response => {
           if (!response.data.success) {
             alert(response.data.message)
@@ -198,7 +197,7 @@ export default ({
     // 取得購物車
     getCart () {
       const api = `/api/${process.env.VUE_APP_APIPATH}/cart`
-      axios.get(api)
+      this.$http.get(api)
         .then(response => {
           if (!response.data.success) return
           this.carts = response.data.data
@@ -211,7 +210,7 @@ export default ({
     removeCartItem (id) {
       const api = `/api/${process.env.VUE_APP_APIPATH}/cart/${id}`
       this.loadingStatus.loadingRemoveCart = id
-      axios.delete(api)
+      this.$http.delete(api)
         .then(response => {
           if (!response.data.success) return
           this.getCart()
@@ -228,7 +227,7 @@ export default ({
         code: this.coupon_code
       }
       this.loadingStatus.loadingCoupon = this.coupon_code
-      axios.post(api, { data })
+      this.$http.post(api, { data })
         .then(response => {
           if (!response.data.success) {
             this.loadingStatus.loadingCoupon = ''
@@ -253,7 +252,7 @@ export default ({
         alert('購物車無內容')
         return
       }
-      axios.post(api, { data })
+      this.$http.post(api, { data })
         .then(response => {
           alert(response.data.message)
           if (response.data.success) {
@@ -275,7 +274,7 @@ export default ({
     }
   },
   mounted () {
-    axios.defaults.baseURL = process.env.VUE_APP_API
+    this.$http.defaults.baseURL = process.env.VUE_APP_API
     this.getCart()
   }
 })

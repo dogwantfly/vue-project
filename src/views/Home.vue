@@ -5,7 +5,7 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
         <ul class="navbar-nav">
           <!-- <li class="nav-item">
             <router-link to="/index" class="nav-link">Home</router-link>
@@ -17,16 +17,31 @@
             <router-link to="/cart" class="nav-link nav-link-color">前台購物車</router-link>
           </li>
         </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <router-link to="/login" class="nav-link nav-link-color">後台登入</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/dashboard/products" class="nav-link nav-link-color">後台產品列表</router-link>
+          </li>
+        </ul>
       </div>
-      <router-link to="/login" class="nav-link nav-link-color">後台登入</router-link>
     </div>
   </nav>
-  <router-view></router-view>
+  <div class="container home">
+    <div class="text-center">
+      <img src="../assets/img/undraw_at_home_octe.svg" alt="" class="home-img">
+    </div>
+    <router-view></router-view>
+  </div>
 </template>
 <style scoped lang="scss">
 
   .home {
     padding-top: 80px;
+  }
+  .home-img {
+    width: 200px;
   }
   .navbar-bg {
     background-color: #293845;

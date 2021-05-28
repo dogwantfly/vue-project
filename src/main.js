@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 import { Form, Field, ErrorMessage, defineRule, configure } from 'vee-validate'
 import { required, email, min, numeric } from '@vee-validate/rules'
@@ -21,7 +22,9 @@ configure({
 })
 setLocale('zh_TW')
 
-createApp(App).use(router, axios)
+createApp(App)
+  .use(router)
+  .use(VueAxios, axios)
   .component('Form', Form)
   .component('Field', Field)
   .component('ErrorMessage', ErrorMessage)
