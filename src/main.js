@@ -7,7 +7,7 @@ import { Form, Field, ErrorMessage, defineRule, configure } from 'vee-validate'
 import { required, email, min, numeric } from '@vee-validate/rules'
 import { localize, setLocale } from '@vee-validate/i18n'
 import zhTw from '@vee-validate/i18n/dist/locale/zh_TW.json'
-
+import '@/assets/scss/all.scss'
 // vee-validate 基本設定
 defineRule('email', email)
 defineRule('required', required)

@@ -1,5 +1,5 @@
 <template>
-  <div class="row justify-content-center">
+  <div class="row justify-content-center cart">
     <div class="col-8">
     <!-- 購物車列表 -->
       <table class="table">
@@ -74,7 +74,7 @@
           Email
           <span class="text-danger">*</span>
         </label>
-        <Field id="email" name="email" type="email" class="form-control" placeholder="請輸入 Email" v-model="this.user.email" rules="email|required" :class="{ 'is-invalid': errors['email'] , 'is-valid': !errors['email'] && user.email!== ''}"></Field>
+        <Field id="email" name="email" type="email" class="form-control" placeholder="請輸入 Email" v-model="user.email" rules="email|required" :class="{ 'is-invalid': errors['email'] , 'is-valid': !errors['email'] && user.email!== ''}"></Field>
         <error-message name="email" class="invalid-feedback"></error-message>
       </div>
       <div class="mb-3">
@@ -140,7 +140,6 @@
     </Form>
   </div>
 </template>
-
 <script>
 import axios from 'axios'
 export default ({
@@ -281,3 +280,8 @@ export default ({
   }
 })
 </script>
+<style scoped>
+.cart {
+  padding-top: 80px;
+}
+</style>

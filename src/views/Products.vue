@@ -1,6 +1,6 @@
 <template>
   <!-- 商品列表 -->
-  <table class="table">
+  <table class="table products">
     <thead>
       <tr>
         <th scope="col">圖片</th>
@@ -20,7 +20,7 @@
           <br>
           <span class="fw-bold">現在只要 {{item.price}} 元</span>
         </td>
-        <td>
+        <td class="text-end">
           <div class="btn-group" role="group" aria-label="Basic mixed styles example">
             <button type="button" class="btn btn-outline-secondary" v-on:click="getProductInfo(item)">
               <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingItem === item.id">
@@ -53,6 +53,9 @@
 .modal-img {
   height: 500px;
   object-fit: cover;
+}
+.table.products{
+  margin-top: 80px;
 }
 </style>
 <script>
