@@ -22,7 +22,7 @@
             <router-link to="/login" class="nav-link nav-link-color">後台登入</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/dashboard/products" class="nav-link nav-link-color">後台產品列表</router-link>
+            <router-link to="/dashboard/products" class="nav-link nav-link-color">後台首頁</router-link>
           </li>
         </ul>
       </div>
