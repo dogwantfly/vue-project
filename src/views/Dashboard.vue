@@ -22,7 +22,7 @@
   </nav>
   <div class="container dashboard">
     這是後台頁面
-    <router-view/>
+    <router-view v-if="isLogin"></router-view>
   </div>
 </template>
 
@@ -31,3 +31,41 @@
   padding-top: 80px;
 }
 </style>
+<script>
+export default ({
+  data () {
+    return {
+      isLogin: false
+    }
+  },
+  methods: {
+    checkLogin () {
+      const api = '/api/user/check'
+      this.$http.post(api)
+        .then(response => {
+          if (!response.data.success) {
+            alert(response.data.message)
+            this.$router.push('/login')
+            return
+          }
+          this.isLogin = true
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+  },
+  mounted () {
+    // 從 cookie 取登入時存的 token
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, '$1')
+    console.log(token)
+    // 設定 request headers
+    this.$http.defaults.headers.common.Authorization = token
+    this.$http.defaults.baseURL = process.env.VUE_APP_API
+    this.checkLogin()
+    if (token === '') {
+      this.$router.push('/login')
+    }
+  }
+})
+</script>
