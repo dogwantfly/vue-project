@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg fixed-top navbar-bg">
     <div class="container">
       <router-link to="/index" class="navbar-brand nav-link-color">前台</router-link>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-dark navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
@@ -36,7 +36,6 @@
   </div>
 </template>
 <style scoped lang="scss">
-
   .home {
     padding-top: 80px;
   }
@@ -60,3 +59,9 @@
     border-radius: 50px;
   }
 </style>
+<script>
+import 'bootstrap/dist/js/bootstrap.min.js'
+export default {
+
+}
+</script>
