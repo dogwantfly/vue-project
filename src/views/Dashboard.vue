@@ -67,7 +67,7 @@ export default ({
       this.$http.post(api)
         .then(response => {
           if (!response.data.success) return
-          document.cookie = 'token=;expired=;'
+          document.cookie = 'token=;expires=;'
           this.isLogin = false
           alert(response.data.message)
           this.$router.push('/index')
