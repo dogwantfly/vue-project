@@ -34,6 +34,10 @@ const routes = [
         // 子路徑可不加 /
         path: 'products',
         component: () => import('../views/dashboard/Products.vue')
+      },
+      {
+        path: 'orders',
+        component: () => import('../views/dashboard/Orders.vue')
       }
     ]
   }

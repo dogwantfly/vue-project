@@ -5,18 +5,16 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <router-link to="/index" class="nav-link">前台</router-link>
+            <router-link to="/dashboard/orders" class="nav-link">後台訂單</router-link>
           </li>
           <li class="nav-item">
             <router-link to="/dashboard/products" class="nav-link">後台產品列表</router-link>
           </li>
-          <!-- <li class="nav-item">
-            <router-link to="/products" class="nav-link">後台產品列表</router-link>
-          </li> -->
         </ul>
+        <router-link to="/index" class="nav-link nav-link-color">前台</router-link>
       </div>
     </div>
   </nav>
@@ -26,9 +24,12 @@
   </div>
 </template>
 
-<style scoped>
+<style lang="scss">
 .dashboard {
   padding-top: 80px;
+}
+.nav-link-color {
+  color: rgba(0, 0, 0, 0.55);
 }
 </style>
 <script>
