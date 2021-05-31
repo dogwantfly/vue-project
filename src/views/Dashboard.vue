@@ -14,7 +14,14 @@
             <router-link to="/dashboard/products" class="nav-link">後台產品列表</router-link>
           </li>
         </ul>
-        <router-link to="/index" class="nav-link nav-link-color">前台</router-link>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <router-link to="/index" class="nav-link nav-link-color">前台</router-link>
+          </li>
+          <li class="nav-item">
+            <button type="button" @click="logout" class="btn nav-link nav-link-color">登出</button>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
@@ -54,12 +61,25 @@ export default ({
         .catch(error => {
           console.log(error)
         })
+    },
+    logout () {
+      const api = '/logout'
+      this.$http.post(api)
+        .then(response => {
+          if (!response.data.success) return
+          document.cookie = 'token=;expired=;'
+          this.isLogin = false
+          alert(response.data.message)
+          this.$router.push('/index')
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   },
   mounted () {
     // 從 cookie 取登入時存的 token
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, '$1')
-    console.log(token)
     // 設定 request headers
     this.$http.defaults.headers.common.Authorization = token
     this.$http.defaults.baseURL = process.env.VUE_APP_API
