@@ -45,7 +45,7 @@ export default ({
           const { token, expired } = response.data
           // console.log(`token: ${token}`, `expired: ${expired}`)
           // 將 token expired 存入 cookie
-          document.cookie = `token=${token};expired=${new Date(expired)}`
+          document.cookie = `token=${token};expires=${new Date(expired)}`
           // 轉址
           this.$router.push('/dashboard')
         })
