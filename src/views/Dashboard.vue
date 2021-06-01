@@ -48,6 +48,10 @@ export default ({
   },
   methods: {
     checkLogin () {
+      // 從 cookie 取登入時存的 token
+      const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, '$1')
+      // 設定 request headers
+      this.$http.defaults.headers.common.Authorization = token
       const api = '/api/user/check'
       this.$http.post(api)
         .then(response => {
@@ -78,15 +82,8 @@ export default ({
     }
   },
   mounted () {
-    // 從 cookie 取登入時存的 token
-    const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, '$1')
-    // 設定 request headers
-    this.$http.defaults.headers.common.Authorization = token
     this.$http.defaults.baseURL = process.env.VUE_APP_API
     this.checkLogin()
-    if (token === '') {
-      this.$router.push('/login')
-    }
   }
 })
 </script>
