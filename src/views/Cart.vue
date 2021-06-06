@@ -266,6 +266,7 @@ export default ({
             }
             this.message = ''
             resetForm()
+            this.getCart()
           }
         })
         .catch(error => {
