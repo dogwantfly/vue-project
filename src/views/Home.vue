@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg fixed-top navbar-bg">
+  <nav class="navbar navbar-expand-lg fixed-top navbar-bg" :key="$route.path">
     <div class="container">
       <router-link to="/index" class="navbar-brand nav-link-color">前台</router-link>
       <button class="navbar-dark navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,6 +15,9 @@
           </li>
           <li class="nav-item">
             <router-link to="/cart" class="nav-link nav-link-color">前台購物車</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/blog" class="nav-link nav-link-color">Blog</router-link>
           </li>
         </ul>
         <ul class="navbar-nav">
