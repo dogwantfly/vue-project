@@ -1,5 +1,5 @@
-# vue-week6
-https://dogwantfly.github.io/vue-week6/#/
+# vue-project
+https://dogwantfly.github.io/vue-project/#/
 
 ## Project setup
 ```
