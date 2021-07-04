@@ -8,10 +8,16 @@
       <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <router-link to="/dashboard/orders" class="nav-link">後台訂單</router-link>
+            <router-link to="/dashboard/orders" class="nav-link">訂單</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/dashboard/products" class="nav-link">後台產品列表</router-link>
+            <router-link to="/dashboard/products" class="nav-link">產品列表</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/dashboard/coupons" class="nav-link">優惠券列表</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/dashboard/articles" class="nav-link">文章列表</router-link>
           </li>
         </ul>
         <ul class="navbar-nav">
@@ -25,7 +31,7 @@
       </div>
     </div>
   </nav>
-  <div class="container dashboard">
+  <div class="dashboard">
     這是後台頁面
     <router-view v-if="isLogin"></router-view>
   </div>
@@ -81,7 +87,7 @@ export default ({
         })
     }
   },
-  mounted () {
+  created () {
     this.$http.defaults.baseURL = process.env.VUE_APP_API
     this.checkLogin()
   }

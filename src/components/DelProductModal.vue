@@ -7,11 +7,12 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>確定要刪除 <span class="fw-bold">{{ tempProduct.title }}</span> 嗎？ （刪除後即無法恢復）</p>
+          <p>確定要刪除 <span class="fw-bold" v-if="tempProduct">{{ tempProduct.title }}</span>
+          <span class="fw-bold" v-if="tempCoupon">{{ tempCoupon.title }}</span> 嗎？ （刪除後即無法恢復）</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-danger" v-on:click="deleteProduct">刪除</button>
+          <button type="button" class="btn btn-danger" v-on:click="deleteItem">刪除</button>
         </div>
       </div>
     </div>
@@ -21,7 +22,7 @@
 import axios from 'axios'
 import Modal from 'bootstrap/js/dist/modal'
 export default {
-  props: ['temp-product'],
+  props: ['temp-product', 'temp-coupon'],
   template: '#delProductModal',
   data () {
     return {
@@ -46,6 +47,28 @@ export default {
           .catch(error => {
             console.log(error)
           })
+      }
+    },
+    deleteCoupon () {
+      const id = this.tempCoupon.id
+      if (id) {
+        const api = `/api/${process.env.VUE_APP_APIPATH}/admin/coupon/${id}`
+        axios.delete(api, { data: this.tempCoupon })
+          .then(response => {
+            if (!response.data.success) return
+            this.modal.hide()
+            this.$emit('delete')
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    },
+    deleteItem () {
+      if (this.tempProduct) {
+        this.deleteProduct()
+      } else {
+        this.deleteCoupon()
       }
     }
   },
