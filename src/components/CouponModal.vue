@@ -10,38 +10,89 @@
              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
            </div>
            <div class="modal-body">
-             <!-- 套用優惠券 -->
-              <div class="mb-3">
-                <label for="coupon_title" class="form-label">名稱</label>
-                <input type="text" class="form-control" id="coupon_title" placeholder="請輸入優惠券名稱" v-model="tempCoupon.title">
+             <Form action="" @submit="updateCoupon" v-slot="{ errors }" ref="form">
+                <!-- 套用優惠券 -->
+                <div class="mb-3">
+                  <label for="coupon_title" class="form-label">名稱</label>
+                  <Field
+                    type="text"
+                    class="form-control"
+                    id="coupon_title"
+                    placeholder="請輸入優惠券名稱"
+                    v-model="tempCoupon.title"
+                    :class="{ 'is-invalid': errors['名稱'], 'is-valid': tempCoupon.title }"
+                    name="名稱"
+                    rules="required"
+                    required
+                  ></Field>
+                  <Error-message
+                    name="名稱"
+                    class="invalid-feedback"
+                  ></Error-message>
+                </div>
+                <div class="mb-3">
+                  <label for="coupon_code" class="form-label">代碼</label>
+                  <Field
+                    type="text"
+                    class="form-control"
+                    id="coupon_code"
+                    placeholder="請輸入優惠券代碼，例：123coupon"
+                    v-model="tempCoupon.code"
+                    :class="{ 'is-invalid': errors['代碼'], 'is-valid': tempCoupon.code }"
+                    name="代碼"
+                    rules="required"
+                    required
+                  ></Field>
+                  <Error-message
+                    name="代碼"
+                    class="invalid-feedback"
+                  ></Error-message>
+                </div>
+                <div class="mb-3">
+                  <label for="coupon_percent" class="form-label">折扣</label>
+                  <Field
+                    type="text"
+                    class="form-control"
+                    id="coupon_percent"
+                    placeholder="請輸入優惠券折扣，例：80 表示為原價的 80%（8 折）"
+                    v-model.number="tempCoupon.percent"
+                    :class="{ 'is-invalid': errors['折扣'], 'is-valid': tempCoupon.percent }"
+                    name="折扣"
+                    rules="required"
+                    required
+                  ></Field>
+                  <Error-message
+                    name="折扣"
+                    class="invalid-feedback"
+                  ></Error-message>
+                </div>
+                <div class="mb-3">
+                  <label for="coupon_due_date" class="form-label">到期日</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="coupon_due_date"
+                    placeholder="請輸入優惠券到期日"
+                    v-model="due_date"
+                    :min="today"
+                    required>
+                </div>
+                <div class="mb-3">
+                  <input type="checkbox" name="" id="is_enabled" :checked="tempCoupon.is_enabled" class="me-2" :true-value="1" :false-value="0" v-model.number="tempCoupon.is_enabled">
+                  <label for="is_enabled" class="form-label">{{tempCoupon.is_enabled ? '啟用' : '未啟用' }}</label>
+                </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="submit" class="btn btn-primary" :disabled="Object.keys(errors).length !== 0">確認</button>
               </div>
-              <div class="mb-3">
-                <label for="coupon_code" class="form-label">代碼</label>
-                <input type="text" class="form-control" id="coupon_code" placeholder="請輸入優惠券代碼，例：123coupon" v-model="tempCoupon.code">
-              </div>
-              <div class="mb-3">
-                <label for="coupon_percent" class="form-label">折扣</label>
-                <input type="text" class="form-control" id="coupon_percent" placeholder="請輸入優惠券折扣，例：80 表示為原價的 80%（8 折）" v-model.number="tempCoupon.percent">
-              </div>
-              <div class="mb-3">
-                <label for="coupon_due_date" class="form-label">到期日</label>
-                <input type="date" class="form-control" id="coupon_due_date" placeholder="請輸入優惠券到期日" v-model="due_date" :min="today">
-              </div>
-              <div class="mb-3">
-                <input type="checkbox" name="" id="is_enabled" :checked="tempCoupon.is_enabled" class="me-2" :true-value="1" :false-value="0" v-model.number="tempCoupon.is_enabled">
-                <label for="is_enabled" class="form-label">{{tempCoupon.is_enabled ? '啟用' : '未啟用' }}</label>
-              </div>
-             <div class="modal-footer">
-               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-               <button type="button" class="btn btn-primary" v-on:click="updateCoupon">確認</button>
-             </div>
+             </Form>
            </div>
          </div>
        </div>
      </div>
 </template>
 <script>
-import Modal from 'bootstrap/js/dist/modal'
+import modalMixin from '@/mixins/modalMixin'
 export default {
   props: ['coupon', 'isNew'],
   template: '#couponModal',
@@ -50,33 +101,74 @@ export default {
       modal: null,
       tempCoupon: {},
       due_date: '',
-      today: ''
+      today: '',
+      isLoading: false
     }
   },
+  inject: ['emitter'],
+  mixins: [modalMixin],
   methods: {
     openModal () {
+      if (this.isNew) {
+        this.tempCoupon = {
+          code: '',
+          due_date: Math.floor(new Date(this.due_date) / 1000),
+          id: '',
+          is_enabled: 0,
+          num: '',
+          percent: '',
+          title: ''
+        }
+        this.$refs.form.resetForm()
+        const dateAndTime = new Date((this.tempCoupon.due_date + 8 * 3600) * 1000)
+          .toISOString().split('T');
+        [this.due_date] = dateAndTime
+      } else {
+        document.querySelectorAll('.is-valid').forEach((item) => {
+          item.classList.remove('is-valid')
+        })
+      }
       this.modal.show()
     },
     // 建立、更新優惠券
     updateCoupon () {
+      this.isLoading = true
       const id = this.tempCoupon.id
       let api = `/api/${process.env.VUE_APP_APIPATH}/admin/coupon`
       let httpMethod = 'post'
+      let httpMethodStr = '新增'
       if (!this.isNew) {
         api = `/api/${process.env.VUE_APP_APIPATH}/admin/coupon/${id}`
         httpMethod = 'put'
+        httpMethodStr = '更新'
       }
       this.$http[httpMethod](api, { data: this.tempCoupon })
         .then(response => {
           if (!response.data.success) {
-            alert(response.data.message)
+            this.emitter.emit('push-message', {
+              style: 'danger',
+              title: `${httpMethodStr}失敗`,
+              content: `${httpMethodStr}優惠券 ${this.tempCoupon.title} 失敗`
+            })
+            this.isLoading = false
             return
           }
           this.modal.hide()
           this.$emit('update')
+          this.emitter.emit('push-message', {
+            style: 'success',
+            title: `${httpMethodStr}成功`,
+            content: `${httpMethodStr}優惠券 ${this.tempCoupon.title} 成功`
+          })
+          this.isLoading = false
         })
         .catch(error => {
-          console.log(error)
+          this.emitter.emit('push-message', {
+            style: 'danger',
+            title: '連線錯誤',
+            content: error.message
+          })
+          this.isLoading = false
         })
     }
   },
@@ -84,8 +176,6 @@ export default {
     coupon () {
       this.tempCoupon = { ...this.coupon }
       // 將時間格式改為 YYYY-MM-DD
-      // const dateAndTime = new Date(this.tempCoupon.due_date * 1000)
-      //   .toISOString().split('T')[0]
       const dateAndTime = new Date((this.tempCoupon.due_date + 8 * 3600) * 1000)
         .toISOString().split('T');
       [this.due_date] = dateAndTime
@@ -95,10 +185,6 @@ export default {
     }
   },
   mounted () {
-    // 建立 instance
-    this.modal = new Modal(this.$refs.modal, {
-      keyboard: false
-    })
     // https://www.ucamc.com/articles/343-javascript-%E8%BD%89%E6%8F%9B%E6%99%82%E5%8D%80-toisostring-%E7%9B%B8%E5%B7%AE%E5%95%8F%E9%A1%8C
     const todayTime = new Date(+new Date() + 8 * 3600 * 1000).toISOString().split('T')[0]
     this.today = todayTime

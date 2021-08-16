@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <Loading :active="isLoading" :z-index="100"/>
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary mt-3" v-on:click="openModal('new')">
       新增資料
@@ -19,10 +20,10 @@
       <tbody>
         <tr v-for="(item) in products" v-bind:key="item.id">
           <td scope="row">{{ item.category }}</td>
-          <td>{{item.title}}</td>
-          <td>{{item.origin_price}}</td>
-          <td>{{item.price}}</td>
-          <td>{{item.num}}</td>
+          <td>{{ item.title }}</td>
+          <td>{{ $filters.currency(item.origin_price) }}</td>
+          <td>{{ $filters.currency(item.price) }}</td>
+          <td>{{ item.num }}</td>
           <td v-bind:class="{ 'text-success': item.is_enabled}">{{item.is_enabled ? "啟用" : "未啟用" }}</td>
           <td>
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
@@ -37,60 +38,99 @@
     <pagination :pagination="pagination" @change-page="getProduct"></pagination>
   </div>
   <!-- productModal -->
-  <product-modal :temp-product="tempProduct" :products="products" :is-new="isNew" ref="productModal" @update="getProduct"></product-modal>
-  <!-- delProductModal   -->
-  <del-product-modal :temp-product="tempProduct" :products="products" ref="delProductModal" @delete="getProduct"></del-product-modal>
+  <product-modal :temp-product="tempProduct" :is-new="isNew" ref="productModal" @update="getProduct"></product-modal>
+  <!-- DelItemModal   -->
+  <DelItemModal :temp-product="tempProduct" :products="products" ref="delItemModal" @delete="getProduct"/>
 </template>
 <script>
-import axios from 'axios'
 import pagination from '@/components/Pagination.vue'
 import productModal from '@/components/ProductModal.vue'
-import delProductModal from '@/components/DelProductModal.vue'
+import DelItemModal from '@/components/DelItemModal.vue'
 
 export default ({
   components: {
     pagination,
     productModal,
-    delProductModal
+    DelItemModal
   },
   data () {
     return {
       products: [],
       tempProduct: {},
       pagination: {},
-      isNew: false
+      isNew: false,
+      isLoading: false
     }
   },
+  inject: ['emitter'],
   methods: {
     openModal (isNew, item) {
       switch (isNew) {
         case 'new':
-          this.$data.tempProduct = this.$options.data().tempProduct
+          this.tempProduct = {
+            category: '',
+            id: '',
+            imageUrl: '',
+            imagesUrl: [],
+            is_enabled: 0,
+            num: '',
+            origin_price: '',
+            price: '',
+            title: '',
+            unit: ''
+          }
           this.isNew = true
-          this.$refs.productModal.openModal()
+          setTimeout(() => {
+            this.$refs.productModal.openModal()
+          })
           break
         case 'edit':
-          this.tempProduct = { ...item }
+          this.tempProduct = JSON.parse(JSON.stringify(item))
           this.isNew = false
-          this.$refs.productModal.openModal()
+          if (!this.tempProduct.imagesUrl) {
+            this.tempProduct.imagesUrl = []
+          }
+          setTimeout(() => {
+            this.$refs.productModal.openModal()
+          })
           break
         case 'delete':
           this.tempProduct = { ...item }
-          this.$refs.delProductModal.openModal()
+          this.$refs.delItemModal.openModal()
           break
       }
     },
     // 取得商品列表
     getProduct (page = 1) {
+      this.isLoading = true
       const api = `/api/${process.env.VUE_APP_APIPATH}/admin/products?page=${page}`
-      axios.get(api)
+      this.$http.get(api)
         .then(response => {
-          if (!response.data.success) return
+          if (!response.data.success) {
+            this.emitter.emit('push-message', {
+              style: 'danger',
+              title: '取得資料錯誤',
+              content: response.data.message
+            })
+            this.isLoading = false
+            return
+          }
           this.products = response.data.products
           this.pagination = response.data.pagination
+          this.emitter.emit('push-message', {
+            style: 'success',
+            title: '取得後台產品列表',
+            content: '取得後台產品列表'
+          })
+          this.isLoading = false
         })
         .catch(error => {
-          console.log(error)
+          this.emitter.emit('push-message', {
+            style: 'danger',
+            title: '連線錯誤',
+            content: error.message
+          })
+          this.isLoading = false
         })
     }
   },
@@ -104,8 +144,8 @@ export default ({
       window.location = 'index.html'
     }
     // 設定 request headers
-    axios.defaults.headers.common.Authorization = token
-    axios.defaults.baseURL = process.env.VUE_APP_API
+    this.$http.defaults.headers.common.Authorization = token
+    this.$http.defaults.baseURL = process.env.VUE_APP_API
     // 取商品資料
     this.getProduct()
   }

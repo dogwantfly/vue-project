@@ -1,7 +1,8 @@
 <template>
+  <Loading :active="isLoading"/>
   <div class="d-flex justify-content-between align-items-center">
       <h1>訂單頁面</h1>
-      <button type="button" class="btn btn-danger">刪除全部訂單</button>
+      <button type="button" class="btn btn-danger" @click="openModal('delete',item)" :class="{'disabled': !orders.length}">刪除全部訂單</button>
   </div>
   <div class="table-responsive">
     <table class="table">
@@ -21,28 +22,28 @@
         <tr v-for="(item) in orders" v-bind:key="item.id">
           <td scope="row">{{ item.id }}</td>
           <td v-if="item.user">
-            {{item.user.name}} <br>
-            {{item.user.tel}}
+            {{ item.user.name }} <br>
+            {{ item.user.tel }}
           </td>
           <td v-else>
             無
           </td>
-          <td v-if="item.user">{{item.user.email}}</td>
+          <td v-if="item.user">{{ item.user.email }}</td>
           <td v-else>無</td>
           <td>
             <template v-for="(item , key) in item.products" :key="key">
             <p>
-              {{item.product.title}} * {{item.qty}}
+              {{ item.product.title }} * {{ item.qty }}
             </p>
             </template>
           </td>
           <td>
-            {{ item.total }}
+            {{ $filters.currency(item.total) }}
           </td>
           <td>
-            {{ new Date(item.create_at*1000).toLocaleString()}}
+            {{ $filters.date(item.create_at) }}
           </td>
-          <td v-bind:class="{ 'text-success': item.is_paid}">{{item.is_paid ? "已付款" : "未付款" }}</td>
+          <td v-bind:class="item.is_paid ? 'text-success' : 'text-muted'">{{item.is_paid ? "已付款" : "未付款" }}</td>
           <td class="text-end">
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
               <button type="button" class="btn btn-warning" v-on:click="openModal('edit',item)">檢視</button>
@@ -76,21 +77,28 @@ export default ({
       tempOrder: {},
       pagination: {},
       loadingStatus: {},
-      current_page: 1
+      current_page: 1,
+      isLoading: false
     }
   },
   methods: {
     // 取得訂單列表
     getOrders (page = this.current_page) {
+      this.isLoading = true
       const api = `/api/${process.env.VUE_APP_APIPATH}/admin/orders?page=${page}`
       this.$http.get(api)
         .then(response => {
-          if (!response.data.success) return
+          if (!response.data.success) {
+            this.isLoading = false
+            return
+          }
           this.orders = response.data.orders
           this.pagination = response.data.pagination
           this.current_page = response.data.pagination.current_page
+          this.isLoading = false
         })
         .catch(error => {
+          this.isLoading = false
           console.log(error)
         })
     },

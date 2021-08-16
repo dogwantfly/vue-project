@@ -1,4 +1,5 @@
 <template>
+  <Loading :active="isLoading"/>
   <h1>優惠券頁面</h1>
   <button type="button" class="btn btn-primary mt-3" v-on:click="openModal('new')">
       新增優惠券
@@ -18,12 +19,11 @@
         <tr v-for="(item) in coupons" v-bind:key="item.id">
           <td scope="row">{{ item.title }}</td>
           <td>
-            {{item.code}}
+            {{ item.code }}
           </td>
-          <td>{{item.percent}}</td>
-          <td>{{new Date((item.due_date + 8 * 3600) * 1000)
-        .toISOString().split('T')[0]}}</td>
-          <td v-bind:class="{ 'text-success': item.is_enabled}">{{item.is_enabled ? "啟用" : "未啟用" }}</td>
+          <td>{{ item.percent }}</td>
+          <td>{{ $filters.date(item.due_date) }}</td>
+          <td v-bind:class="{ 'text-success': item.is_enabled}">{{ item.is_enabled ? "啟用" : "未啟用" }}</td>
           <td>
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
               <button type="button" class="btn btn-warning" v-on:click="openModal('edit',item)">編輯</button>
@@ -37,8 +37,8 @@
   <pagination :pagination="pagination" @change-page="getCoupons"></pagination>
   <!-- couponModal -->
   <coupon-modal :coupon="tempCoupon" ref="couponModal" @update="getCoupons" :is-new="isNew"></coupon-modal>
-  <!-- delProductModal   -->
-  <del-product-modal :temp-coupon="tempCoupon" ref="delProductModal" @delete="getCoupons"></del-product-modal>
+  <!-- DelItemModal   -->
+  <DelItemModal :temp-coupon="tempCoupon" ref="delItemModal" @delete="getCoupons"/>
 </template>
 <style scoped>
   .table {
@@ -48,12 +48,12 @@
 <script>
 import pagination from '@/components/Pagination.vue'
 import couponModal from '@/components/CouponModal.vue'
-import delProductModal from '@/components/DelProductModal.vue'
+import DelItemModal from '@/components/DelItemModal.vue'
 export default ({
   components: {
     pagination,
     couponModal,
-    delProductModal
+    DelItemModal
   },
   data () {
     return {
@@ -62,21 +62,28 @@ export default ({
       pagination: {},
       loadingStatus: {},
       current_page: 1,
-      isNew: false
+      isNew: false,
+      isLoading: false
     }
   },
   methods: {
     // 取得優惠券列表
     getCoupons (page = this.current_page) {
+      this.isLoading = true
       const api = `/api/${process.env.VUE_APP_APIPATH}/admin/coupons?page=${page}`
       this.$http.get(api)
         .then(response => {
-          if (!response.data.success) return
+          if (!response.data.success) {
+            this.isLoading = false
+            return
+          }
           this.coupons = response.data.coupons
           this.pagination = response.data.pagination
           this.current_page = response.data.pagination.current_page
+          this.isLoading = false
         })
         .catch(error => {
+          this.isLoading = false
           console.log(error)
         })
     },
@@ -87,18 +94,27 @@ export default ({
           this.isNew = true
           this.tempCoupon = {
             due_date: Math.floor(Date.now() / 1000),
-            is_enabled: 0
+            is_enabled: 0,
+            code: '',
+            id: '',
+            num: '',
+            percent: '',
+            title: ''
           }
-          this.$refs.couponModal.openModal()
+          setTimeout(() => {
+            this.$refs.couponModal.openModal()
+          })
           break
         case 'edit':
           this.isNew = false
-          this.tempCoupon = { ...item }
-          this.$refs.couponModal.openModal()
+          this.tempCoupon = JSON.parse(JSON.stringify(item))
+          setTimeout(() => {
+            this.$refs.couponModal.openModal()
+          })
           break
         case 'delete':
           this.tempCoupon = { ...item }
-          this.$refs.delProductModal.openModal()
+          this.$refs.delItemModal.openModal()
           break
       }
     }

@@ -1,4 +1,5 @@
 <template>
+  <Loading :active="isLoading"/>
   <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true" ref="modal">
        <div class="modal-dialog modal-xl">
          <div class="modal-content">
@@ -16,19 +17,19 @@
                   <tbody v-if="tempOrder.user">
                     <tr>
                       <th scope="row">姓名</th>
-                      <td> {{tempOrder.user.name}} </td>
+                      <td> {{ tempOrder.user.name }} </td>
                     </tr>
                     <tr>
                       <th scope="row">電話</th>
-                      <td>{{tempOrder.user.tel}}</td>
+                      <td>{{ tempOrder.user.tel }}</td>
                     </tr>
                     <tr>
                       <th scope="row">地址</th>
-                      <td>{{tempOrder.user.address}}</td>
+                      <td>{{ tempOrder.user.address }}</td>
                     </tr>
                     <tr>
                       <th scope="row">Email</th>
-                      <td>{{tempOrder.user.email}}</td>
+                      <td>{{ tempOrder.user.email }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -39,15 +40,19 @@
                   <tbody>
                     <tr>
                       <th scope="row">訂單日期</th>
-                      <td> {{ new Date(tempOrder.create_at * 1000).toLocaleString() }} </td>
+                      <td> {{ $filters.date(tempOrder.create_at) }} </td>
                     </tr>
                     <tr>
                       <th scope="row">訂單編號</th>
-                      <td>{{tempOrder.id}}</td>
+                      <td>{{ tempOrder.id }}</td>
                     </tr>
                     <tr>
                       <th scope="row">總金額</th>
-                      <td>$ {{tempOrder.total}}</td>
+                      <td>$ {{ tempOrder.total }}</td>
+                    </tr>
+                    <tr v-if="tempOrder.is_paid">
+                      <th scope="row">付款時間</th>
+                      <td> {{ new Date(tempOrder.paid_date * 1000).toLocaleString() }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -74,43 +79,60 @@
        </div>
      </div>
 </template>
+
 <script>
-import Modal from 'bootstrap/js/dist/modal'
+import modalMixin from '@/mixins/modalMixin'
+
 export default {
   props: ['temp-order'],
+  emits: ['update'],
+  inject: ['emitter'],
   template: '#orderModal',
   data () {
     return {
-      modal: null
+      modal: null,
+      isLoading: false
     }
   },
+  mixins: [modalMixin],
   methods: {
     openModal () {
       this.modal.show()
     },
     // 更新訂單
     updateOrder () {
+      this.isLoading = true
       const id = this.tempOrder.id
       const api = `/api/${process.env.VUE_APP_APIPATH}/admin/order/${id}`
       this.$http.put(api, { data: this.tempOrder })
         .then(response => {
           if (!response.data.success) {
-            alert(response.data.message)
+            this.emitter.emit('push-message', {
+              style: 'danger',
+              title: '修改訂單失敗',
+              content: response.data.message
+            })
+            this.isLoading = false
             return
           }
           this.modal.hide()
           this.$emit('update')
+          this.emitter.emit('push-message', {
+            style: 'success',
+            title: '修改訂單成功',
+            content: response.data.message
+          })
+          this.isLoading = false
         })
         .catch(error => {
-          console.log(error)
+          this.emitter.emit('push-message', {
+            style: 'danger',
+            title: '連線錯誤',
+            content: error.message
+          })
+          this.isLoading = false
         })
     }
-  },
-  mounted () {
-    // 建立 instance
-    this.modal = new Modal(this.$refs.modal, {
-      keyboard: false
-    })
   }
 }
 </script>

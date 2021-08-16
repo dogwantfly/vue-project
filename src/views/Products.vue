@@ -1,147 +1,149 @@
 <template>
-  <!-- 商品列表 -->
-  <table class="table products">
-    <thead>
-      <tr>
-        <th scope="col">圖片</th>
-        <th scope="col">商品名稱</th>
-        <th scope="col">價格</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(item) in products" v-bind:key="item.id">
-        <td scope="row">
-          <img :src="item.imgUrl" :alt="item.title" class="cart-img">
-        </td>
-        <td>{{item.title}}</td>
-        <td>
-          <del>原價 {{ item.origin_price }} 元</del>
+  <Loading :active="isLoading" :z-index="1080" :loader="'dots'" :color="'#384D48'"/>
+  <div class="container pt-5">
+    <ul class="row pt-5">
+      <li class="card col-lg-3 border-0" v-for="item in products" v-bind:key="item.id">
+        <button type="button" @click="toggleFavorite(item)" class="btn text-danger">
+          <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
+        </button>
+        <img :src="item.imageUrl" :alt="item.title" class="cart-img card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">{{ item.title }}</h5>
+          <del>原價 {{ $filters.currency(item.origin_price) }} 元</del>
           <br>
-          <span class="fw-bold">現在只要 {{item.price}} 元</span>
-        </td>
-        <td class="text-end">
-          <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-            <button type="button" class="btn btn-outline-secondary" v-on:click="getProductInfo(item)">
+          <p class="fw-bold card-text">現在只要 {{ $filters.currency(item.price) }} 元</p>
+          <div class="btn-group w-100" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-outline-primary" v-on:click="getProductInfo(item.id)">
               <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingItem === item.id">
                 <span class="visually-hidden">Loading...</span>
               </div>
               查看更多
             </button>
-            <button type="button" class="btn btn-outline-primary" v-on:click="addCart(item.id, 1, $event)">
+            <button type="button" class="btn btn-primary" v-on:click="addCart(item.id, 1)" :disabled="loadingStatus.loadingCart === item.id">
               <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingCart === item.id">
                 <span class="visually-hidden">Loading...</span>
               </div>
               加到購物車
             </button>
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <!-- 分頁 -->
-  <pagination :pagination="pagination" @change-page="getProduct"></pagination>
-  <!-- userProductModal -->
-  <userProductModal :temp-product="tempProduct" ref="userProductModal" @add-cart="addCart"></userProductModal>
+        </div>
+      </li>
+    </ul>
+    <!-- 分頁 -->
+    <Pagination :pagination="pagination" @change-page="getProducts"/>
+  </div>
 </template>
-<style scoped>
-.cart-img{
-  width: 200px;
-  height: 150px;
-  object-fit: cover;
-}
-.modal-img {
-  height: 500px;
-  object-fit: cover;
-}
-.table.products{
-  margin-top: 80px;
-}
-</style>
+
 <script>
-import pagination from '@/components/Pagination.vue'
-import userProductModal from '@/components/UserProductModal.vue'
+import Pagination from '@/components/Pagination.vue'
+import handleFavorite from '@/methods/handleFavorite'
+
 export default ({
   data () {
     return {
       products: {},
       pagination: '',
       tempProduct: {},
-      loadingStatus: {}
+      loadingStatus: {},
+      myFavorite: handleFavorite.getFavorite() || [],
+      isLoading: false
     }
   },
+  inject: ['$httpMessageState', 'emitter'],
   components: {
-    pagination,
-    userProductModal
+    Pagination
   },
   methods: {
     // 取得商品列表
-    getProduct (page = 1) {
+    getProducts (page = 1) {
+      this.isLoading = true
       const api = `/api/${process.env.VUE_APP_APIPATH}/products?page=${page}`
       this.$http.get(api)
         .then(response => {
-          if (!response.data.success) return
+          if (!response.data.success) {
+            this.$httpMessageState(response, '取得產品資料')
+            this.isLoading = false
+            return
+          }
           this.products = response.data.products
           this.pagination = response.data.pagination
+          this.isLoading = false
         })
         .catch(error => {
-          console.log(error)
+          this.$httpMessageState(error, '連線錯誤')
+          this.isLoading = false
         })
     },
     // 商品細節
-    getProductInfo (item) {
-      this.tempProduct = { ...item }
-      const id = this.tempProduct.id
-      const api = `/api/${process.env.VUE_APP_APIPATH}/product/${id}`
-      this.loadingStatus.loadingItem = id
-      this.$http.get(api)
-        .then(response => {
-          if (!response.data.success) {
-            alert(response.data.message)
-            return
-          }
-          this.loadingStatus.loadingItem = ''
-          this.$refs.userProductModal.openModal()
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    getProductInfo (productId) {
+      this.$router.push(`/product/${productId}`)
     },
     // 加入購物車
-    addCart (id, qty = 1, e) {
+    addCart (id, qty = 1) {
       const api = `/api/${process.env.VUE_APP_APIPATH}/cart`
-      let data = {
+      const data = {
         product_id: id,
         qty
       }
-      if (e.target.dataset.action === 'changeQty') {
-        const newQty = e.target.value - qty
-        data = {
-          product_id: id,
-          qty: newQty
-        }
-      }
-      if (e.target.nodeName === 'BUTTON') {
-        this.loadingStatus.loadingCart = id
-      }
-      this.$refs.userProductModal.hideModal()
+      this.loadingStatus.loadingCart = id
       this.$http.post(api, { data })
         .then(response => {
           if (!response.data.success) {
             alert(response.data.message)
             return
           }
-          // this.getCart();
+          this.emitter.emit('update-cart')
           this.loadingStatus.loadingCart = ''
         })
         .catch(error => {
-          console.log(error)
+          this.loadingStatus.loadingCart = ''
+          this.$httpMessageState(error, '連線錯誤')
         })
+    },
+    toggleFavorite (item) {
+      if (this.myFavorite.includes(item.id)) {
+        this.myFavorite.splice(this.myFavorite.indexOf(item.id), 1)
+        this.$httpMessageState({
+          data: {
+            success: true,
+            message: `已將 ${item.title} 移除收藏`
+          }
+        }, '移除收藏')
+      } else {
+        this.myFavorite.push(item.id)
+        this.$httpMessageState({
+          data: {
+            success: true,
+            message: `已將${item.title}加入收藏`
+          }
+        }, '加入收藏')
+      }
+      handleFavorite.storeFavorite(this.myFavorite)
+      this.emitter.emit('update-favorite')
+    },
+    updateFavorite () {
+      this.myFavorite = handleFavorite.getFavorite()
+      this.getProducts()
     }
   },
   mounted () {
     this.$http.defaults.baseURL = process.env.VUE_APP_API
-    this.getProduct()
+    this.getProducts()
+    this.emitter.on('update-favorite', this.updateFavorite)
+  },
+  unmounted () {
+    this.emitter.off('update-favorite', this.updateFavorite)
   }
 })
 </script>
+
+<style scoped>
+.cart-img{
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+.table.products{
+  margin-top: 80px;
+}
+</style>

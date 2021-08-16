@@ -1,84 +1,98 @@
 <template>
+  <Loading :active="isLoading"/>
   <h1>文章頁面</h1>
   <button type="button" class="btn btn-primary mt-3" v-on:click="openModal('new')">
       新增文章
   </button>
-  <!-- <table class="table">
+  <table class="table">
       <thead>
         <tr>
           <th scope="col">名稱</th>
-          <th scope="col">優惠碼</th>
-          <th scope="col">折扣百分比</th>
-          <th scope="col">到期日</th>
-          <th scope="col">是否啟用</th>
+          <th scope="col">作者</th>
+          <th scope="col">發佈日期</th>
+          <th scope="col">是否發佈</th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item) in coupons" v-bind:key="item.id">
+        <tr v-for="(item) in articles" v-bind:key="item.id">
           <td scope="row">{{ item.title }}</td>
-          <td>
-            {{item.code}}
-          </td>
-          <td>{{item.percent}}</td>
-          <td>{{new Date((item.due_date + 8 * 3600) * 1000)
-        .toISOString().split('T')[0]}}</td>
-          <td v-bind:class="{ 'text-success': item.is_enabled}">{{item.is_enabled ? "啟用" : "未啟用" }}</td>
+          <td scope="row">{{ item.author }}</td>
+          <td>{{ $filters.date(item.create_at) }}</td>
+          <td v-bind:class="{ 'text-success': item.isPublic}">{{ item.isPublic ? "已發佈" : "未發佈" }}</td>
           <td>
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-              <button type="button" class="btn btn-warning" v-on:click="openModal('edit',item)">編輯</button>
+              <button type="button" class="btn btn-warning" v-on:click="getArticle(item.id)">編輯</button>
               <button type="button" class="btn btn-danger" v-on:click="openModal('delete',item)">刪除</button>
             </div>
           </td>
         </tr>
       </tbody>
-    </table> -->
+    </table>
   <!-- 分頁 -->
-  <pagination :pagination="pagination" @change-page="getCoupons"></pagination>
+  <Pagination :pagination="pagination" @change-page="getArticles"/>
   <!-- articleModal -->
-  <article-modal ref="articleModal" :is-new="isNew" :article="tempArticle"></article-modal>
-  <!-- <article-modal :article="tempArticle" ref="articleModal" @update="getArticles" :is-new="isNew"></article-modal> -->
-  <!-- delProductModal   -->
-  <!-- <del-product-modal :temp-coupon="tempCoupon" ref="delProductModal" @delete="getCoupons"></del-product-modal> -->
+  <ArticleModal ref="articleModal" :is-new="isNew" :article="tempArticle" @update="getArticles"/>
+  <!-- DelItemModal   -->
+  <DelItemModal :temp-article="tempArticle" ref="delItemModal" @delete="getArticles"/>
 </template>
-<style scoped>
-  /* .table {
-    table-layout: fixed;
-  } */
-</style>
 <script>
-import pagination from '@/components/Pagination.vue'
-import articleModal from '@/components/ArticleModal.vue'
-// import delProductModal from '@/components/DelProductModal.vue'
+import Pagination from '@/components/Pagination.vue'
+import ArticleModal from '@/components/ArticleModal.vue'
+import DelItemModal from '@/components/DelItemModal.vue'
 export default ({
   components: {
-    pagination,
-    articleModal
-    // delProductModal
+    Pagination,
+    ArticleModal,
+    DelItemModal
   },
   data () {
     return {
-      coupons: [],
+      articles: '',
       tempArticle: '',
       pagination: {},
       loadingStatus: {},
       current_page: 1,
-      isNew: false
+      isNew: false,
+      isLoading: false
     }
   },
   methods: {
-    // 取得優惠券列表
-    getCoupons (page = this.current_page) {
-      const api = `/api/${process.env.VUE_APP_APIPATH}/admin/coupons?page=${page}`
+    // 取得文章列表
+    getArticles (page = this.current_page) {
+      this.isLoading = true
+      const api = `/api/${process.env.VUE_APP_APIPATH}/admin/articles?page=${page}`
       this.$http.get(api)
         .then(response => {
-          if (!response.data.success) return
-          this.coupons = response.data.coupons
+          if (!response.data.success) {
+            this.isLoading = false
+            return
+          }
+          this.articles = response.data.articles
           this.pagination = response.data.pagination
           this.current_page = response.data.pagination.current_page
+          this.isLoading = false
         })
         .catch(error => {
           console.log(error)
+          this.isLoading = false
+        })
+    },
+    getArticle (id) {
+      this.isLoading = true
+      const api = `/api/${process.env.VUE_APP_APIPATH}/admin/article/${id}`
+      this.$http.get(api)
+        .then(response => {
+          if (!response.data.success) {
+            this.isLoading = false
+            return
+          }
+          this.openModal('edit', response.data.article)
+          this.isLoading = false
+        })
+        .catch(error => {
+          console.log(error)
+          this.isLoading = false
         })
     },
     // 開啟編輯、刪除、查看更多
@@ -86,17 +100,30 @@ export default ({
       switch (action) {
         case 'new':
           this.isNew = true
-          this.tempArticle = {}
-          this.$refs.articleModal.openModal()
+          this.tempArticle = {
+            author: '',
+            id: '',
+            image: '',
+            description: '',
+            content: '',
+            create_at: Math.floor(Date.now() / 1000),
+            isPublic: false,
+            tag: ['']
+          }
+          setTimeout(() => {
+            this.$refs.articleModal.openModal()
+          })
           break
         case 'edit':
           this.isNew = false
-          // this.tempCoupon = { ...item }
-          // this.$refs.couponModal.openModal()
+          this.tempArticle = JSON.parse(JSON.stringify(item))
+          setTimeout(() => {
+            this.$refs.articleModal.openModal()
+          })
           break
         case 'delete':
-          // this.tempCoupon = { ...item }
-          // this.$refs.delProductModal.openModal()
+          this.tempArticle = { ...item }
+          this.$refs.delItemModal.openModal()
           break
       }
     }
@@ -104,7 +131,7 @@ export default ({
   mounted () {
     this.$http.defaults.baseURL = process.env.VUE_APP_API
     // 取商品資料
-    this.getCoupons()
+    this.getArticles()
   }
 })
 </script>

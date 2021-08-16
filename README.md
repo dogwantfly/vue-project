@@ -1,5 +1,5 @@
 # vue-project
-https://dogwantfly.github.io/vue-project/#/
+
 
 ## Project setup
 ```

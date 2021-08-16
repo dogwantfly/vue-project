@@ -7,7 +7,10 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>確定要刪除編號：<span class="fw-bold"> {{ tempOrder.id }} </span> 訂單嗎？ （刪除後即無法恢復）</p>
+          <p>確定要刪除編號：
+            <span class="fw-bold" v-if="tempOrder.id"> {{ tempOrder.id }} </span>
+            <span class="fw-bold" v-else> 全部 </span>
+            訂單嗎？ （刪除後即無法恢復）</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
@@ -18,41 +21,46 @@
   </div>
 </template>
 <script>
-import Modal from 'bootstrap/js/dist/modal'
+import modalMixin from '@/mixins/modalMixin'
 export default {
   props: ['temp-order'],
   template: '#delOrderModal',
   data () {
     return {
-      modal: null
+      modal: null,
+      isLoading: false
     }
   },
+  mixins: [modalMixin],
   methods: {
     openModal () {
       this.modal.show()
     },
     // 刪除資料
     deleteOrder () {
+      this.isLoading = true
       const id = this.tempOrder.id
+      let api
       if (id) {
-        const api = `/api/${process.env.VUE_APP_APIPATH}/admin/order/${id}`
-        this.$http.delete(api, { data: this.tempOrder })
-          .then(response => {
-            if (!response.data.success) return
-            this.modal.hide()
-            this.$emit('delete')
-          })
-          .catch(error => {
-            console.log(error)
-          })
+        api = `/api/${process.env.VUE_APP_APIPATH}/admin/order/${id}`
+      } else {
+        api = `/api/${process.env.VUE_APP_APIPATH}/admin/orders/all`
       }
+      this.$http.delete(api, { data: this.tempOrder })
+        .then(response => {
+          if (!response.data.success) {
+            this.isLoading = false
+            return
+          }
+          this.modal.hide()
+          this.$emit('delete')
+          this.isLoading = false
+        })
+        .catch(error => {
+          console.log(error)
+          this.isLoading = false
+        })
     }
-  },
-  mounted () {
-    // 建立 instance
-    this.modal = new Modal(this.$refs.modal, {
-      keyboard: false
-    })
   }
 }
 </script>

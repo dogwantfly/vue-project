@@ -7,7 +7,7 @@ const routes = [
     children: [
       {
         // 子路徑可不加 /
-        path: 'index',
+        path: '',
         component: () => import('../views/Index.vue')
       },
       {
@@ -15,12 +15,32 @@ const routes = [
         component: () => import('../views/Products.vue')
       },
       {
+        path: 'product/:productId',
+        component: () => import('../views/Product.vue')
+      },
+      {
         path: 'cart',
         component: () => import('../views/Cart.vue')
       },
       {
-        path: 'blog',
+        path: 'checkout/:orderId',
+        component: () => import('../views/CheckOut.vue')
+      },
+      {
+        path: 'blogs',
+        component: () => import('../views/Blogs.vue')
+      },
+      {
+        path: 'blog/:blogId',
         component: () => import('../views/Blog.vue')
+      },
+      {
+        path: 'orders',
+        component: () => import('../views/Orders.vue')
+      },
+      {
+        path: 'about',
+        component: () => import('../views/About.vue')
       }
     ]
   },
@@ -36,7 +56,7 @@ const routes = [
     children: [
       {
         // 子路徑可不加 /
-        path: 'products',
+        path: '',
         component: () => import('../views/dashboard/Products.vue')
       },
       {
@@ -52,19 +72,13 @@ const routes = [
         component: () => import('../views/dashboard/Articles.vue')
       }
     ]
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: {
+      name: 'Home'
+    }
   }
-  // 404 頁面
-  // {
-  //   path: '/:pathMatch(.*)*',
-  //   component: () => import('../views/NotFound.vue')
-  // }
-  // // 重新導向
-  // {
-  //   path: '/newPage/:pathMatch(.*)*',
-  //   redirect: {
-  //     name: 'Home'
-  //   }
-  // }
 ]
 
 const router = createRouter({
