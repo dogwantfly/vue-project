@@ -21,7 +21,7 @@
                     {{ item.title }}
                   </router-link>
                 </h4>
-                <button type="button" @click="toggleFavorite(item)" class="btn btn-favorite">
+                <button type="button" @click.stop="toggleFavorite(item)" class="btn btn-favorite">
                   <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
                 </button>
               </div>
@@ -36,7 +36,7 @@
                 </div>
                 查看更多
               </button>
-              <button type="button" class="btn btn-primary" v-on:click="addCart(item.id, 1)" :disabled="loadingStatus.loadingCart === item.id">
+              <button type="button" class="btn btn-primary" @click="addCart(item.id, 1)" :disabled="loadingStatus.loadingCart === item.id">
                 <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingCart === item.id">
                   <span class="visually-hidden">Loading...</span>
                 </div>
@@ -211,6 +211,7 @@ export default ({
 .btn-favorite {
   font-size: 18px;
   color: #dc3545;
+  z-index: 10;
 }
 .btn-favorite:hover {
   color: #9e2632;
