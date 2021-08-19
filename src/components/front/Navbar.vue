@@ -21,7 +21,7 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuFavorite" ref="dropdown">
               <li class="card border-0 px-2" v-for="product in products" :key="product.id">
-                <a class="row g-0 align-items-center" href="#">
+                <router-link class="row g-0 align-items-center" :to="`/product/${product.id}`">
                   <div class="col-md-3">
                     <img :src="product.imageUrl" :alt="product.title" style="width:70px; height: 70px">
                   </div>
@@ -35,7 +35,7 @@
                       <i class="bi bi-x-lg"></i>
                     </button>
                   </div>
-                </a>
+                </router-link>
               </li>
               <li v-if="!products.length">
                 <p>目前無收藏商品</p>

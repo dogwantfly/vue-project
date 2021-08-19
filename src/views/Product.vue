@@ -46,7 +46,7 @@
           </div>
         </div>
       </div>
-      <div class="col" v-if="randomProducts.length">
+      <div class="col-12" v-if="randomProducts.length">
         <h3>買了此商品的人也買了...</h3>
         <ul class="row">
           <li class="card col-lg-3 border-0 mb-4" v-for="item in randomProducts" :key="item.id">
@@ -63,6 +63,23 @@
                 </button>
               </div>
               <p class="fw-bold card-text">優惠價： {{ $filters.currency(item.price) }} 元</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="col-12" v-if="productsViewed.length">
+        <h3>最近瀏覽商品</h3>
+        <ul class="row">
+          <li class="card col-lg-2 border-0 mb-4" v-for="item in productsViewed" :key="item.id">
+            <img :src="item.imageUrl" :alt="item.title" class="product-img card-img-top">
+            <div class="card-body">
+              <div class="d-flex align-items-center justify-content-between">
+                <h4 class="card-title mb-0 h6">
+                  <a href="#" @click.prevent="getProductInfo(item.id)" class="text-dark d-block stretched-link" >
+                    {{ item.title }}
+                  </a>
+                </h4>
+              </div>
             </div>
           </li>
         </ul>
@@ -135,6 +152,7 @@ export default {
           }
           this.products = response.data.products
           this.getRandomProducts()
+          this.getProductsViewed()
         })
         .catch(error => {
           this.$httpMessageState(error, '連線錯誤')
@@ -155,9 +173,31 @@ export default {
         this.randomProducts.push(product)
       })
     },
+    saveProductViewed (productId) {
+      const maxLength = 6
+      const productsIdViewed = JSON.parse(localStorage.getItem('productsViewed')) || []
+      if (productsIdViewed.includes(productId)) {
+        productsIdViewed.splice(productsIdViewed.indexOf(productId), 1)
+      }
+      productsIdViewed.unshift(productId)
+      if (productsIdViewed.length > maxLength) {
+        productsIdViewed.pop()
+      }
+      localStorage.setItem('productsViewed', JSON.stringify(productsIdViewed))
+    },
+    getProductsViewed () {
+      const productsIdViewed = JSON.parse(localStorage.getItem('productsViewed')) || []
+      if (!productsIdViewed.length) return
+      this.productsViewed = []
+      productsIdViewed.forEach(productId => {
+        const filterProduct = this.products.filter(product => product.id === productId)[0]
+        this.productsViewed.push(filterProduct)
+      })
+    },
     getProductInfo (productId) {
       this.$router.push(`/product/${productId}`)
       this.getProduct(productId)
+      this.saveProductViewed(productId)
     },
     addCart (id, qty = 1) {
       const api = `/api/${process.env.VUE_APP_APIPATH}/cart`
@@ -214,6 +254,7 @@ export default {
     this.$http.defaults.baseURL = process.env.VUE_APP_API
     this.getProduct()
     this.emitter.on('update-favorite', this.updateFavorite)
+    this.saveProductViewed(this.$route.params.productId)
     // console.log(this.$route)
     // const date = new Date()
     // date.setDate(date.getDate() + 7)
@@ -238,6 +279,11 @@ export default {
   .cart-img{
     width: 100%;
     height: 200px;
+    object-fit: cover;
+  }
+  .product-img {
+    height: 150px;
+    width: 100%;
     object-fit: cover;
   }
   .table.products{
