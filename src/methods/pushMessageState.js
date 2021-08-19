@@ -22,7 +22,7 @@ export default function (response, title = '更新') {
     emitter.emit('push-message', {
       style: 'danger',
       title: '連線錯誤',
-      content: response.message.join('、')
+      content: response.message.join('、') || response
     })
   }
 }

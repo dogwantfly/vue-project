@@ -1,11 +1,26 @@
 <template>
   <Loading :active="isLoading" :z-index="1080" :loader="'dots'" :color="'#384D48'"/>
   <div class="container pt-5">
-    <div class="row pt-3">
-      <div class="col-lg-7">
-        <img :src="product.imageUrl" :alt="product.title">
+    <div class="row pt-5">
+      <div class="col-lg-6">
+        <Swiper :style="{'--swiper-navigation-color': '#fff','--swiper-pagination-color': '#fff'}" :loop="false" :spaceBetween="10" :thumbs="{ swiper: thumbsSwiper }" class="mySwiper2">
+          <SwiperSlide>
+            <img :src="product.imageUrl" :alt="product.title" class="img-fluid">
+          </SwiperSlide>
+          <SwiperSlide v-for="(image , key) in product.imagesUrl" :key="image">
+            <img :src="image" :alt="`${product.title} ${key}`" class="img-fluid">
+          </SwiperSlide>
+        </Swiper>
+        <Swiper @swiper="setThumbsSwiper" :loop="false" :spaceBetween="10" :slidesPerView="4"  :watchSlidesVisibility="true" :watchSlidesProgress="true" class="mySwiper">
+          <SwiperSlide>
+            <img :src="product.imageUrl" :alt="product.title" class="img-fluid">
+          </SwiperSlide>
+          <SwiperSlide v-for="(image , key) in product.imagesUrl" :key="image">
+            <img :src="image" :alt="`${product.title} ${key}`"  class="img-fluid">
+          </SwiperSlide>
+        </Swiper>
       </div>
-      <div class="col-lg-5">
+      <div class="col-lg-6">
         <div class="d-flex align-items-center">
           <h1 class="mb-0">{{ product.title }}</h1>
           <button type="button" @click="toggleFavorite(product)" class="btn text-danger">
@@ -31,12 +46,44 @@
           </div>
         </div>
       </div>
+      <div class="col" v-if="randomProducts.length">
+        <h3>買了此商品的人也買了...</h3>
+        <ul class="row">
+          <li class="card col-lg-3 border-0 mb-4" v-for="item in randomProducts" :key="item.id">
+            <img :src="item.imageUrl" :alt="item.title" class="cart-img card-img-top">
+            <div class="card-body">
+              <div class="d-flex align-items-center justify-content-between">
+                <h4 class="card-title mb-0">
+                  <a href="#" @click.prevent="getProductInfo(item.id)" class="text-dark d-block stretched-link" >
+                    {{ item.title }}
+                  </a>
+                </h4>
+                <button type="button" @click="toggleFavorite(item)" class="btn btn-favorite">
+                  <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
+                </button>
+              </div>
+              <p class="fw-bold card-text">優惠價： {{ $filters.currency(item.price) }} 元</p>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import handleFavorite from '@/methods/handleFavorite'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import 'swiper/swiper.scss'
+import 'swiper/components/navigation/navigation.min.css'
+import 'swiper/components/thumbs/thumbs.min.css'
+import SwiperCore, { Navigation, Thumbs } from 'swiper/core'
+
+SwiperCore.use([Navigation, Thumbs])
+
+function getRandomInt (max) {
+  return Math.floor(Math.random() * max)
+}
 
 export default {
   data () {
@@ -45,14 +92,21 @@ export default {
       qty: 1,
       loadingStatus: {},
       myFavorite: handleFavorite.getFavorite() || [],
-      isLoading: false
+      isLoading: false,
+      thumbsSwiper: null,
+      randomProducts: [],
+      productsViewed: []
     }
   },
   inject: ['$httpMessageState', 'emitter'],
+  components: {
+    Swiper,
+    SwiperSlide
+  },
   methods: {
-    getProduct () {
+    getProduct (productId) {
       this.isLoading = true
-      const id = this.$route.params.productId
+      const id = productId || this.$route.params.productId
       const api = `/api/${process.env.VUE_APP_APIPATH}/product/${id}`
       this.$http.get(api)
         .then(response => {
@@ -62,12 +116,48 @@ export default {
             return
           }
           this.product = response.data.product
+          this.getAllProducts()
           this.isLoading = false
         })
         .catch(error => {
           this.$httpMessageState(error, '連線錯誤')
           this.isLoading = false
         })
+    },
+    getAllProducts () {
+      const api = `/api/${process.env.VUE_APP_APIPATH}/products/all`
+      this.$http.get(api)
+        .then(response => {
+          if (!response.data.success) {
+            this.$httpMessageState(response, '取得全部產品資料')
+            this.isLoading = false
+            return
+          }
+          this.products = response.data.products
+          this.getRandomProducts()
+        })
+        .catch(error => {
+          this.$httpMessageState(error, '連線錯誤')
+          this.isLoading = false
+        })
+    },
+    getRandomProducts () {
+      const { category, id } = this.product
+      const filterProducts = this.products.filter(product => product.category === category && product.id !== id)
+      const arrSet = new Set([])
+      const maxSize = filterProducts.length < 4 ? filterProducts.length : 4
+      for (let i = 0; arrSet.size < maxSize; i += 1) {
+        const num = getRandomInt(filterProducts.length)
+        arrSet.add(filterProducts[num])
+      }
+      this.randomProducts = []
+      arrSet.forEach(product => {
+        this.randomProducts.push(product)
+      })
+    },
+    getProductInfo (productId) {
+      this.$router.push(`/product/${productId}`)
+      this.getProduct(productId)
     },
     addCart (id, qty = 1) {
       const api = `/api/${process.env.VUE_APP_APIPATH}/cart`
@@ -115,15 +205,49 @@ export default {
     updateFavorite () {
       this.myFavorite = handleFavorite.getFavorite()
       this.getProduct()
+    },
+    setThumbsSwiper (swiper) {
+      this.thumbsSwiper = swiper
     }
   },
   mounted () {
     this.$http.defaults.baseURL = process.env.VUE_APP_API
     this.getProduct()
     this.emitter.on('update-favorite', this.updateFavorite)
+    // console.log(this.$route)
+    // const date = new Date()
+    // date.setDate(date.getDate() + 7)
+    // document.cookie = `productViewed=${this.productsViewed}; expires=${date}`
   },
   unmounted () {
     this.emitter.off('update-favorite', this.updateFavorite)
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .mySwiper {
+    height: 20%;
+    background-color: rgb(226, 225, 225);
+  }
+  .mySwiper2 {
+    height: 300px;
+    margin-bottom: 20px;
+    background-color: rgb(184, 184, 184);
+  }
+  .cart-img{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  .table.products{
+    margin-top: 80px;
+  }
+  .btn-favorite {
+    font-size: 18px;
+    color: #dc3545;
+  }
+  .btn-favorite:hover {
+    color: #9e2632;
+  }
+</style>

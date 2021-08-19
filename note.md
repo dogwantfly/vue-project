@@ -42,3 +42,15 @@ export function currency (num) {
 }
 ```
 c 為每個字元、i 為順序、a 為全部字元，例如：n 為 10000，c -> 1 0 0 0 0、i -> 0 1 2 3 4、a -> 10000
+
+### Products.vue
+```
+computed: {
+    filterProducts () {
+      return this.products.filter(product => product.category.match(this.selectedCategory))
+    }
+  },
+```
+this.products 在 data 的初始值若不是設定陣列`[]`，這裏 filter 會出錯
+
+- 選擇全部產品時分頁 pagination 調整，參考：https://hsiangfeng.github.io/vue/20190729/2401395670/
