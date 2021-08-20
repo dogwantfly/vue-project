@@ -1,10 +1,11 @@
 <template>
   <Loading :active="isLoading"/>
-  <h1>優惠券頁面</h1>
-  <button type="button" class="btn btn-primary mt-3" v-on:click="openModal('new')">
-      新增優惠券
-  </button>
-  <table class="table">
+  <div class="container">
+    <h1>優惠券頁面</h1>
+    <button type="button" class="btn btn-primary mt-3" v-on:click="openModal('new')">
+        新增優惠券
+    </button>
+    <table class="table">
       <thead>
         <tr>
           <th scope="col">名稱</th>
@@ -33,10 +34,11 @@
         </tr>
       </tbody>
     </table>
-  <!-- 分頁 -->
-  <pagination :pagination="pagination" @change-page="getCoupons"></pagination>
+    <!-- 分頁 -->
+    <Pagination :pagination="pagination" @change-page="getCoupons"/>
+  </div>
   <!-- couponModal -->
-  <coupon-modal :coupon="tempCoupon" ref="couponModal" @update="getCoupons" :is-new="isNew"></coupon-modal>
+  <CouponModal :coupon="tempCoupon" ref="couponModal" @update="getCoupons" :is-new="isNew"/>
   <!-- DelItemModal   -->
   <DelItemModal :temp-coupon="tempCoupon" ref="delItemModal" @delete="getCoupons"/>
 </template>
@@ -46,13 +48,14 @@
   }
 </style>
 <script>
-import pagination from '@/components/Pagination.vue'
-import couponModal from '@/components/CouponModal.vue'
+import Pagination from '@/components/Pagination.vue'
+import CouponModal from '@/components/CouponModal.vue'
 import DelItemModal from '@/components/DelItemModal.vue'
+
 export default ({
   components: {
-    pagination,
-    couponModal,
+    Pagination,
+    CouponModal,
     DelItemModal
   },
   data () {
@@ -66,6 +69,7 @@ export default ({
       isLoading: false
     }
   },
+  inject: ['$httpMessageState', 'emitter'],
   methods: {
     // 取得優惠券列表
     getCoupons (page = this.current_page) {
@@ -74,6 +78,7 @@ export default ({
       this.$http.get(api)
         .then(response => {
           if (!response.data.success) {
+            this.$httpMessageState(response, '取得優惠券資料')
             this.isLoading = false
             return
           }
@@ -81,10 +86,15 @@ export default ({
           this.pagination = response.data.pagination
           this.current_page = response.data.pagination.current_page
           this.isLoading = false
+          const currentTime = Math.floor(Date.now() / 1000)
+          console.log(currentTime)
+          const coupons = this.coupons.filter(coupon => coupon.is_enabled && currentTime < coupon.due_date)
+          console.log(coupons)
+          this.emitter.emit('update-coupon', coupons)
         })
         .catch(error => {
+          this.$httpMessageState(error, '連線錯誤')
           this.isLoading = false
-          console.log(error)
         })
     },
     // 開啟編輯、刪除、查看更多

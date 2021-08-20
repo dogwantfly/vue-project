@@ -1,8 +1,10 @@
 <template>
-  <div>
-    文章內文
+  <div class="container">
+    <div>
+      文章內文
+    </div>
+    <article class="article" v-html="article.content"></article>
   </div>
-  <article class="article" v-html="article.content"></article>
 </template>
 
 <script>

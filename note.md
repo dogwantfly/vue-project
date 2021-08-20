@@ -54,3 +54,7 @@ computed: {
 this.products 在 data 的初始值若不是設定陣列`[]`，這裏 filter 會出錯
 
 - 選擇全部產品時分頁 pagination 調整，參考：https://hsiangfeng.github.io/vue/20190729/2401395670/
+
+### Index.vue
+
+倒數計時參考： https://tools.wingzero.tw/article/sn/112?__cf_chl_jschl_tk__=pmd_UayhRAEY3oHZyrT3uBQ3FkAgrQY4bR96ql8jy5NSQ70-1629480501-0-gqNtZGzNAeWjcnBszQeR

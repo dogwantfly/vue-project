@@ -36,7 +36,7 @@
                 </div>
                 查看更多
               </button>
-              <button type="button" class="btn btn-primary" @click="addCart(item.id, 1)" :disabled="loadingStatus.loadingCart === item.id">
+              <button type="button" class="btn btn-primary btn-cart" @click.stop="addCart(item.id, 1)" :disabled="loadingStatus.loadingCart === item.id">
                 <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingCart === item.id">
                   <span class="visually-hidden">Loading...</span>
                 </div>
@@ -213,10 +213,13 @@ export default ({
   color: #dc3545;
   z-index: 10;
 }
+.btn-cart {
+  z-index: 10;
+}
 .btn-favorite:hover {
   color: #9e2632;
 }
-.sticky-position {
+.sticky-position{
   top: 90px;
 }
 </style>
