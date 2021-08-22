@@ -5,6 +5,25 @@
   </div>
   <div class="container">
     <div class="row">
+      <div class="col-3">
+         <button type="button" class="btn btn-secondary" v-if="!isDiscounting && !discountResult" @click="getDiscount">
+            <span class="spinner-grow spinner-grow-sm text-primary" role="status" aria-hidden="true" v-if="isDiscounting && !discountResult"></span>
+            <span class="visually-hidden" v-if="isDiscounting && !discountResult">Loading...</span>
+           抽優惠券
+          </button>
+        <button type="button" class="btn btn-info" v-else @click="getDiscount" :disabled="isDiscounting">
+          再抽一次
+        </button>
+      </div>
+     <div class="col-3">
+       <p class="fs-1">
+          <span class="spinner-grow spinner-grow-sm text-primary" role="status" aria-hidden="true" v-if="isDiscounting"></span>
+          <span class="visually-hidden text-primary" v-if="isDiscounting">Loading...</span>
+         {{ discountResult }}
+        </p>
+     </div>
+    </div>
+    <div class="row">
       <div class="col-4">
         <Form @submit="subscribe" v-slot="{ errors }" ref="subscribeForm">
           <label for="subscribe">訂閱我們</label>
@@ -31,20 +50,30 @@
   <div class="bg-danger">
     <div class="container">
       <p>
-        活動優惠倒數 {{ time }} 秒，快來領取折扣碼
-        <code>test</code>
+        活動優惠倒數 {{ daysLeft }} 天 {{ hoursLeft }} 小時 {{ minutesLeft }} 分 {{ secondsLeft }} 秒，快來領取折扣碼
+        <code class="bg-lignt p-2 d-inline-block">test0924</code>
       </p>
     </div>
   </div>
 </template>
 
 <script>
+function getRandomInt (max) {
+  return Math.floor(Math.random() * max)
+}
+
 export default ({
   data () {
     return {
       userEmail: '',
       timer: null,
-      time: Date.now() + 24 * 60 * 60 * 20
+      time: 0,
+      daysLeft: 0,
+      hoursLeft: 0,
+      minutesLeft: 0,
+      secondsLeft: 0,
+      discountResult: '',
+      isDiscounting: false
     }
   },
   inject: ['$httpMessageState', 'emitter'],
@@ -60,10 +89,26 @@ export default ({
       this.$refs.subscribeForm.resetForm()
     },
     countDown () {
+      const expires = 1632441600
+      const currentTime = Math.floor(Date.now() / 1000)
+      this.time = expires - currentTime
+      this.daysLeft = parseInt(this.time / 60 / 60 / 24)
+      this.hoursLeft = parseInt((this.time / 60 / 60) % 24)
+      this.minutesLeft = parseInt((this.time / 60) % 60)
+      this.secondsLeft = parseInt(this.time % 60)
       this.time--
       if (this.time === 0) {
         clearInterval(this.timer)
       }
+    },
+    getDiscount () {
+      this.isDiscounting = true
+      this.discountResult = ''
+      setTimeout(() => {
+        const discounts = ['銘謝惠顧', 'firstPrize', 'secondPrize', 'thirdPrize', 'lastPrize']
+        this.discountResult = discounts[getRandomInt(discounts.length)]
+        this.isDiscounting = false
+      }, 2000)
     }
   },
   unmounted () {

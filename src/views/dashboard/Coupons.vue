@@ -86,11 +86,6 @@ export default ({
           this.pagination = response.data.pagination
           this.current_page = response.data.pagination.current_page
           this.isLoading = false
-          const currentTime = Math.floor(Date.now() / 1000)
-          console.log(currentTime)
-          const coupons = this.coupons.filter(coupon => coupon.is_enabled && currentTime < coupon.due_date)
-          console.log(coupons)
-          this.emitter.emit('update-coupon', coupons)
         })
         .catch(error => {
           this.$httpMessageState(error, '連線錯誤')

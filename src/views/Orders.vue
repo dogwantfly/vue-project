@@ -1,12 +1,15 @@
 <template>
+<div class="container">
   訂單管理
   搜尋訂單
-  尚未付款的訂單
+  尚未付款的訂單共 <span class="text-danger fw-bold">{{ unpaidOrders.length }}</span>  筆
+  已付款共 <span class="fw-bold">{{ orders.length - unpaidOrders.length}}</span> 筆
   <ul class="list-group">
     <li class="list-group-item" v-for="order in unpaidOrders" :key="order.id">
       <router-link :to="`/checkout/${order.id}`">{{ order.id }}</router-link>
     </li>
   </ul>
+</div>
 </template>
 
 <script>
