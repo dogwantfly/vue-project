@@ -1,7 +1,7 @@
 <template>
   <Loading :active="isLoading" :z-index="100"/>
   <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true" ref="modal">
-       <div class="modal-dialog modal-xl">
+       <div class="modal-dialog modal-xl modal-dialog-scrollable">
          <div class="modal-content">
            <div class="modal-header bg-dark text-white">
              <h5 class="modal-title" id="exampleModalLabel">
@@ -153,17 +153,11 @@
                       ></Error-message>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <label for="num" class="form-label">數量</label>
-                      <input type="number" class="form-control" id="num" placeholder="請輸入數量" v-model="product.num">
-                    </div>
-                  </div>
                   <hr>
-                  <label for="description" class="form-label">產品描述</label>
-                  <textarea class="form-control mb-3" id="description" rows="3" placeholder="產品描述" v-model="product.description"></textarea>
                   <label for="content" class="form-label">說明內容</label>
                   <textarea class="form-control mb-3" id="content" rows="3" placeholder="說明內容" v-model="product.content"></textarea>
+                  <label for="description" class="form-label">產品描述</label>
+                  <textarea class="form-control mb-3" id="description" rows="3" placeholder="產品描述" v-model="product.description"></textarea>
                   <input type="checkbox" name="" id="is_enabled" :checked="product.is_enabled" class="me-2" v-model="product.is_enabled">
                   <label for="is_enabled" class="form-label">是否啟用</label>
                 </div>

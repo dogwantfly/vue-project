@@ -3,7 +3,7 @@
   <div class="container pt-5">
     <div class="row pt-5">
       <div class="col-lg-6">
-        <Swiper :style="{'--swiper-navigation-color': '#fff','--swiper-pagination-color': '#fff'}" :loop="false" :spaceBetween="10" :thumbs="{ swiper: thumbsSwiper }" class="mySwiper2">
+        <Swiper :style="{'--swiper-navigation-color': '#fff','--swiper-pagination-color': '#fff'}" :loop="false" :spaceBetween="10" :thumbs="{ swiper: thumbsSwiper }" class="mySwiper2 text-center">
           <SwiperSlide>
             <img :src="product.imageUrl" :alt="product.title" class="img-fluid">
           </SwiperSlide>
@@ -22,29 +22,52 @@
       </div>
       <div class="col-lg-6">
         <div class="d-flex align-items-center">
-          <h1 class="mb-0">{{ product.title }}</h1>
+          <h1>{{ product.title }}</h1>
           <button type="button" @click="toggleFavorite(product)" class="btn text-danger">
             <i class="bi" :class="myFavorite.includes(product.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
           </button>
           <span class="badge bg-primary rounded-pill">{{ product.category }}</span>
         </div>
-        <p>商品描述：{{ product.description }}</p>
-        <p>商品內容：{{ product.content }}</p>
         <div class="h5" v-if="!product.price">{{ product.origin_price }} 元</div>
         <del class="h6">原價 {{ product.origin_price }} 元</del>
         <div class="h5">現在只要 {{ product.price }} 元</div>
-        <div>
-          <div class="input-group">
-            <input type="number" class="form-control"
-                  v-model.number="qty" min="1">
-            <button type="button" class="btn btn-primary" @click="addCart(product.id)">
-              <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingCart === product.id">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              加入購物車
-            </button>
-          </div>
+        <div class="input-group mb-3">
+          <input type="number" class="form-control"
+                v-model.number="qty" min="1">
+          <button type="button" class="btn btn-primary" @click="addCart(product.id)">
+            <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingCart === product.id">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            加入購物車
+          </button>
         </div>
+        <ul>
+          <li>
+            <h4>運送方式</h4>
+            <p>一般宅配，貨到付款</p>
+          </li>
+          <li>
+            <h4>運送須知</h4>
+            <p>若有不方便寄送之日期（如出國）請於訂單中備注或是任何管道告知，如配送失敗產生二次運費需由買家負擔</p>
+          </li>
+          <li>
+            <h4>退換貨須知</h4>
+            <p>依《消費者保護法》的規定，於全站購物皆享有商品到貨【七日猶豫期】（含例假日）之權益。若收到的商品有任何問題，可於猶豫期內申請退貨。</p>
+          </li>
+        </ul>
+      </div>
+      <div class="col-12">
+        <h3>商品詳情</h3>
+        <p>
+          商品內容：<br/>
+          {{ product.content }}
+        </p>
+        <p v-if="product.description">
+          商品描述：<br/>
+          <template v-for="desc in product.description.split('\n')" :key="desc">
+            {{ desc }} <br/>
+          </template>
+        </p>
       </div>
       <div class="col-12" v-if="randomProducts.length">
         <h3>買了此商品的人也買了...</h3>
@@ -255,10 +278,6 @@ export default {
     this.getProduct()
     this.emitter.on('update-favorite', this.updateFavorite)
     this.saveProductViewed(this.$route.params.productId)
-    // console.log(this.$route)
-    // const date = new Date()
-    // date.setDate(date.getDate() + 7)
-    // document.cookie = `productViewed=${this.productsViewed}; expires=${date}`
   },
   unmounted () {
     this.emitter.off('update-favorite', this.updateFavorite)
@@ -270,11 +289,18 @@ export default {
   .mySwiper {
     height: 20%;
     background-color: rgb(226, 225, 225);
+    img {
+      height: 100%;
+    }
   }
   .mySwiper2 {
-    height: 300px;
+    height: 600px;
     margin-bottom: 20px;
     background-color: rgb(184, 184, 184);
+    img {
+      object-fit: cover;
+      height: 100%;
+    }
   }
   .cart-img{
     width: 100%;

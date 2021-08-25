@@ -1,8 +1,6 @@
 <template>
+  <Loading :active="isLoading" :z-index="1080" :loader="'dots'" :color="'#384D48'"/>
   <div class="container">
-    <div>
-      這裏是部落格
-    </div>
     <ul>
       <li class="card mb-3" v-for="article in articles" :key="article.id">
         <div class="row g-0">
@@ -12,10 +10,10 @@
           <div class="col-md-8">
             <div class="card-body">
               <h5 class="card-title">{{ article.title }}</h5>
-              <p class="card-text">{{ }}</p>
+              <p class="card-text text-truncate">{{ article.description }}</p>
               <p class="card-text"><small class="text-muted">{{ new Date((article.create_at + 8 * 3600) * 1000)
           .toISOString().split('T')[0] }}</small></p>
-              <router-link :to="`/blog/${article.id}`" class="btn btn-primary stretched-link">查看內文</router-link>
+              <router-link :to="`/blog/${article.id}`" class="btn btn-primary stretched-link btn-zindex position-absolute">查看內文</router-link>
             </div>
           </div>
         </div>
@@ -28,20 +26,29 @@
 export default {
   data () {
     return {
-      articles: ''
+      articles: '',
+      isLoading: false
     }
   },
+  inject: ['$httpMessageState', 'emitter'],
   methods: {
     // 取得文章列表
     getArticles (page = 1) {
+      this.isLoading = true
       const api = `/api/${process.env.VUE_APP_APIPATH}/articles?page=${page}`
       this.$http.get(api)
         .then(response => {
-          if (!response.data.success) return
+          if (!response.data.success) {
+            this.$httpMessageState(response, '取得文章')
+            this.isLoading = false
+            return
+          }
           this.articles = response.data.articles
+          this.isLoading = false
         })
         .catch(error => {
-          console.log(error)
+          this.$httpMessageState(error, '連線錯誤')
+          this.isLoading = false
         })
     }
   },
@@ -51,3 +58,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .btn-zindex {
+    z-index: 10;
+  }
+</style>

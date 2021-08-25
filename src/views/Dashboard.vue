@@ -2,8 +2,7 @@
 <Loading :active="isLoading" :z-index="100"/>
 <ToastMessages/>
   <Navbar/>
-  <div class="dashboard">
-    這是後台頁面
+  <div class="container">
     <router-view v-if="isLogin"></router-view>
   </div>
 </template>
@@ -63,9 +62,3 @@ export default ({
   }
 })
 </script>
-
-<style lang="scss">
-  .dashboard {
-    padding-top: 80px;
-  }
-</style>

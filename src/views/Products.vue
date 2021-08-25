@@ -30,7 +30,7 @@
               <p class="fw-bold card-text">現在只要 {{ $filters.currency(item.price) }} 元</p>
             </div>
             <div class="btn-group" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-outline-primary" v-on:click="getProductInfo(item.id)">
+              <button type="button" class="btn btn-outline-primary btn-cart" v-on:click="getProductInfo(item.id)">
                 <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingItem === item.id">
                   <span class="visually-hidden">Loading...</span>
                 </div>

@@ -23,7 +23,7 @@
               <li class="card border-0 px-2" v-for="product in products" :key="product.id">
                 <router-link class="row g-0 align-items-center" :to="`/product/${product.id}`">
                   <div class="col-md-3">
-                    <img :src="product.imageUrl" :alt="product.title" style="width:70px; height: 70px">
+                    <img :src="product.imageUrl" :alt="product.title" style="width:70px; height: 70px" class="img-fluid">
                   </div>
                   <div class="col-md-9 d-flex align-items-center">
                     <div class="card-body">
@@ -184,6 +184,9 @@ export default {
       &:hover {
         color: #871f2a;
       }
+    }
+    img {
+      object-fit: cover;
     }
   }
 </style>

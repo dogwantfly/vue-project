@@ -51,7 +51,7 @@
     <div class="container">
       <p>
         活動優惠倒數 {{ daysLeft }} 天 {{ hoursLeft }} 小時 {{ minutesLeft }} 分 {{ secondsLeft }} 秒，快來領取折扣碼
-        <code class="bg-lignt p-2 d-inline-block">test0924</code>
+        <code class="bg-secondary p-2 d-inline-block text-white">CHORDNEW100</code>
       </p>
     </div>
   </div>

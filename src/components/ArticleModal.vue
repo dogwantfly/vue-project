@@ -1,6 +1,6 @@
 <template>
   <div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true" ref="modal">
-       <div class="modal-dialog modal-xl">
+       <div class="modal-dialog modal-xl modal-dialog-scrollable">
          <div class="modal-content">
            <div class="modal-header bg-dark text-white">
              <h5 class="modal-title" id="exampleModalLabel">
@@ -75,7 +75,7 @@
               </div>
               <div class="mb-3">
                 <label for="article_description" class="form-label">文章描述</label>
-                <input type="text" class="form-control" id="article_description" placeholder="請輸入文章描述" v-model="tempArticle.description">
+                <textarea type="text" class="form-control" id="article_description" placeholder="請輸入文章描述" v-model="tempArticle.description"></textarea>
               </div>
               <div class="mb-3">
                 <input type="checkbox" name="" id="article_isPublic" :checked="tempArticle.isPublic" class="me-2" :true-value="true" :false-value="false" v-model="tempArticle.isPublic">
@@ -124,6 +124,9 @@ export default {
             { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
             { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' }
           ]
+        },
+        link: {
+          addTargetToExternalLinks: true
         },
         extraPlugins: [this.uploader]
       }
