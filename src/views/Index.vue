@@ -1,9 +1,24 @@
 <template>
-  <div class="home text-center">
-    <div class="banner bg-overlay">
+  <div class="home">
+    <div class="banner">
+      <div class="container h-100">
+        <div class="row h-100">
+          <div class="col-lg-8 h-100">
+          <img src="https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1629912413182.png?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=d2v8j9vQzRgkaGEaP4mK3mYwvXhlfJUQPvxY0oGijYGlOCjwlUvNvpEO4Q40Hamh6RFURg4Zh52QFhJ%2BIu4IfpAQVXyrmf6ejlzhKbyt7B5TW9DEuAKaBa%2Fv0E2EhtQS9hETSQMH0wq%2Fg9E74DxZxurwfUYrdRt9KWg3uWqUY41iodZIXVJbXqusj2NXmlWeF0cyyKUeVCTgH%2BKMKsKv034xW1xy77g%2Bp89%2FHTj1j82EgDMpTas5sSesly5Ha6yU54iUKjqmHqi1nWK35NKTn7MX8JWVDMl0O9mAXE7a6j%2BAQJ1zGCvzS19iIuN5c1ikUMj%2B58Z3AoiTrBIQMy34cw%3D%3D" alt="guitar">
+        </div>
+         <div class="col-lg-4 d-flex justify-content-center flex-column">
+           <h1>
+             這是一段標題
+           </h1>
+           <h2>
+             這是一段標題
+           </h2>
+         </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="container">
+  <div class="container text-center">
     <div class="row">
       <div class="col-3">
          <button type="button" class="btn btn-secondary" v-if="!isDiscounting && !discountResult" @click="getDiscount">
@@ -129,10 +144,9 @@ export default ({
   }
   .banner {
     height: calc(100vh - 100px);
-    background: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1628700994415.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=OHIKs%2F4ilnVuRvsNh7QCbrF%2B%2Bjqvrcey3DgKyGywreHd22qUA4PzDEIuwJ2MotDhthNV99%2F%2FDhrH0cK7HsTXBssMqICcwvnEYKWSPn7MWpUdSbs3krnA0PAl0aRBaQVT98bU6cQDP9ziLBnVViF2tcqUioqsAWJn67%2FELiNb0ZQ1KOksV9WHkzsDurYyS3HuYTNmujQCrDtDM0Wf2vPVy8z5SXDGujiov34%2BGpC8Ul60orvZLGGhIsOe1u0jq2aW%2FHPiMCgp748r8FdlmyywTnVmEgmiyPgGh5qdQ9JmlMXIyzaMKe4tqCeaQ%2Bdh6CiNGWM%2FxtWjwrqCHdpY95X1ww%3D%3D') no-repeat center/cover;
-    background-color: rgba(119, 119, 119, 0.549);
+    background: linear-gradient(140deg,rgba(119, 119, 119, 0.549) 50%,rgb(233, 214, 66) 50%) center/100%;
   }
-  .bg-overlay:before {
+  /* .bg-overlay:before {
     content: '';
     position: absolute;
     top: 0;
@@ -141,9 +155,9 @@ export default ({
     right: 0;
     background-color: #c9ccce;
     opacity: .55;
-  }
+  } */
   .banner img {
-    height: 60vh;
+    height: 100%;
   }
   .btn-submit {
     height: calc(100% - 20px);
