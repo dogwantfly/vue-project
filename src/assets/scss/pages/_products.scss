@@ -1,0 +1,56 @@
+.banner {
+  height: 200px;
+  background-color: #f6f6f6;
+}
+.list-group-item {
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+.card {
+  &:hover .cart-img{
+    filter: brightness(0.5);
+  }
+  &:hover .btn-favorite{
+    transform: translateX(0px);
+  }
+  &:hover .btn-group{
+    transform: translateY(-38px);
+  }
+  .btn-group {
+    transform: translateY(0px);
+    left: 0;
+    right: 0;
+    top: 100%;
+    transition: all 0.3s;
+  }
+}
+.cart-img{
+  width: 100%;
+  object-fit: cover;
+  transition: all 0.3s;
+  filter: brightness(1);
+}
+.table.products{
+  margin-top: 80px;
+}
+.btn-favorite {
+  font-size: 18px;
+  color: $white;
+  z-index: 10;
+  right: 0;
+  top: 0;
+  transform: translateX(44px);
+  transition: all 0.3s;
+  background-color: $primary;
+}
+.btn-cart {
+  z-index: 10;
+}
+.btn-favorite:hover {
+  color: #9e2632;
+}
+.sticky-position{
+  top: 90px;
+}

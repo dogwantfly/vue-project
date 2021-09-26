@@ -1,47 +1,56 @@
 <template>
   <Loading :active="isLoading" :z-index="1080" :loader="'dots'" :color="'#384D48'"/>
-  <div class="container pt-5">
+  <div class="banner">
+    <div class="container h-100 d-flex align-items-center justify-content-center">
+      <h1>
+        找到想要的樂器或配件 ——
+      </h1>
+    </div>
+  </div>
+  <div class="container pb-5">
     <div class="row pt-5">
       <div class="col-lg-3">
-        <div class="list-group sticky-top sticky-position">
-          <a href="#" class="list-group-item list-group-item-action" @click.prevent="selectedCategory = ''">全部</a>
-          <a href="#" class="list-group-item list-group-item-action" v-for="item in categories" :key="item" @click.prevent="selectedCategory = item">
+        <ul class="list-group sticky-top sticky-position">
+          <li>
+            <a href="#" class="list-group-item list-group-item-action" @click.prevent="selectedCategory = ''" :class="{ active : selectedCategory === '' }">全部</a>
+          </li>
+          <li v-for="item in categories" :key="item">
+            <a href="#" class="list-group-item list-group-item-action" @click.prevent="selectedCategory = item" :class="{ active : selectedCategory === item }">
             {{ item }}
-          </a>
-        </div>
+            </a>
+          </li>
+        </ul>
       </div>
       <div class="col-lg-9">
         <ul class="row">
-          <li class="card col-lg-3 border-0 mb-4" v-for="item in filterProducts" :key="item.id">
-            <img :src="item.imageUrl" :alt="item.title" class="cart-img card-img-top">
+          <li class="card col-md-6 col-lg-3 border-0 mb-4" v-for="item in filterProducts" :key="item.id">
+            <div class="overflow-hidden position-relative">
+              <button type="button" @click.stop="toggleFavorite(item)" class="btn btn-favorite position-absolute">
+                  <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
+              </button>
+              <div class="ratio ratio-3x4">
+                <img :src="item.imageUrl" :alt="item.title" class="cart-img card-img-top">
+              </div>
+              <div class="btn-group position-absolute">
+                <button type="button" class="btn btn-primary btn-cart" @click.stop="addCart(item.id, 1)" :disabled="loadingStatus.loadingCart === item.id">
+                  <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingCart === item.id">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  加到購物車
+                </button>
+              </div>
+            </div>
             <div class="card-body">
               <div class="d-flex align-items-center justify-content-between">
-                <h4 class="card-title mb-0">
+                <h2 class="card-title mb-3 fs-5">
                   <router-link :to="`/product/${item.id}`" class="text-dark d-block stretched-link" >
                     {{ item.title }}
                   </router-link>
-                </h4>
-                <button type="button" @click.stop="toggleFavorite(item)" class="btn btn-favorite">
-                  <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
-                </button>
+                </h2>
               </div>
-              <del>原價 {{ $filters.currency(item.origin_price) }} 元</del>
-              <br>
-              <p class="fw-bold card-text">現在只要 {{ $filters.currency(item.price) }} 元</p>
-            </div>
-            <div class="btn-group" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-outline-primary btn-cart" v-on:click="getProductInfo(item.id)">
-                <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingItem === item.id">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-                查看更多
-              </button>
-              <button type="button" class="btn btn-primary btn-cart" @click.stop="addCart(item.id, 1)" :disabled="loadingStatus.loadingCart === item.id">
-                <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingCart === item.id">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-                加到購物車
-              </button>
+              <del class="text-muted">NT$ {{ $filters.currency(item.origin_price) }} 元</del>
+              <!-- <br> -->
+              <p class="fw-bold card-text">NT$ {{ $filters.currency(item.price) }} 元</p>
             </div>
           </li>
         </ul>
@@ -86,6 +95,10 @@ export default ({
           }
           this.products = response.data.products
           this.getCategories()
+          const { selectedCategory } = this.$route.params
+          if (selectedCategory) {
+            this.selectedCategory = selectedCategory
+          }
           if (this.selectedCategory !== '') {
             this.pagination = {}
           } else {
@@ -198,28 +211,3 @@ export default ({
   }
 })
 </script>
-
-<style scoped>
-.cart-img{
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-}
-.table.products{
-  margin-top: 80px;
-}
-.btn-favorite {
-  font-size: 18px;
-  color: #dc3545;
-  z-index: 10;
-}
-.btn-cart {
-  z-index: 10;
-}
-.btn-favorite:hover {
-  color: #9e2632;
-}
-.sticky-position{
-  top: 90px;
-}
-</style>

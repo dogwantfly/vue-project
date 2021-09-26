@@ -58,3 +58,41 @@ this.products 在 data 的初始值若不是設定陣列`[]`，這裏 filter 會
 ### Index.vue
 
 倒數計時參考： https://tools.wingzero.tw/article/sn/112?__cf_chl_jschl_tk__=pmd_UayhRAEY3oHZyrT3uBQ3FkAgrQY4bR96ql8jy5NSQ70-1629480501-0-gqNtZGzNAeWjcnBszQeR
+
+vue swiper 斷點設定
+
+參考：Erica 同學的作法
+https://github.com/ericacadu/panya/blob/master/src/components/FrontSwiper.vue
+
+```
+<swiper
+  :breakpoints="{
+    '640': {
+      slidesPerView: 1,
+      spaceBetween: 0,
+    },
+    '768': {
+      slidesPerView: 2,
+      spaceBetween: 30,
+    },
+    '1024': {
+      slidesPerView: 3,
+      spaceBetween: 30,
+    },
+  }"
+ ></swiper>
+```
+
+其他參考：https://stackoverflow.com/questions/66689135/how-to-use-swiper-breakpoints-in-vue-js 
+
+其他參考資源：
+https://randomuser.me/
+https://dribbble.com/shots/6292189-Customers-Reviews
+https://dribbble.com/shots/16131519-pet-food-shopify-landing-page/attachments/7985224?mode=media
+https://dribbble.com/shots/16247176-shopify-website-design/attachments/8111881?mode=media
+https://dribbble.com/shots/16308764-Teapoty-Landing-Page-Animation/attachments/8190033?mode=media
+https://cdn.dribbble.com/users/7083770/screenshots/16308764/media/d0d6f2a4068096e34fd4b2ed1b525fb7.png
+
+回到最上方：
+參考：
+https://css-tricks.com/how-to-make-an-unobtrusive-scroll-to-top-button/

@@ -88,7 +88,7 @@
                   v-model="tempArticle.content" />
               <!-- https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v3.html#quick-start -->
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
                 <button type="submit" class="btn btn-primary" :disabled="Object.keys(errors).length !== 0 || !tempArticle.content">確認</button>
               </div>
              </Form>

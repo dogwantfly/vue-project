@@ -2,4 +2,7 @@
 @import './helper/variables';
 @import "~bootstrap/scss/mixins";
 @import '~bootstrap/scss/bootstrap';
-@import 'base'
+@import 'base';
+@import 'layout';
+@import 'pages/index';
+@import 'pages/products';

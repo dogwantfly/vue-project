@@ -1,10 +1,10 @@
 <template>
-  <nav class="navbar navbar-expand-lg fixed-top navbar-bg" :key="$route.path">
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary" :key="$route.path">
     <div class="container">
-      <router-link to="/" class="navbar-brand nav-link-color">前台</router-link>
+      <router-link to="/" class="navbar-brand nav-link-color">CHORD</router-link>
       <div class="d-flex order-lg-last">
         <ul class="navbar-nav fs-3 flex-row">
-          <li class="nav-item me-2 position-relative">
+          <li class="nav-item me-3 me-lg-2 position-relative">
             <span class="badge rounded-pill bg-danger position-absolute" v-if="carts.carts">
               {{ carts.carts.length ? carts.carts.length : ''}}
             </span>
@@ -51,24 +51,16 @@
       <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <router-link to="/products" class="nav-link nav-link-color">前台產品列表</router-link>
+            <router-link to="/products" class="nav-link nav-link-color">樂器</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/blogs" class="nav-link nav-link-color">Blog</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/orders" class="nav-link nav-link-color">查看訂單狀態</router-link>
+            <router-link to="/blogs" class="nav-link nav-link-color">部落格</router-link>
           </li>
           <li class="nav-item">
             <router-link to="/about" class="nav-link nav-link-color">關於我們</router-link>
           </li>
-        </ul>
-        <ul class="navbar-nav">
           <li class="nav-item">
-            <router-link to="/login" class="nav-link nav-link-color">後台登入</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/dashboard" class="nav-link nav-link-color">後台首頁</router-link>
+            <router-link to="/orders" class="nav-link nav-link-color">查看訂單狀態</router-link>
           </li>
         </ul>
       </div>
@@ -149,44 +141,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-  .navbar-bg {
-    background-color: #eedb7e90;
-  }
-  .nav-link-color {
-    color: #383837;
-    &:hover {
-      background-color: #f6f1e63d;
-      font-weight: bold;
-      border-radius: 50px;
-    }
-  }
-  .navbar-bg .nav-link.active {
-    background-color: #f6f1e63d;
-    font-weight: bold;
-    border-radius: 50px;
-  }
-  .nav-item .rounded-pill {
-    top: 5px;
-    right: -2px;
-    font-size: 12px;
-  }
-  .dropdown-menu {
-    min-width: 320px;
-    .card {
-      &:hover {
-        background-color: #f8f9fa;
-      }
-    }
-    .remove-btn {
-      color: #dc3545;
-      &:hover {
-        color: #871f2a;
-      }
-    }
-    img {
-      object-fit: cover;
-    }
-  }
-</style>

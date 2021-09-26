@@ -17,7 +17,7 @@
           嗎？ （刪除後即無法恢復）</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
           <button type="button" class="btn btn-danger" v-on:click="deleteItem">刪除</button>
         </div>
       </div>
@@ -74,75 +74,6 @@ export default {
           this.isLoading = false
         })
     },
-    // deleteCoupon () {
-    //   this.isLoading = true
-    //   const id = this.tempCoupon.id
-    //   if (id) {
-    //     const api = `/api/${process.env.VUE_APP_APIPATH}/admin/coupon/${id}`
-    //     this.$http.delete(api, { data: this.tempCoupon })
-    //       .then(response => {
-    //         if (!response.data.success) {
-    //           this.emitter.emit('push-message', {
-    //             style: 'danger',
-    //             title: '刪除失敗',
-    //             content: response.data.message
-    //           })
-    //           this.isLoading = false
-    //           return
-    //         }
-    //         this.modal.hide()
-    //         this.$emit('delete')
-    //         this.emitter.emit('push-message', {
-    //           style: 'success',
-    //           title: '刪除成功',
-    //           content: response.data.message
-    //         })
-    //         this.isLoading = false
-    //       })
-    //       .catch(error => {
-    //         this.emitter.emit('push-message', {
-    //           style: 'danger',
-    //           title: '連線錯誤',
-    //           content: error.message
-    //         })
-    //         this.isLoading = false
-    //       })
-    //   }
-    // },
-    // deleteArticle () {
-    //   this.isLoading = true
-    //   const id = this.tempArticle.id
-    //   if (id) {
-    //     const api = `/api/${process.env.VUE_APP_APIPATH}/admin/article/${id}`
-    //     this.$http.delete(api, { data: this.tempArticle })
-    //       .then(response => {
-    //         if (!response.data.success) {
-    //           this.emitter.emit('push-message', {
-    //             style: 'danger',
-    //             title: '刪除失敗',
-    //             content: response.data.message
-    //           })
-    //           this.isLoading = false
-    //           return
-    //         }
-    //         this.modal.hide()
-    //         this.$emit('delete')
-    //         this.emitter.emit('push-message', {
-    //           style: 'success',
-    //           title: '刪除成功',
-    //           content: response.data.message
-    //         })
-    //       })
-    //       .catch(error => {
-    //         this.emitter.emit('push-message', {
-    //           style: 'danger',
-    //           title: '連線錯誤',
-    //           content: error.message
-    //         })
-    //         this.isLoading = false
-    //       })
-    //   }
-    // },
     deleteItem () {
       if (this.tempProduct) {
         this.api = `/api/${process.env.VUE_APP_APIPATH}/admin/product/${this.tempProduct.id}`

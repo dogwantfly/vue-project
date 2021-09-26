@@ -1,9 +1,16 @@
 <template>
+<!-- http://preview.themeforest.net/item/mevo-creative-ecommerce-html-template-for-agency-company-studio/full_screen_preview/19688538?_ga=2.232712287.1382045043.1632202344-747249374.1624593689 -->
   <Loading :active="isLoading" :z-index="1080" :loader="'dots'" :color="'#384D48'"/>
   <div class="container pt-5">
     <div class="row pt-5">
-      <div class="col-lg-6">
-        <Swiper :style="{'--swiper-navigation-color': '#fff','--swiper-pagination-color': '#fff'}" :loop="false" :spaceBetween="10" :thumbs="{ swiper: thumbsSwiper }" class="mySwiper2 text-center">
+      <div class="col-lg-7 d-flex">
+        <Swiper
+          :style="{'--swiper-navigation-color': '#fff','--swiper-pagination-color': '#fff'}"
+          :loop="false"
+          :thumbs="{ swiper: thumbsSwiper }"
+          :direction="'vertical'"
+          class="mySwiper2 text-center"
+        >
           <SwiperSlide>
             <img :src="product.imageUrl" :alt="product.title" class="img-fluid">
           </SwiperSlide>
@@ -11,7 +18,16 @@
             <img :src="image" :alt="`${product.title} ${key}`" class="img-fluid">
           </SwiperSlide>
         </Swiper>
-        <Swiper @swiper="setThumbsSwiper" :loop="false" :spaceBetween="10" :slidesPerView="4"  :watchSlidesVisibility="true" :watchSlidesProgress="true" class="mySwiper">
+        <Swiper
+          @swiper="setThumbsSwiper"
+          :loop="false"
+          :slidesPerView="4"
+          :spaceBetween="10"
+          :watchSlidesVisibility="true"
+          :watchSlidesProgress="true"
+          class="mySwiper"
+          :direction="'vertical'"
+        >
           <SwiperSlide>
             <img :src="product.imageUrl" :alt="product.title" class="img-fluid">
           </SwiperSlide>
@@ -20,13 +36,15 @@
           </SwiperSlide>
         </Swiper>
       </div>
-      <div class="col-lg-6">
+      <div class="col-lg-5">
         <div class="d-flex align-items-center">
-          <h1>{{ product.title }}</h1>
+          <h1 class="me-3">
+            {{ product.title }}
+          </h1>
+          <p class="badge bg-primary rounded-pill fs-6 mb-0 me-3">{{ product.category }}</p>
           <button type="button" @click="toggleFavorite(product)" class="btn text-danger">
             <i class="bi" :class="myFavorite.includes(product.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
           </button>
-          <span class="badge bg-primary rounded-pill">{{ product.category }}</span>
         </div>
         <div class="h5" v-if="!product.price">{{ product.origin_price }} 元</div>
         <del class="h6">原價 {{ product.origin_price }} 元</del>
@@ -258,7 +276,7 @@ export default {
         this.$httpMessageState({
           data: {
             success: true,
-            message: `已將${item.title}加入收藏`
+            message: `已將 ${item.title} 加入收藏`
           }
         }, '加入收藏')
       }
@@ -287,19 +305,22 @@ export default {
 
 <style lang="scss" scoped>
   .mySwiper {
-    height: 20%;
-    background-color: rgb(226, 225, 225);
+    background-color: #f6f6f6;
     img {
       height: 100%;
+      width: 100%;
+      object-fit: cover;
     }
   }
   .mySwiper2 {
+    flex-grow: 1;
     height: 600px;
-    margin-bottom: 20px;
-    background-color: rgb(184, 184, 184);
+    margin-right: 20px;
+    background-color: #f6f6f6;
     img {
       object-fit: cover;
       height: 100%;
+      width: 100%;
     }
   }
   .cart-img{
@@ -322,5 +343,9 @@ export default {
   }
   .btn-favorite:hover {
     color: #9e2632;
+  }
+  .btn:focus {
+    outline: none;
+    box-shadow: none;
   }
 </style>

@@ -1,0 +1,90 @@
+.navbar-brand {
+  background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1630314930567.png?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=cuRKdPz9RSr%2FF48JjzyDq1z3raPKJdxprUvXMmaYEmER3cOnAT0JQ%2Faihj8yu%2FB5RsrddhTQeUYX2ByM3mtNxb%2BFQcBlcfLowhQlDdjlX%2FhZIZkKi%2BstqSvHb0%2BENCdZmhH0bMcveWuO6NWiFdbO%2FfNDe7g3NHLRf3UWjU1gxaw1roYraHVIpxn80OUt3l%2BRJlHUXpNl294TtRafhpcxs5MMG%2BHs043ODs5rfzwWPtsPyd6iLebULYYKPql9yGG7ZhG4kKO1NdZ68e03eGWz10Bq4AvFeu8nQYmLyvfejQp1IQjn0N%2FPzMq1A1qF68gVdnYKyR0t5WAsl6gHcKfnbw%3D%3D');
+  width: 180px;
+  height: 100%;
+  color: transparent;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: left center;
+  margin-left: -20px;
+}
+.nav-link-color {
+  &:hover {
+    font-weight: bold;
+    border-radius: 50px;
+  }
+}
+.navbar-bg .nav-link.active {
+  background-color: #f6f1e63d;
+  font-weight: bold;
+  border-radius: 50px;
+}
+.nav-item .rounded-pill {
+  @include media-breakpoint-up(lg) {
+    right: -10%;
+    font-size: 12px;
+  }
+  top: 12%;
+  right: -35%;
+  font-size: 8px;
+}
+.dropdown-menu {
+  min-width: 320px;
+  .card {
+    &:hover {
+      background-color: #f8f9fa;
+    }
+  }
+  .remove-btn {
+    color: #dc3545;
+    &:hover {
+      color: #871f2a;
+    }
+  }
+  img {
+    object-fit: cover;
+  }
+}
+.subscribe {
+  .container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    @include media-breakpoint-up(md) {
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+  }
+  border-color: rgb(216, 216, 216);
+  .input-group {
+    flex-wrap: nowrap;
+  }
+  .form-control {
+    border: 0;
+    background-color: #f6f6f6;
+    padding: 1rem 2rem;
+  }
+  .btn-submit {
+    padding: 1rem 2rem;
+    height: calc(100% - 22px);
+  }
+}
+.footer {
+  font-size: 14px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  h3 {
+    font-size: 14px;
+  }
+  @include media-breakpoint-up(md) {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+  .navbar-brand {
+    background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1632063617106.png?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=b6m6MB3tT8YdjjXrGEIfYOiPG7WiLWZQh70t%2FiztTby%2FoE94oXKk4Z4rTNA6ZdY0FP2KaOABNqQi71oBxXmq6RaZGfyyS8IanBY9P5HNnq7fewbWcVa%2BfD55IO9byGARZuxNsN8130QuQ%2B6etybXOW1G4X%2FxCl18V6FVDx6chD0LVpvzRPoMeQ3KvljB7JERnE6tjTdfICs6lVIK2syEzzX77vgnslWKMW4srn70Tf9hWASe7fXQsCveRTyMnIGBxNoTXFUYxGmIbcarBykBpqp7X2318frUkZ4%2FsvFRwCmJyAoef73yxE0uQ%2BGyE%2BFijCc2xbkfRBAcUWEFuhZDAA%3D%3D');
+    height: 50px;
+    margin-left: -24px;
+    &:hover {
+      color: transparent;
+    }
+  }
+}
