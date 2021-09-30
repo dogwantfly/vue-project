@@ -48,9 +48,9 @@
                   </router-link>
                 </h2>
               </div>
-              <del class="text-muted">NT$ {{ $filters.currency(item.origin_price) }} 元</del>
+              <del class="text-muted">NT$ {{ $filters.currency(item.origin_price) }} </del>
               <!-- <br> -->
-              <p class="fw-bold card-text">NT$ {{ $filters.currency(item.price) }} 元</p>
+              <p class="fw-bold card-text">NT$ {{ $filters.currency(item.price) }} </p>
             </div>
           </li>
         </ul>

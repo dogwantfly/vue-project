@@ -1,4 +1,5 @@
 <template>
+<!-- https://dribbble.com/shots/15137093--Notifications-New-Countly-UI -->
   <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toast">
     <div class="toast-header">
       <span

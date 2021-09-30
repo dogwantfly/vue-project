@@ -1,9 +1,9 @@
 <template>
 <!-- http://preview.themeforest.net/item/mevo-creative-ecommerce-html-template-for-agency-company-studio/full_screen_preview/19688538?_ga=2.232712287.1382045043.1632202344-747249374.1624593689 -->
   <Loading :active="isLoading" :z-index="1080" :loader="'dots'" :color="'#384D48'"/>
-  <div class="container pt-5">
+  <div class="product container py-5">
     <div class="row pt-5">
-      <div class="col-lg-7 d-flex">
+      <div class="col-lg-7 d-flex mb-5">
         <Swiper
           :style="{'--swiper-navigation-color': '#fff','--swiper-pagination-color': '#fff'}"
           :loop="false"
@@ -37,8 +37,8 @@
         </Swiper>
       </div>
       <div class="col-lg-5">
-        <div class="d-flex align-items-center">
-          <h1 class="me-3">
+        <div class="d-flex align-items-center mb-3">
+          <h1 class="me-2 fs-3">
             {{ product.title }}
           </h1>
           <p class="badge bg-primary rounded-pill fs-6 mb-0 me-3">{{ product.category }}</p>
@@ -47,9 +47,9 @@
           </button>
         </div>
         <div class="h5" v-if="!product.price">{{ product.origin_price }} 元</div>
-        <del class="h6">原價 {{ product.origin_price }} 元</del>
-        <div class="h5">現在只要 {{ product.price }} 元</div>
-        <div class="input-group mb-3">
+        <del class="h6 text-muted"> NT${{ product.origin_price }} </del>
+        <div class="h5 mb-3">NT${{ product.price }}</div>
+        <div class="input-group mb-5">
           <input type="number" class="form-control"
                 v-model.number="qty" min="1">
           <button type="button" class="btn btn-primary" @click="addCart(product.id)">
@@ -60,58 +60,81 @@
           </button>
         </div>
         <ul>
-          <li>
-            <h4>運送方式</h4>
-            <p>一般宅配，貨到付款</p>
+          <li class="mb-3">
+            <h4 class="fs-5">運送方式</h4>
+            <p class="text-muted">一般宅配，貨到付款</p>
           </li>
-          <li>
-            <h4>運送須知</h4>
-            <p>若有不方便寄送之日期（如出國）請於訂單中備注或是任何管道告知，如配送失敗產生二次運費需由買家負擔</p>
+          <li class="mb-3">
+            <h4 class="fs-5">運送須知</h4>
+            <p class="text-muted">若有不方便寄送之日期（如出國）請於訂單中備註或是任何管道告知，如配送失敗產生二次運費需由買家負擔</p>
           </li>
-          <li>
-            <h4>退換貨須知</h4>
-            <p>依《消費者保護法》的規定，於全站購物皆享有商品到貨【七日猶豫期】（含例假日）之權益。若收到的商品有任何問題，可於猶豫期內申請退貨。</p>
+          <li class="mb-3">
+            <h4 class="fs-5">退換貨須知</h4>
+            <p class="text-muted">依《消費者保護法》的規定，於全站購物皆享有商品到貨【七日猶豫期】（含例假日）之權益。若收到的商品有任何問題，可於猶豫期內申請退貨。</p>
           </li>
         </ul>
       </div>
-      <div class="col-12">
-        <h3>商品詳情</h3>
-        <p>
-          商品內容：<br/>
-          {{ product.content }}
-        </p>
-        <p v-if="product.description">
-          商品描述：<br/>
-          <template v-for="desc in product.description.split('\n')" :key="desc">
-            {{ desc }} <br/>
-          </template>
-        </p>
+      <div class="product-detail col-12 bg-light py-5 text-center mb-5">
+        <ul class="nav nav-pills mb-3 justify-content-center mb-5" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">商品內容</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">商品描述</button>
+          </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            <p>
+              {{ product.content }}
+            </p>
+          </div>
+          <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <p v-if="product.description">
+              <template v-for="desc in product.description.split('\n')" :key="desc">
+                {{ desc }} <br/>
+              </template>
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="col-12" v-if="randomProducts.length">
-        <h3>買了此商品的人也買了...</h3>
+      <div class="product-also-buy col-12 mb-5" v-if="randomProducts.length">
+        <h3 class="title mb-4">買了此商品的人也買了...</h3>
         <ul class="row">
-          <li class="card col-lg-3 border-0 mb-4" v-for="item in randomProducts" :key="item.id">
-            <img :src="item.imageUrl" :alt="item.title" class="cart-img card-img-top">
+          <li class="card col-md-4 col-lg-3 col-xl-2 border-0" v-for="item in randomProducts" :key="item.id">
+            <div class="overflow-hidden position-relative">
+              <button type="button" @click.stop="toggleFavorite(item)" class="btn btn-favorite position-absolute">
+                  <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
+              </button>
+              <div class="ratio ratio-3x4">
+                <img :src="item.imageUrl" :alt="item.title" class="cart-img card-img-top">
+              </div>
+              <div class="btn-group position-absolute">
+                <button type="button" class="btn btn-primary btn-cart" @click.stop="addCart(item.id, 1)" :disabled="loadingStatus.loadingCart === item.id">
+                  <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingCart === item.id">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  加到購物車
+                </button>
+              </div>
+            </div>
             <div class="card-body">
               <div class="d-flex align-items-center justify-content-between">
-                <h4 class="card-title mb-0">
+                <h4 class="card-title mb-0 fs-5">
                   <a href="#" @click.prevent="getProductInfo(item.id)" class="text-dark d-block stretched-link" >
                     {{ item.title }}
                   </a>
                 </h4>
-                <button type="button" @click.stop="toggleFavorite(item)" class="btn btn-favorite">
-                  <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
-                </button>
               </div>
-              <p class="fw-bold card-text">優惠價： {{ $filters.currency(item.price) }} 元</p>
+              <p class="fw-bold card-text text-muted">NT$ {{ $filters.currency(item.price) }}</p>
             </div>
           </li>
         </ul>
       </div>
-      <div class="col-12" v-if="productsViewed.length">
-        <h3>最近瀏覽商品</h3>
+      <div class="col-12 d-none d-xl-block" v-if="productsViewed.length">
+        <h3 class="mb-4">最近瀏覽商品</h3>
         <ul class="row">
-          <li class="card col-lg-2 border-0 mb-4" v-for="item in productsViewed" :key="item.id">
+          <li class="card col-lg-2 border-0" v-for="item in productsViewed" :key="item.id">
             <img :src="item.imageUrl" :alt="item.title" class="product-img card-img-top">
             <div class="card-body">
               <div class="d-flex align-items-center justify-content-between">
@@ -302,50 +325,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  .mySwiper {
-    background-color: #f6f6f6;
-    img {
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-    }
-  }
-  .mySwiper2 {
-    flex-grow: 1;
-    height: 600px;
-    margin-right: 20px;
-    background-color: #f6f6f6;
-    img {
-      object-fit: cover;
-      height: 100%;
-      width: 100%;
-    }
-  }
-  .cart-img{
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-  .product-img {
-    height: 150px;
-    width: 100%;
-    object-fit: cover;
-  }
-  .table.products{
-    margin-top: 80px;
-  }
-  .btn-favorite {
-    font-size: 18px;
-    color: #dc3545;
-    z-index: 10;
-  }
-  .btn-favorite:hover {
-    color: #9e2632;
-  }
-  .btn:focus {
-    outline: none;
-    box-shadow: none;
-  }
-</style>
