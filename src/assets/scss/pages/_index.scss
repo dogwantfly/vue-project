@@ -116,7 +116,7 @@
     z-index: 1;
   }
 }
-.articles {
+.articles, .article {
   .background-text {
     top: 0;
     right: 0;
@@ -124,7 +124,7 @@
   }
   .stretched-link, .articles-link {
     &::after {
-      transition: all 0,2s ease-out 0s;
+      transition: all 0.2s ease-out 0s;
     }
     &:hover::after {
       backdrop-filter: grayscale(0.5);
@@ -132,7 +132,10 @@
     &:hover .bi-chevron-right::before {
       transform: translatex(5px);
     }
-    .bi-chevron-right::before {
+    &:hover .bi-chevron-left::before {
+      transform: translatex(-5px);
+    }
+    .bi-chevron-right::before, .bi-chevron-left::before {
       transition: all 0.3s ease-out 0s;
     }
   }
