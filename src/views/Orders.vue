@@ -1,4 +1,11 @@
 <template>
+<div class="banner">
+  <div class="container h-100 d-flex align-items-center justify-content-center">
+    <h1>
+      訂單狀態
+    </h1>
+  </div>
+</div>
 <div class="container">
   訂單管理
   搜尋訂單
