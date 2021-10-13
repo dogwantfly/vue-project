@@ -1,0 +1,22 @@
+.orders {
+  .img-size {
+    object-fit: cover;
+    width: 80px;
+  }
+  .table {
+    border: 0;
+    td, th {
+      border: 0;
+    }
+  }
+  .input-group-text {
+    background-color: $gray-100;
+  }
+  .form-control {
+    background-color: $gray-100;
+    padding: 1rem 1rem;
+  }
+  .accordion-button {
+    background-color: $gray-100;
+  }
+}

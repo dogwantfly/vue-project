@@ -100,7 +100,7 @@ export default {
       order: ''
     }
   },
-  inject: ['$httpMessageState'],
+  inject: ['$httpMessageState', 'emitter'],
   methods: {
     getOrder () {
       const id = this.$route.params.orderId

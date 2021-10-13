@@ -214,31 +214,31 @@
   padding-top: 80px;
   padding-bottom: 80px;
   background-color: #F6F6F6;
-}
-.accordion {
-  &-item {
-    background-color: transparent;
-    border: 0;
-    ul {
-      list-style: disc;
-      padding-left: 20px;
+  .accordion {
+    &-item {
+      background-color: transparent;
+      border: 0;
+      ul {
+        list-style: disc;
+        padding-left: 20px;
+      }
     }
-  }
-  &-header {
-    background-color: $white;
-  }
-  &-collapse {
-    background-color: $white;
-  }
-  &-button {
-    &::after {
-      background-image: url("./assets/img/plus-lg.svg");
+    &-header {
+      background-color: $white;
     }
-    &:not(.collapsed)::after {
-      background-image: url("./assets/img/dash-lg.svg");
+    &-collapse {
+      background-color: $white;
     }
-    &:focus {
-      box-shadow: none;
+    &-button {
+      &::after {
+        background-image: url("./assets/img/plus-lg.svg");
+      }
+      &:not(.collapsed)::after {
+        background-image: url("./assets/img/dash-lg.svg");
+      }
+      &:focus {
+        box-shadow: none;
+      }
     }
   }
 }
