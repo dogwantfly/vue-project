@@ -3,6 +3,7 @@
 @import "~bootstrap/scss/mixins";
 @import '~bootstrap/scss/bootstrap';
 @import 'base';
+@import 'components/toast';
 @import 'layout';
 @import 'pages/index';
 @import 'pages/products';
@@ -10,3 +11,5 @@
 @import 'pages/about';
 @import 'pages/orders';
 @import 'pages/cart';
+@import 'pages/checkout';
+@import 'pages/login';

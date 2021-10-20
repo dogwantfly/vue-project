@@ -1,55 +1,66 @@
 <template>
-    <Loading :active="isLoading"/>
+<!-- https://dribbble.com/shots/16428412-Login-Clearfreight -->
+<!-- https://getcssscan.com/css-box-shadow-examples -->
+    <Loading :active="isLoading" :z-index="100" :loader="'dots'" :color="'#384D48'"/>
     <ToastMessages/>
-    <div class="login row justify-content-center align-items-center h-100">
-        <div class="col-8 col-md-6 col-lg-4">
-            <h1 class="text-center">
-                請先登入
-            </h1>
-            <Form action="" @submit="login" v-slot="{ errors }">
-                <!-- email -->
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <Field
-                      type="email"
-                      class="form-control"
-                      id="email"
-                      placeholder="name@example.com"
-                      v-model="user.username"
-                      required
-                      rules="email|required"
-                      name="email"
-                      :class="{ 'is-invalid': errors['email'], 'is-valid': user.username }"
-                    ></Field>
-                    <Error-message
-                      name="email"
-                      class="invalid-feedback"
-                    ></Error-message>
-                </div>
-                <!-- password -->
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <Field
-                      type="password"
-                      class="form-control"
-                      id="password"
-                      placeholder="請輸入密碼"
-                      v-model="user.password"
-                      required
-                      rules="required"
-                      name="密碼"
-                      :class="{ 'is-invalid': errors['密碼'], 'is-valid': user.password && user.password!== '' }"
-                    ></Field>
-                    <Error-message
-                      name="密碼"
-                      class="invalid-feedback"
-                    ></Error-message>
-                </div>
-                <div class="d-grid">
+    <div class="login min-vh-100">
+      <router-link to="/" class="navbar-brand">後台首頁</router-link>
+      <div class="container">
+        <div class="row justify-content-center align-items-center h-100">
+          <div class="col-md-6 col-lg-5">
+            <div class="form p-5">
+              <h1 class="fs-4 mb-4">
+                管理員登入
+              </h1>
+              <Form action="" @submit="login" v-slot="{ errors }">
+                  <!-- email -->
+                  <div class="mb-3">
+                      <label for="email" class="form-label">Email</label>
+                      <Field
+                        type="email"
+                        class="form-control"
+                        id="email"
+                        placeholder="name@example.com"
+                        v-model="user.username"
+                        required
+                        rules="email|required"
+                        name="email"
+                        :class="{ 'is-invalid': errors['email'], 'is-valid': user.username }"
+                      ></Field>
+                      <Error-message
+                        name="email"
+                        class="invalid-feedback"
+                      ></Error-message>
+                  </div>
+                  <!-- password -->
+                  <div class="mb-3">
+                      <label for="password" class="form-label">Password</label>
+                      <Field
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        placeholder="請輸入密碼"
+                        v-model="user.password"
+                        required
+                        rules="required"
+                        name="密碼"
+                        :class="{ 'is-invalid': errors['密碼'], 'is-valid': user.password && user.password!== '' }"
+                      ></Field>
+                      <Error-message
+                        name="密碼"
+                        class="invalid-feedback"
+                      ></Error-message>
+                  </div>
+                  <div class="d-grid">
                     <button type="submit" class="btn btn-primary mb-3">登入</button>
-                </div>
-            </Form>
+                    <hr>
+                    <router-link to="/" class="btn btn-outline-secondary mb-3">回到首頁</router-link>
+                  </div>
+              </Form>
+            </div>
         </div>
+        </div>
+      </div>
     </div>
 </template>
 <script>
@@ -153,8 +164,3 @@ export default ({
   }
 })
 </script>
-<style scoped>
-  .login {
-    padding-top: 80px;
-  }
-</style>

@@ -1,0 +1,28 @@
+.login {
+  background-color: $primary;
+  margin-top: -66px;
+  .navbar-brand {
+    width: 300px;
+    height: 100px;
+    background-size: cover;
+    margin-left: 0;
+    display: inline-block;
+    color: transparent;
+    background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1632063617106.png?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=b6m6MB3tT8YdjjXrGEIfYOiPG7WiLWZQh70t%2FiztTby%2FoE94oXKk4Z4rTNA6ZdY0FP2KaOABNqQi71oBxXmq6RaZGfyyS8IanBY9P5HNnq7fewbWcVa%2BfD55IO9byGARZuxNsN8130QuQ%2B6etybXOW1G4X%2FxCl18V6FVDx6chD0LVpvzRPoMeQ3KvljB7JERnE6tjTdfICs6lVIK2syEzzX77vgnslWKMW4srn70Tf9hWASe7fXQsCveRTyMnIGBxNoTXFUYxGmIbcarBykBpqp7X2318frUkZ4%2FsvFRwCmJyAoef73yxE0uQ%2BGyE%2BFijCc2xbkfRBAcUWEFuhZDAA%3D%3D');
+  }
+  .container {
+    height: calc(100vh - 100px);
+  }
+  .form {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+  }
+  .form-control {
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    padding: 1rem 2rem;
+  }
+  .btn {
+    padding: 1rem 2rem;
+  }
+}

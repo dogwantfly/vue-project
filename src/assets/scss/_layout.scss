@@ -1,6 +1,6 @@
 .navbar-brand {
   background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1630314930567.png?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=cuRKdPz9RSr%2FF48JjzyDq1z3raPKJdxprUvXMmaYEmER3cOnAT0JQ%2Faihj8yu%2FB5RsrddhTQeUYX2ByM3mtNxb%2BFQcBlcfLowhQlDdjlX%2FhZIZkKi%2BstqSvHb0%2BENCdZmhH0bMcveWuO6NWiFdbO%2FfNDe7g3NHLRf3UWjU1gxaw1roYraHVIpxn80OUt3l%2BRJlHUXpNl294TtRafhpcxs5MMG%2BHs043ODs5rfzwWPtsPyd6iLebULYYKPql9yGG7ZhG4kKO1NdZ68e03eGWz10Bq4AvFeu8nQYmLyvfejQp1IQjn0N%2FPzMq1A1qF68gVdnYKyR0t5WAsl6gHcKfnbw%3D%3D');
-  width: 180px;
+  width: 140px;
   height: 100%;
   color: transparent;
   background-size: cover;
@@ -28,8 +28,22 @@
   right: -35%;
   font-size: 8px;
 }
+.navbar-nav {
+  .dropdown-menu {
+    position: fixed;
+    right: 0;
+    max-height: calc(100vh - 60px);
+    overflow-y: scroll;
+    z-index: 100;
+    top: 60px;
+    @include media-breakpoint-up(md) {
+      left: auto;
+    }
+  }
+}
 .dropdown-menu {
   min-width: 320px;
+  padding: 0;
   .card {
     &:hover {
       background-color: #f8f9fa;

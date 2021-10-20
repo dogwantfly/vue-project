@@ -1,17 +1,12 @@
 <template>
 <!-- https://dribbble.com/shots/15137093--Notifications-New-Countly-UI -->
-  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toast">
-    <div class="toast-header">
-      <span
-        :class="`bg-${message.style}`"
-        class="p-2 rounded me-2 d-inline-block"
-      ></span>
-      <strong class="me-auto">{{ message.title }}</strong>
-      <!-- <small class="text-muted">just now</small> -->
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body">
-      {{ message.content }}
+  <div class="toast align-items-center" :class="`border-${message.style}`" role="alert" aria-live="assertive" aria-atomic="true" ref="toast">
+    <div class="d-flex">
+      <div class="toast-body d-flex align-items-center" :class="`text-${message.style}`">
+        <i class="bi fs-3 me-3" :class="message.style === 'success' ? 'bi-check-circle' : 'bi-exclamation-circle'"></i>
+        {{ message.content || message.title }}
+      </div>
+      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
   </div>
 </template>

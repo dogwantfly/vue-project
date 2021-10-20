@@ -23,14 +23,14 @@
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuFavorite" ref="dropdown">
               <li class="card border-0 px-2" v-for="product in products" :key="product.id">
                 <router-link class="row g-0 align-items-center" :to="`/product/${product.id}`">
-                  <div class="col-md-3">
+                  <div class="col-3">
                     <img :src="product.imageUrl" :alt="product.title" style="width:70px; height: 70px" class="img-fluid">
                   </div>
-                  <div class="col-md-9 d-flex align-items-center">
+                  <div class="col-9 d-flex align-items-center">
                     <div class="card-body">
-                      <h5 class="card-title">{{ product.title }}</h5>
-                      <del class="card-text"><small class="text-muted">原價： {{ $filters.currency(product.origin_price) }} 元</small></del>
-                      <p class="card-text">優惠價： {{ $filters.currency(product.price) }} 元</p>
+                      <h5 class="card-title h6">{{ product.title }}</h5>
+                      <del class="card-text text-muted small">${{ $filters.currency(product.origin_price) }} </del>
+                      <p class="card-text">${{ $filters.currency(product.price) }}</p>
                     </div>
                     <button type="button" class="btn remove-btn" @click.stop.prevent="removeFavorite(product)">
                       <i class="bi bi-x-lg"></i>

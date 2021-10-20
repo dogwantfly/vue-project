@@ -28,12 +28,3 @@ export default ({
   }
 })
 </script>
-
-<style scoped>
-  .toast-container {
-    top: 80px;
-    position: fixed;
-    right: 20%;
-    z-index: 1061;
-  }
-</style>
