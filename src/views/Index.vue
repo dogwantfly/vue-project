@@ -96,26 +96,27 @@
     </div>
   </div>
   <div class="lottery container text-center">
-    <div class="row">
-      <div class="col">
-        <h3>活動期間快來領取優惠券！</h3>
-        <small class="text-danger d-block mb-5">優惠倒數 {{ daysLeft }} 天 {{ hoursLeft }} 小時 {{ minutesLeft }} 分 {{ secondsLeft }} 秒</small>
-         <button type="button" class="btn btn-primary" v-if="!isDiscounting && !discountResult" @click="getDiscount">
-            <span class="spinner-grow spinner-grow-sm text-primary" role="status" aria-hidden="true" v-if="isDiscounting && !discountResult"></span>
-            <span class="visually-hidden" v-if="isDiscounting && !discountResult">Loading...</span>
-           領取優惠券
-          </button>
+    <div class="lottery-info">
+      <h3>活動期間快來領取優惠券！</h3>
+      <template v-if="time > 0">
+        <small class="text-danger d-block mb-5" v-if="time > 0">優惠倒數 {{ daysLeft }} 天 {{ hoursLeft }} 小時 {{ minutesLeft }} 分 {{ secondsLeft }} 秒</small>
+        <button type="button" class="btn btn-primary" v-if="!isDiscounting && !discountResult" @click="getDiscount">
+          <span class="spinner-grow spinner-grow-sm text-primary" role="status" aria-hidden="true" v-if="isDiscounting && !discountResult"></span>
+          <span class="visually-hidden" v-if="isDiscounting && !discountResult">Loading...</span>
+          領取優惠券
+        </button>
         <button type="button" class="btn btn-dark mb-5" v-else @click="getDiscount" :disabled="isDiscounting">
           重新領取
         </button>
-        <p>
-          <span v-if="discountResult">恭喜你獲得優惠碼</span>
-          <br>
-          <span class="spinner-grow spinner-grow-sm text-primary" role="status" aria-hidden="true" v-if="isDiscounting"></span>
-          <span class="visually-hidden text-primary" v-if="isDiscounting">Loading...</span>
-          <span class="fs-1 bg-light">{{ discountResult }}</span>
-        </p>
-      </div>
+      </template>
+      <small class="text-danger d-block mb-5" v-else>優惠已截止</small>
+      <p>
+        <span v-if="discountResult">恭喜你獲得優惠碼</span>
+        <br>
+        <span class="spinner-grow spinner-grow-sm text-primary" role="status" aria-hidden="true" v-if="isDiscounting"></span>
+        <span class="visually-hidden text-primary" v-if="isDiscounting">Loading...</span>
+        <span class="fs-1 bg-light user-select-all">{{ discountResult }}</span>
+      </p>
     </div>
   </div>
   <div class="articles position-relative">
@@ -496,7 +497,7 @@ export default ({
       this.minutesLeft = parseInt((this.time / 60) % 60)
       this.secondsLeft = parseInt(this.time % 60)
       this.time--
-      if (this.time === 0) {
+      if (this.time <= 0) {
         clearInterval(this.timer)
       }
     },

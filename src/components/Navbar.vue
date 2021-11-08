@@ -1,35 +1,46 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-    <div class="container">
-      <router-link to="/dashboard" class="navbar-brand">後台首頁</router-link>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <router-link to="/dashboard/orders" class="nav-link">訂單</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/dashboard/products" class="nav-link">產品列表</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/dashboard/coupons" class="nav-link">優惠券列表</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/dashboard/articles" class="nav-link">文章列表</router-link>
-          </li>
-        </ul>
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <router-link to="/" class="nav-link nav-link-color">前台</router-link>
-          </li>
-          <li class="nav-item">
-            <button type="button" @click="logout" class="btn nav-link nav-link-color">登出</button>
-          </li>
-        </ul>
-      </div>
+  <nav class="navbar flex-column align-items-stretch bg-light">
+    <div>
+      <router-link to="/dashboard" class="navbar-brand w-100 mb-5">後台首頁</router-link>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <router-link to="/dashboard/products" class="nav-link d-flex align-items-center py-0 mb-3">
+            <div class="ps-4 icon">
+              <i class="bi bi-handbag-fill rounded-circle p-3 d-block"></i>
+            </div>
+            產品列表
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/dashboard/orders" class="nav-link d-flex align-items-center py-0 mb-3">
+            <div class="ps-4 icon">
+              <i class="bi bi-receipt rounded-circle p-3 d-block"></i>
+            </div>
+            訂單
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/dashboard/coupons" class="nav-link d-flex align-items-center py-0 mb-3">
+            <div class="ps-4 icon">
+              <i class="bi bi-gift-fill rounded-circle p-3 d-block"></i>
+            </div>
+            優惠券列表
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/dashboard/articles" class="nav-link d-flex align-items-center py-0">
+            <div class="ps-4 icon">
+              <i class="bi bi-card-text rounded-circle p-3 d-block"></i>
+            </div>
+            文章列表
+          </router-link>
+        </li>
+      </ul>
     </div>
+    <button type="button" @click="logout" class="btn btn-transparent text-start ps-5 py-3">
+      <i class="bi bi-box-arrow-left me-3"></i>
+      登出
+    </button>
   </nav>
 </template>
 

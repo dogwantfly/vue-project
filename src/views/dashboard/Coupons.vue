@@ -1,5 +1,5 @@
 <template>
-  <Loading :active="isLoading"/>
+  <Loading :active="isLoading" :z-index="100" :loader="'dots'" :color="'#384D48'"/>
   <div class="container">
     <h1>優惠券頁面</h1>
     <button type="button" class="btn btn-primary mt-3" v-on:click="openModal('new')">

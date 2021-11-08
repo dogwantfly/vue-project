@@ -1,31 +1,46 @@
 <template>
-  <Loading :active="isLoading" :z-index="100"/>
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary mt-3" v-on:click="openModal('new')">
-    新增資料
-  </button>
-  <table class="table">
-    <thead>
+  <Loading :active="isLoading" :z-index="100" :loader="'dots'" :color="'#384D48'"/>
+  <header>
+    <h1>
+      產品管理
+    </h1>
+  </header>
+  <div class="d-flex justify-content-between align-items-center mt-3 mb-5">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" v-on:click="openModal('new')">
+      新增產品
+    </button>
+    <div class="input-group w-auto align-items-center">
+      <label for="sort" class="me-2">排序</label>
+      <select class="form-select" aria-label="select" v-model="sortBy" id="sort">
+        <option selected value="">日期由新到舊（預設）</option>
+        <option value="priceFromHighest">售價由高至低</option>
+        <option value="priceFromLowest">售價由低至高</option>
+      </select>
+    </div>
+  </div>
+  <table class="table table-borderless table-hover">
+    <thead class="bg-light rounded-3">
       <tr>
         <th scope="col">分類</th>
         <th scope="col">產品名稱</th>
         <th scope="col">原價</th>
         <th scope="col">售價</th>
-        <th scope="col">是否啟用</th>
-        <th scope="col">編輯 / 刪除</th>
+        <th scope="col" class="text-end">是否啟用</th>
+        <th scope="col" class="text-end">編輯 / 刪除</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(item) in products" v-bind:key="item.id">
         <td scope="row">{{ item.category }}</td>
         <td>{{ item.title }}</td>
-        <td>{{ $filters.currency(item.origin_price) }}</td>
+        <td class="text-muted">{{ $filters.currency(item.origin_price) }}</td>
         <td>{{ $filters.currency(item.price) }}</td>
-        <td v-bind:class="{ 'text-success': item.is_enabled}">{{item.is_enabled ? "啟用" : "未啟用" }}</td>
-        <td>
+        <td :class="item.is_enabled ? 'text-success': 'text-muted'" class="text-end">{{item.is_enabled ? "啟用" : "未啟用" }}</td>
+        <td class="text-end">
           <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-            <button type="button" class="btn btn-warning" v-on:click="openModal('edit',item)">編輯</button>
-            <button type="button" class="btn btn-danger" v-on:click="openModal('delete',item)">刪除</button>
+            <button type="button" class="btn btn-outline-secondary border-0 bi bi-pencil-fill" v-on:click="openModal('edit',item)"></button>
+            <button type="button" class="btn btn-outline-danger border-0 bi bi-trash-fill" v-on:click="openModal('delete',item)"></button>
           </div>
         </td>
       </tr>
@@ -57,7 +72,8 @@ export default ({
       pagination: {},
       isNew: false,
       isLoading: false,
-      current_page: 1
+      current_page: 1,
+      sortBy: ''
     }
   },
   inject: ['$httpMessageState', 'emitter'],
@@ -110,6 +126,7 @@ export default ({
             return
           }
           this.products = response.data.products
+          this.sortBy = ''
           this.pagination = response.data.pagination
           this.current_page = response.data.pagination.current_page
           this.isLoading = false
@@ -118,6 +135,57 @@ export default ({
           this.$httpMessageState(error, '連線錯誤')
           this.isLoading = false
         })
+    },
+    getAllProducts () {
+      this.isLoading = true
+      const api = `/api/${process.env.VUE_APP_APIPATH}/admin/products/all`
+      this.$http.get(api)
+        .then(response => {
+          if (!response.data.success) {
+            this.$httpMessageState(response, '取得產品資料')
+            this.isLoading = false
+            return
+          }
+          this.products = Object.values(response.data.products)
+          this.sortProducts(this.sortBy)
+          this.pagination = ''
+          // this.current_page = response.data.pagination.current_page
+          this.isLoading = false
+        })
+        .catch(error => {
+          this.$httpMessageState(error, '連線錯誤')
+          this.isLoading = false
+        })
+    },
+    sortProducts (sortBy) {
+      switch (sortBy) {
+        case 'priceFromLowest':
+          this.products.sort(function (a, b) {
+            return a.price - b.price
+          })
+          break
+        case 'priceFromHighest':
+          this.getAllProducts()
+          this.products.sort(function (a, b) {
+            return b.price - a.price
+          })
+          break
+        default:
+          break
+      }
+    }
+  },
+  watch: {
+    sortBy (newSort, oldSort) {
+      if (newSort === oldSort) {
+        if (newSort === 'priceFromLowest' || newSort === 'priceFromHighest') {
+          this.getAllProducts()
+        }
+      } else if (newSort === '') {
+        this.getProducts()
+      } else {
+        this.getAllProducts()
+      }
     }
   },
   mounted () {

@@ -1,10 +1,16 @@
 <template>
-<Loading :active="isLoading" :z-index="100"/>
+<!-- https://dribbble.com/shots/14119591-Dashboard-UX-UI-Design -->
+<!-- https://dribbble.com/shots/15005862-Table-Filters -->
+<Loading :active="isLoading" :z-index="100" :loader="'dots'" :color="'#384D48'"/>
 <ToastMessages/>
+<div class="dashboard d-flex">
   <Navbar/>
-  <div class="container">
-    <router-view v-if="isLogin"></router-view>
+  <div class="w-100 main">
+    <div class="container">
+      <router-view v-if="isLogin"></router-view>
+    </div>
   </div>
+</div>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <Loading :active="isLoading"/>
+  <Loading :active="isLoading" :z-index="100" :loader="'dots'" :color="'#384D48'"/>
   <div class="d-flex justify-content-between align-items-center">
       <h1>訂單頁面</h1>
       <button type="button" class="btn btn-danger" @click="openModal('delete',item)" :class="{'disabled': !orders.length}">刪除全部訂單</button>
