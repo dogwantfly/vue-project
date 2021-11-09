@@ -140,7 +140,6 @@ export default {
   mounted () {
     this.$http.defaults.baseURL = process.env.VUE_APP_API
     this.getArticle()
-    console.log(this.$router)
   }
 }
 </script>

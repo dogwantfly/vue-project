@@ -61,7 +61,7 @@ export default {
           this.isLoading = false
         })
         .catch(error => {
-          console.log(error)
+          this.$httpMessageState(error, '連線錯誤')
           this.isLoading = false
         })
     }
