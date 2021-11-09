@@ -12,9 +12,13 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <Form action="" @submit="updateProduct" v-slot="{ errors }" ref="form">
+          <Form @submit="updateProduct" v-slot="{ errors }" ref="form">
           <div class="row">
             <div class="col-sm-3 product-modal-pictures">
+              <label class="form-label h6">
+                新增主圖
+                <span class="text-warning ms-3">必填</span>
+              </label>
               <div class="form-group mb-3 bg-light p-3 rounded-3">
                 <label for="imageUrl" class="form-label">輸入主圖片網址</label>
                 <Field
@@ -66,6 +70,7 @@
               </div>
             </div>
             <div class="col-sm-9">
+              <p class="h6 text-warning d-inline-block">此區為必填項目</p>
               <div class="bg-light mb-3 rounded-3 p-3">
                 <label for="title" class="form-label">標題</label>
                 <Field
@@ -161,7 +166,7 @@
                 <textarea class="form-control mb-3" id="content" rows="3" placeholder="說明內容" v-model="product.content"></textarea>
                 <label for="description" class="form-label">產品描述</label>
                 <textarea class="form-control mb-3" id="description" rows="3" placeholder="產品描述" v-model="product.description"></textarea>
-                <input type="checkbox" name="" id="is_enabled" :checked="product.is_enabled" class="me-2" v-model="product.is_enabled">
+                <input type="checkbox" id="is_enabled" :checked="product.is_enabled" class="me-2" v-model="product.is_enabled">
                 <label for="is_enabled" class="form-label">是否啟用</label>
               </div>
             </div>
@@ -226,7 +231,6 @@ export default {
       }
       this.modal.show()
     },
-    // 更新資料
     updateProduct () {
       this.isLoading = true
       const id = this.tempProduct.id
@@ -242,12 +246,10 @@ export default {
         return
       }
       if (id) {
-        // 編輯商品
         api = `/api/${process.env.VUE_APP_APIPATH}/admin/product/${id}`
         httpMethod = 'put'
         httpMethodStr = '更新'
       } else {
-        // 建立新商品
         this.tempProduct.id = new Date().getTime()
         api = `/api/${process.env.VUE_APP_APIPATH}/admin/product`
       }

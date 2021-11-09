@@ -1,14 +1,14 @@
 <template>
   <nav class="navbar flex-column align-items-stretch bg-light">
     <div>
-      <router-link to="/dashboard" class="navbar-brand w-100 mb-5">後台首頁</router-link>
+      <router-link to="/" class="navbar-brand w-100 mb-5">後台首頁</router-link>
       <ul class="navbar-nav">
         <li class="nav-item">
           <router-link to="/dashboard/products" class="nav-link d-flex align-items-center py-0 mb-3">
             <div class="ps-4 icon">
               <i class="bi bi-handbag-fill rounded-circle p-3 d-block"></i>
             </div>
-            產品列表
+            產品
           </router-link>
         </li>
         <li class="nav-item">
@@ -24,7 +24,7 @@
             <div class="ps-4 icon">
               <i class="bi bi-gift-fill rounded-circle p-3 d-block"></i>
             </div>
-            優惠券列表
+            優惠券
           </router-link>
         </li>
         <li class="nav-item">
@@ -32,7 +32,7 @@
             <div class="ps-4 icon">
               <i class="bi bi-card-text rounded-circle p-3 d-block"></i>
             </div>
-            文章列表
+            文章
           </router-link>
         </li>
       </ul>

@@ -1,6 +1,6 @@
 <!-- pagination -->
 <template id="pagination-template">
-  <nav aria-label="Page navigation">
+  <nav aria-label="Page navigation" v-if="pagination.total_pages > 1">
     <ul class="pagination justify-content-end">
       <li class="page-item" v-if="pagination.has_pre">
         <a class="page-link bi bi-caret-left-fill" href="#" @click.prevent="changePage(pagination.current_page - 1)"></a>

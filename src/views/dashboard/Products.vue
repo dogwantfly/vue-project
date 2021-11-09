@@ -1,15 +1,20 @@
 <template>
   <Loading :active="isLoading" :z-index="100" :loader="'dots'" :color="'#384D48'"/>
-  <header>
+  <header class="mb-5">
     <h1>
       產品管理
     </h1>
   </header>
   <div class="d-flex justify-content-between align-items-center mt-3 mb-5">
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" v-on:click="openModal('new')">
+    <button type="button" class="btn btn-primary" @click="openModal('new')">
       新增產品
     </button>
+    <div class="input-group w-auto align-items-center border rounded-3">
+      <div class="input-text px-3">
+        <i class="bi bi-search"></i>
+      </div>
+      <input type="search" v-model="productSearchBar" placeholder="搜尋商品名稱" class="form-control border-0">
+    </div>
     <div class="input-group w-auto align-items-center">
       <label for="sort" class="me-2">排序</label>
       <select class="form-select" aria-label="select" v-model="sortBy" id="sort">
@@ -18,6 +23,9 @@
         <option value="priceFromLowest">售價由低至高</option>
       </select>
     </div>
+  </div>
+  <div class="alert alert-danger border-0" v-if="productSearchBar && searchResults">
+    {{ searchResults }}
   </div>
   <table class="table table-borderless table-hover">
     <thead class="bg-light rounded-3">
@@ -31,7 +39,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(item) in products" v-bind:key="item.id">
+      <tr v-for="(item) in products" :key="item.id">
         <td scope="row">{{ item.category }}</td>
         <td>{{ item.title }}</td>
         <td class="text-muted">{{ $filters.currency(item.origin_price) }}</td>
@@ -39,14 +47,13 @@
         <td :class="item.is_enabled ? 'text-success': 'text-muted'" class="text-end">{{item.is_enabled ? "啟用" : "未啟用" }}</td>
         <td class="text-end">
           <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-            <button type="button" class="btn btn-outline-secondary border-0 bi bi-pencil-fill" v-on:click="openModal('edit',item)"></button>
-            <button type="button" class="btn btn-outline-danger border-0 bi bi-trash-fill" v-on:click="openModal('delete',item)"></button>
+            <button type="button" class="btn btn-outline-secondary border-0 bi bi-pencil-fill" @click="openModal('edit',item)"></button>
+            <button type="button" class="btn btn-outline-danger border-0 bi bi-trash-fill" @click="openModal('delete',item)"></button>
           </div>
         </td>
       </tr>
     </tbody>
   </table>
-  <!-- 分頁 -->
   <Pagination :pagination="pagination" @change-page="getProducts"/>
 
   <!-- productModal -->
@@ -73,7 +80,9 @@ export default ({
       isNew: false,
       isLoading: false,
       current_page: 1,
-      sortBy: ''
+      sortBy: '',
+      productSearchBar: '',
+      searchResults: ''
     }
   },
   inject: ['$httpMessageState', 'emitter'],
@@ -114,7 +123,6 @@ export default ({
           break
       }
     },
-    // 取得商品列表
     getProducts (page = this.current_page) {
       this.isLoading = true
       const api = `/api/${process.env.VUE_APP_APIPATH}/admin/products?page=${page}`
@@ -127,6 +135,7 @@ export default ({
           }
           this.products = response.data.products
           this.sortBy = ''
+          this.productSearchBar = ''
           this.pagination = response.data.pagination
           this.current_page = response.data.pagination.current_page
           this.isLoading = false
@@ -148,8 +157,10 @@ export default ({
           }
           this.products = Object.values(response.data.products)
           this.sortProducts(this.sortBy)
+          if (this.productSearchBar !== '') {
+            this.searchProducts()
+          }
           this.pagination = ''
-          // this.current_page = response.data.pagination.current_page
           this.isLoading = false
         })
         .catch(error => {
@@ -173,6 +184,15 @@ export default ({
         default:
           break
       }
+    },
+    searchProducts () {
+      const matchProducts = this.products.filter((product) => product.title.toLowerCase().includes(this.productSearchBar.trim().toLowerCase()))
+      if (matchProducts.length) {
+        this.searchResults = ''
+        this.products = matchProducts
+      } else {
+        this.searchResults = '無符合搜尋結果，請再試試其他關鍵字～'
+      }
     }
   },
   watch: {
@@ -186,10 +206,16 @@ export default ({
       } else {
         this.getAllProducts()
       }
+    },
+    productSearchBar (newValue) {
+      if (newValue !== '') {
+        this.getAllProducts()
+      } else {
+        this.getProducts()
+      }
     }
   },
   mounted () {
-    // 從 cookie 取登入時存的 token
     const token = document.cookie.split('; ')
       .find(row => row.startsWith('token='))
       .split('=')[1]

@@ -60,3 +60,17 @@
   overflow-y: auto;
   max-height: calc(100vh - 250px);
 }
+.coupon.table {
+  table-layout: fixed;
+}
+.ck-editor__editable_inline {
+  min-height: 300px;
+}
+.ck-body-wrapper .ck.ck-balloon-panel {
+  z-index: 1080;
+}
+.ck-content a {
+  text-decoration: underline;
+  background-color: $light;
+  color: $teal;
+}

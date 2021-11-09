@@ -489,7 +489,7 @@ export default ({
   },
   methods: {
     countDown () {
-      const expires = 1636156800
+      const expires = 1638230400
       const currentTime = Math.floor(Date.now() / 1000)
       this.time = expires - currentTime
       this.daysLeft = parseInt(this.time / 60 / 60 / 24)

@@ -1,102 +1,111 @@
 <template>
-  <div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true" ref="modal">
-       <div class="modal-dialog modal-xl modal-dialog-scrollable">
-         <div class="modal-content">
-           <div class="modal-header bg-dark text-white">
-             <h5 class="modal-title" id="exampleModalLabel">
-               <span v-if="isNew">新增</span>
-               <span v-else>編輯</span>文章
-              </h5>
-             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-           </div>
-           <div class="modal-body">
-            <Form @submit="updateArticle" v-slot="{ errors }" ref="form">
-              <!-- 套用文章 -->
-              <div class="mb-3">
-              <label for="article_title" class="form-label">名稱</label>
-              <Field
-                type="text"
-                class="form-control"
-                id="article_title"
-                placeholder="請輸入文章名稱"
-                v-model="tempArticle.title"
-                :class="{ 'is-invalid': errors['名稱'], 'is-valid': tempArticle.title }"
-                name="名稱"
-                rules="required"
-                required />
-              <Error-message
-                name="名稱"
-                class="invalid-feedback" />
+  <div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="ariticleModalLabel" aria-hidden="true" ref="modal">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="exampleModalLabel">
+            <span v-if="isNew">新增</span>
+            <span v-else>編輯</span>文章
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <Form @submit="updateArticle" v-slot="{ errors }" ref="form">
+          <div class="row">
+            <div class="col-6">
+              <p class="h6 text-warning d-inline-block">此區為必填項目</p>
+              <div class="bg-light mb-3 rounded-3 p-3">
+                <div class="mb-3">
+                  <label for="article_title" class="form-label">名稱</label>
+                  <Field
+                    type="text"
+                    class="form-control"
+                    id="article_title"
+                    placeholder="請輸入文章名稱"
+                    v-model="tempArticle.title"
+                    :class="{ 'is-invalid': errors['名稱'], 'is-valid': tempArticle.title }"
+                    name="名稱"
+                    rules="required"
+                    required />
+                  <Error-message
+                    name="名稱"
+                    class="invalid-feedback" />
+                </div>
+                <div class="mb-3">
+                  <label for="article_author" class="form-label">作者</label>
+                  <Field
+                    type="text"
+                    class="form-control"
+                    id="article_author"
+                    placeholder="請輸入作者"
+                    v-model="tempArticle.author"
+                    :class="{ 'is-invalid': errors['作者'], 'is-valid': tempArticle.author }"
+                    name="作者"
+                    rules="required"
+                    required />
+                  <Error-message
+                    name="作者"
+                    class="invalid-feedback" />
+                </div>
+                <div class="mb-3">
+                  <label for="article_create_at" class="form-label">發佈日期</label>
+                  <input type="date" class="form-control" id="article_create_at" v-model="create_at" :min="today">
+                </div>
               </div>
               <div class="mb-3">
-                <label for="article_image" class="form-label">主要圖片</label>
-                <input type="text" class="form-control mb-3" id="article_image" placeholder="請輸入圖片連結，例：http://xxx" v-model="tempArticle.image">
-                <label for="customFile" class="form-label">或 上傳圖片
-                  <div class="spinner-border spinner-border-sm" role="status" v-if="loadingUploadImg">
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
-                </label>
-                <input type="file" id="customFile" class="form-control mb-3" ref="fileInput" @change="uploadImg">
-                <img :src="tempArticle.image" :alt="tempArticle.title" class="img-fluid mb-3">
+                <label for="article_description" class="form-label">文章簡述</label>
+                <textarea type="text" class="form-control" id="article_description" placeholder="請輸入文章簡要描述" v-model="tempArticle.description" style="height: 150px;"></textarea>
               </div>
               <div class="mb-3">
                 <label for="article_tags" class="form-label">標籤</label>
-                <div class="row">
-                  <div class="col-lg-2" v-for="(item, key) in tempArticle.tag" :key="`tag${key}`">
-                    <div class="input-group">
-                      <input type="text" class="form-control" id="article_tags" placeholder="請輸入標籤" v-model="tempArticle.tag[key]">
-                      <button class="btn btn-outline-danger" @click="deleteTag(key)">x</button>
+                <div class="row g-3">
+                  <div class="col-auto" v-for="(item, key) in tempArticle.tag" :key="`tag${key}`">
+                    <div class="input-group border rounded-3">
+                      <input type="text" class="form-control border-0" id="article_tags" placeholder="請輸入標籤" v-model="tempArticle.tag[key]">
+                      <!-- <button class="btn btn-outline-danger" @click="deleteTag(key)">x</button> -->
+                      <button type="button" class="btn btn-outline-danger border-0 bi bi-trash" @click="deleteTag(key)"></button>
                     </div>
                   </div>
-                  <div class="col-2">
+                  <div class="col-auto">
                     <button type="button" class="btn btn-outline-primary" @click="addTag">新增標籤</button>
                   </div>
                 </div>
               </div>
               <div class="mb-3">
-                <label for="article_create_at" class="form-label">發佈日期</label>
-                <input type="date" class="form-control" id="article_create_at" v-model="create_at" :min="today">
+                <p>是否要發佈</p>
+                <input type="checkbox" id="article_isPublic" :checked="tempArticle.isPublic" class="me-2" :true-value="true" :false-value="false" v-model="tempArticle.isPublic">
+                <label for="article_isPublic" class="form-label" :class="tempArticle.isPublic ? 'text-success' : 'text-muted'">{{tempArticle.isPublic ? '發佈' : '未發佈' }}</label>
               </div>
-              <div class="mb-3">
-                <label for="article_author" class="form-label">作者</label>
-                <Field
-                  type="text"
-                  class="form-control"
-                  id="article_author"
-                  placeholder="請輸入作者"
-                  v-model="tempArticle.author"
-                  :class="{ 'is-invalid': errors['作者'], 'is-valid': tempArticle.author }"
-                  name="作者"
-                  rules="required"
-                  required />
-                <Error-message
-                  name="作者"
-                  class="invalid-feedback" />
-              </div>
-              <div class="mb-3">
-                <label for="article_description" class="form-label">文章描述</label>
-                <textarea type="text" class="form-control" id="article_description" placeholder="請輸入文章描述" v-model="tempArticle.description"></textarea>
-              </div>
-              <div class="mb-3">
-                <input type="checkbox" name="" id="article_isPublic" :checked="tempArticle.isPublic" class="me-2" :true-value="true" :false-value="false" v-model="tempArticle.isPublic">
-                <label for="article_isPublic" class="form-label">{{tempArticle.isPublic ? '發佈' : '未發佈' }}</label>
-              </div>
-              <p v-if="!tempArticle.content">請輸入文章內容</p>
-              <CKEditor
-                  :editor="editor"
-                  :config="editorConfig"
-                  v-model="tempArticle.content" />
-              <!-- https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v3.html#quick-start -->
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
-                <button type="submit" class="btn btn-primary" :disabled="Object.keys(errors).length !== 0 || !tempArticle.content">確認</button>
-              </div>
-             </Form>
-           </div>
-         </div>
-       </div>
-     </div>
+            </div>
+            <div class="col-6">
+              <label for="article_image" class="form-label">主要圖片</label>
+              <input type="text" class="form-control mb-3" id="article_image" placeholder="請輸入圖片連結，例：http://xxx" v-model="tempArticle.image">
+              <label for="customFile" class="form-label">或 上傳圖片
+                <div class="spinner-border spinner-border-sm" role="status" v-if="loadingUploadImg">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </label>
+              <input type="file" id="customFile" class="form-control mb-3" ref="fileInput" @change="uploadImg">
+              <img :src="tempArticle.image" :alt="tempArticle.title" class="img-fluid mb-3">
+            </div>
+          </div>
+          <p v-if="!tempArticle.content" class="text-warning">請輸入文章內容（必填）</p>
+          <CKEditor
+              :editor="editor"
+              :config="editorConfig"
+              v-model="tempArticle.content" />
+          <!-- https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v3.html#quick-start -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-primary" :disabled="Object.keys(errors).length !== 0 || !tempArticle.content">確認</button>
+          </div>
+          </Form>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
+
 <script>
 import CKEditor from '@ckeditor/ckeditor5-vue'
 import modalMixin from '@/mixins/modalMixin'
@@ -133,7 +142,6 @@ export default {
     }
   },
   components: {
-    // Use the <ckeditor> component in this view.
     CKEditor: CKEditor.component
   },
   mixins: [modalMixin],
@@ -142,6 +150,7 @@ export default {
       if (this.isNew) {
         this.tempArticle = {
           author: '',
+          title: '',
           id: '',
           image: '',
           description: '',
@@ -150,6 +159,7 @@ export default {
           isPublic: false,
           tag: ['']
         }
+        this.create_at = ''
         this.$refs.form.resetForm()
         const dateAndTime = new Date((this.tempArticle.create_at + 8 * 3600) * 1000).toISOString().split('T');
         [this.create_at] = dateAndTime
@@ -160,7 +170,6 @@ export default {
       }
       this.modal.show()
     },
-    // 建立、更新文章
     updateArticle () {
       this.isLoading = true
       const id = this.tempArticle.id
@@ -263,12 +272,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .ck-editor__editable_inline {
-    min-height: 300px;
-  }
-  .ck.ck-balloon-panel {
-    z-index: 1080;
-  }
-</style>

@@ -2,17 +2,21 @@
   <div class="modal fade" id="delOrderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="modal">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header bg-danger text-white">
+        <div class="modal-header border-0">
           <h5 class="modal-title" id="exampleModalLabel">刪除訂單</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <p>確定要刪除編號：
             <span class="fw-bold" v-if="tempOrder.id"> {{ tempOrder.id }} </span>
             <span class="fw-bold" v-else> 全部 </span>
-            訂單嗎？ （刪除後即無法恢復）</p>
+            訂單嗎？</p>
+          <div class="alert alert-danger py-2" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            刪除後即無法恢復
+          </div>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer border-0">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
           <button type="button" class="btn btn-danger" v-on:click="deleteOrder">刪除</button>
         </div>

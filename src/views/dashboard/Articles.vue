@@ -1,39 +1,57 @@
 <template>
   <Loading :active="isLoading" :z-index="100" :loader="'dots'" :color="'#384D48'"/>
-  <h1>文章頁面</h1>
-  <button type="button" class="btn btn-primary mt-3" v-on:click="openModal('new')">
+  <header class="mb-5">
+    <h1>文章管理</h1>
+  </header>
+  <div class="d-flex justify-content-between align-items-center mt-3 mb-5">
+    <button type="button" class="btn btn-primary mt-3" @click="openModal('new')">
       新增文章
-  </button>
-  <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">名稱</th>
-          <th scope="col">作者</th>
-          <th scope="col">發佈日期</th>
-          <th scope="col">是否發佈</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item) in articles" v-bind:key="item.id">
-          <td scope="row">{{ item.title }}</td>
-          <td scope="row">{{ item.author }}</td>
-          <td>{{ $filters.date(item.create_at) }}</td>
-          <td v-bind:class="{ 'text-success': item.isPublic}">{{ item.isPublic ? "已發佈" : "未發佈" }}</td>
-          <td>
-            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-              <button type="button" class="btn btn-warning" v-on:click="getArticle(item.id)">編輯</button>
-              <button type="button" class="btn btn-danger" v-on:click="openModal('delete',item)">刪除</button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  <!-- 分頁 -->
+    </button>
+    <div class="input-group w-25 align-items-center border rounded-3">
+      <div class="input-text px-3">
+        <i class="bi bi-search"></i>
+      </div>
+      <input type="search" placeholder="搜尋文章名稱" class="form-control border-0" v-model="articleSearchBar">
+    </div>
+    <div class="input-group w-auto align-items-center">
+      <label for="sort" class="me-2">排序</label>
+      <select class="form-select" aria-label="select" v-model="sortBy" id="sort">
+        <option selected value="">新增日期由新到舊（預設）</option>
+        <option value="postDateFromNewest">發佈日由新至舊</option>
+        <option value="postDateFromOldest">發佈日由舊至新</option>
+      </select>
+    </div>
+  </div>
+  <div class="alert alert-danger border-0" v-if="articleSearchBar && searchResults">
+    {{ searchResults }}
+  </div>
+  <table class="table table-borderless table-hover">
+    <thead class="bg-light rounded-3">
+      <tr>
+        <th scope="col">名稱</th>
+        <th scope="col">作者</th>
+        <th scope="col">發佈日期</th>
+        <th scope="col" class="text-end">是否發佈</th>
+        <th scope="col" class="text-end">編輯 / 刪除</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(item) in articles" :key="item.id">
+        <td scope="row">{{ item.title }}</td>
+        <td scope="row">{{ item.author }}</td>
+        <td>{{ $filters.date(item.create_at) }}</td>
+        <td :class="item.isPublic  ? 'text-success' : 'text-muted'" class="text-end">{{ item.isPublic ? "已發佈" : "未發佈" }}</td>
+        <td class="text-end">
+          <div class="btn-group" role="group" aria-label="edit and delete button">
+            <button type="button" class="btn btn-outline-secondary border-0 bi bi-pencil-fill" @click="getArticle(item.id)"></button>
+            <button type="button" class="btn btn-outline-danger border-0 bi bi-trash-fill" @click="openModal('delete',item)"></button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <Pagination :pagination="pagination" @change-page="getArticles"/>
-  <!-- articleModal -->
   <ArticleModal ref="articleModal" :is-new="isNew" :article="tempArticle" @update="getArticles"/>
-  <!-- DelItemModal   -->
   <DelItemModal :temp-article="tempArticle" ref="delItemModal" @delete="getArticles"/>
 </template>
 <script>
@@ -54,11 +72,13 @@ export default ({
       loadingStatus: {},
       current_page: 1,
       isNew: false,
-      isLoading: false
+      isLoading: false,
+      articleSearchBar: '',
+      searchResults: '',
+      sortBy: ''
     }
   },
   methods: {
-    // 取得文章列表
     getArticles (page = this.current_page) {
       this.isLoading = true
       const api = `/api/${process.env.VUE_APP_APIPATH}/admin/articles?page=${page}`
@@ -71,6 +91,8 @@ export default ({
           this.articles = response.data.articles
           this.pagination = response.data.pagination
           this.current_page = response.data.pagination.current_page
+          this.articleSearchBar = ''
+          this.sortBy = ''
           this.isLoading = false
         })
         .catch(error => {
@@ -95,13 +117,13 @@ export default ({
           this.isLoading = false
         })
     },
-    // 開啟編輯、刪除、查看更多
     openModal (action, item) {
       switch (action) {
         case 'new':
           this.isNew = true
           this.tempArticle = {
             author: '',
+            title: '',
             id: '',
             image: '',
             description: '',
@@ -110,6 +132,7 @@ export default ({
             isPublic: false,
             tag: ['']
           }
+          this.$refs.articleModal.$refs.form.resetForm()
           setTimeout(() => {
             this.$refs.articleModal.openModal()
           })
@@ -126,11 +149,57 @@ export default ({
           this.$refs.delItemModal.openModal()
           break
       }
+    },
+    searchArticles () {
+      const matchArticles = this.articles.filter(article => article.title.toLowerCase().includes(this.articleSearchBar.trim().toLowerCase()))
+      if (matchArticles.length) {
+        this.searchResults = ''
+        this.articles = matchArticles
+      } else {
+        this.searchResults = '無符合搜尋結果，請再試試其他關鍵字～'
+      }
+    },
+    sortArticles (sortBy) {
+      switch (sortBy) {
+        case 'postDateFromNewest':
+          this.articles.sort(function (a, b) {
+            return b.create_at - a.create_at
+          })
+          break
+        case 'postDateFromOldest':
+          this.articles.sort(function (a, b) {
+            return a.create_at - b.create_at
+          })
+          break
+        default:
+          break
+      }
+    }
+  },
+  watch: {
+    sortBy (newSort, oldSort) {
+      if (newSort === oldSort) {
+        if (newSort !== '') {
+          this.sortArticles()
+        } else {
+          this.getArticles()
+        }
+      } else if (newSort === '') {
+        this.getArticles()
+      } else {
+        this.sortArticles(newSort)
+      }
+    },
+    articleSearchBar (newValue) {
+      if (newValue !== '') {
+        this.searchArticles()
+      } else {
+        this.getArticles()
+      }
     }
   },
   mounted () {
     this.$http.defaults.baseURL = process.env.VUE_APP_API
-    // 取商品資料
     this.getArticles()
   }
 })
