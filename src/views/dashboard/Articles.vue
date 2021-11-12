@@ -11,7 +11,7 @@
       <div class="input-text px-3">
         <i class="bi bi-search"></i>
       </div>
-      <input type="search" placeholder="搜尋文章名稱" class="form-control border-0" v-model="articleSearchBar">
+      <input type="search" placeholder="搜尋文章名稱" class="form-control border-0" v-model.trim="articleSearchBar">
     </div>
     <div class="input-group w-auto align-items-center">
       <label for="sort" class="me-2">排序</label>
@@ -54,16 +54,19 @@
   <ArticleModal ref="articleModal" :is-new="isNew" :article="tempArticle" @update="getArticles"/>
   <DelItemModal :temp-article="tempArticle" ref="delItemModal" @delete="getArticles"/>
 </template>
+
 <script>
 import Pagination from '@/components/Pagination.vue'
-import ArticleModal from '@/components/ArticleModal.vue'
-import DelItemModal from '@/components/DelItemModal.vue'
+import ArticleModal from '@/components/backend/ArticleModal.vue'
+import DelItemModal from '@/components/backend/DelItemModal.vue'
+
 export default ({
   components: {
     Pagination,
     ArticleModal,
     DelItemModal
   },
+  inject: ['$httpMessageState'],
   data () {
     return {
       articles: '',
@@ -85,6 +88,7 @@ export default ({
       this.$http.get(api)
         .then(response => {
           if (!response.data.success) {
+            this.$httpMessageState(response, '取得文章')
             this.isLoading = false
             return
           }
@@ -106,6 +110,7 @@ export default ({
       this.$http.get(api)
         .then(response => {
           if (!response.data.success) {
+            this.$httpMessageState(response, '取得文章')
             this.isLoading = false
             return
           }
@@ -151,7 +156,7 @@ export default ({
       }
     },
     searchArticles () {
-      const matchArticles = this.articles.filter(article => article.title.toLowerCase().includes(this.articleSearchBar.trim().toLowerCase()))
+      const matchArticles = this.articles.filter(article => article.title.toLowerCase().includes(this.articleSearchBar.toLowerCase()))
       if (matchArticles.length) {
         this.searchResults = ''
         this.articles = matchArticles

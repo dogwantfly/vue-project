@@ -14,10 +14,10 @@
 <script>
 import 'bootstrap/dist/js/bootstrap.min.js'
 import $httpMessageState from '@/methods/pushMessageState'
-import ToastMessages from '@/components/ToastMessages.vue'
 import emitter from '@/methods/emitter'
-import Navbar from '@/components/front/Navbar.vue'
-import Footer from '@/components/front/Footer.vue'
+import ToastMessages from '@/components/ToastMessages.vue'
+import Navbar from '@/components/frontend/Navbar.vue'
+import Footer from '@/components/frontend/Footer.vue'
 
 export default {
   data () {

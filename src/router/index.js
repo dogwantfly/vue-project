@@ -6,7 +6,6 @@ const routes = [
     component: () => import('../views/Home.vue'),
     children: [
       {
-        // 子路徑可不加 /
         path: '',
         name: 'Index',
         component: () => import('../views/Index.vue')
@@ -67,10 +66,9 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     redirect: '/dashboard/products',
-    component: () => import('../views/Dashboard.vue'),
+    component: () => import('../views/dashboard/Dashboard.vue'),
     children: [
       {
-        // 子路徑可不加 /
         path: 'products',
         name: 'DashboardProducts',
         component: () => import('../views/dashboard/Products.vue')

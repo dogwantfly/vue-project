@@ -1,5 +1,4 @@
 <template>
-<!-- https://dribbble.com/shots/15137093--Notifications-New-Countly-UI -->
   <div class="toast align-items-center" :class="`border-${message.style}`" role="alert" aria-live="assertive" aria-atomic="true" ref="toast">
     <div class="d-flex">
       <div class="toast-body d-flex align-items-center" :class="`text-${message.style}`">

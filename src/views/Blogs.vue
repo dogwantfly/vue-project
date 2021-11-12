@@ -29,23 +29,19 @@
             </div>
           </div>
         </li>
-        <li class="col-lg-4 card mb-3 border-0" v-for="article in articles.slice(1)" :key="article.id">
-          <div class="row g-0">
-            <div class="col-md-12 ratio ratio-4x3">
-              <img :src="article.image" :alt="article.title" class="img-fluid card-img">
-            </div>
-            <div class="col-md-12">
-              <div class="card-body">
-                <h5 class="card-title">{{ article.title }}</h5>
-                <p class="card-text text-truncate">{{ article.description }}</p>
-                <p class="card-text"><small class="text-muted">{{ new Date((article.create_at + 8 * 3600) * 1000)
-            .toISOString().split('T')[0] }}</small></p>
-                <router-link :to="`/blog/${article.id}`" class="btn btn-link stretched-link btn-zindex ps-0">
-                  查看內文
-                  <i class="bi bi-chevron-right"></i>
-                </router-link>
-              </div>
-            </div>
+        <li class="col-md-6 col-lg-4 card mb-3 border-0" v-for="article in articles.slice(1)" :key="article.id">
+          <div class="ratio ratio-4x3">
+            <img :src="article.image" :alt="article.title" class="img-fluid card-img">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{ article.title }}</h5>
+            <p class="card-text text-truncate">{{ article.description }}</p>
+            <p class="card-text"><small class="text-muted">{{ new Date((article.create_at + 8 * 3600) * 1000)
+        .toISOString().split('T')[0] }}</small></p>
+            <router-link :to="`/blog/${article.id}`" class="btn btn-link stretched-link btn-zindex ps-0">
+              查看內文
+              <i class="bi bi-chevron-right"></i>
+            </router-link>
           </div>
         </li>
       </ul>
@@ -61,7 +57,7 @@ export default {
       isLoading: false
     }
   },
-  inject: ['$httpMessageState', 'emitter'],
+  inject: ['$httpMessageState'],
   methods: {
     getArticles (page = 1) {
       this.isLoading = true

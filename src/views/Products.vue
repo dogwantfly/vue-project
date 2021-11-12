@@ -26,7 +26,7 @@
           <li class="card col-md-6 col-lg-3 border-0 mb-4" v-for="item in filterProducts" :key="item.id">
             <div class="overflow-hidden position-relative">
               <button type="button" @click.stop="toggleFavorite(item)" class="btn btn-favorite position-absolute">
-                  <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
+                <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
               </button>
               <div class="ratio ratio-3x4">
                 <img :src="item.imageUrl" :alt="item.title" class="cart-img card-img-top">
@@ -49,12 +49,10 @@
                 </h2>
               </div>
               <del class="text-muted">NT$ {{ $filters.currency(item.origin_price) }} </del>
-              <!-- <br> -->
               <p class="fw-bold card-text">NT$ {{ $filters.currency(item.price) }} </p>
             </div>
           </li>
         </ul>
-        <!-- 分頁 -->
         <Pagination :pagination="pagination" @change-page="getAllProducts"/>
       </div>
     </div>
@@ -137,11 +135,9 @@ export default ({
       const maxPage = (this.pagination.current_page * perPage)
       this.products = this.products.slice(minPage, maxPage)
     },
-    // 商品細節
     getProductInfo (productId) {
       this.$router.push(`/product/${productId}`)
     },
-    // 加入購物車
     addCart (id, qty = 1) {
       const api = `/api/${process.env.VUE_APP_APIPATH}/cart`
       const data = {

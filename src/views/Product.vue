@@ -1,5 +1,4 @@
 <template>
-<!-- http://preview.themeforest.net/item/mevo-creative-ecommerce-html-template-for-agency-company-studio/full_screen_preview/19688538?_ga=2.232712287.1382045043.1632202344-747249374.1624593689 -->
   <Loading :active="isLoading" :z-index="1080" :loader="'dots'" :color="'#384D48'"/>
   <div class="product container py-5">
     <div class="row pt-5">
@@ -50,8 +49,7 @@
         <del class="h6 text-muted"> NT${{ product.origin_price }} </del>
         <div class="h5 mb-3">NT${{ product.price }}</div>
         <div class="input-group mb-5">
-          <input type="number" class="form-control"
-                v-model.number="qty" min="1">
+          <input type="number" class="form-control" v-model.number="qty" min="1">
           <button type="button" class="btn btn-primary" @click="addCart(product.id)">
             <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingCart === product.id">
               <span class="visually-hidden">Loading...</span>
@@ -104,7 +102,7 @@
           <li class="card col-md-4 col-lg-3 col-xl-2 border-0" v-for="item in randomProducts" :key="item.id">
             <div class="overflow-hidden position-relative">
               <button type="button" @click.stop="toggleFavorite(item)" class="btn btn-favorite position-absolute">
-                  <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
+                <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
               </button>
               <div class="ratio ratio-3x4">
                 <img :src="item.imageUrl" :alt="item.title" class="cart-img card-img-top">
@@ -139,7 +137,7 @@
             <div class="card-body">
               <div class="d-flex align-items-center justify-content-between">
                 <h4 class="card-title mb-0 h6">
-                  <a href="#" @click.prevent="getProductInfo(item.id)" class="text-dark d-block stretched-link" >
+                  <a href="#" @click.prevent="getProductInfo(item.id)" class="text-dark d-block stretched-link">
                     {{ item.title }}
                   </a>
                 </h4>

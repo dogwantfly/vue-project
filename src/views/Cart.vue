@@ -1,6 +1,5 @@
 <template>
   <Loading :active="isLoading" :z-index="100" :loader="'dots'" :color="'#384D48'"/>
-  <!-- https://umea.qodeinteractive.com/cart/ -->
   <div class="banner">
     <div class="container h-100 d-flex align-items-center justify-content-center">
       <h1>
@@ -30,8 +29,8 @@
           </small>
         </button>
         <div class="table-responsive bg-light p-md-5 my-5 rounded-1" v-if="carts.carts.length">
-          <table class="table">
-            <thead>
+          <table class="table table-borderless table-hover">
+            <thead class="rounded-3">
               <tr>
                 <th scope="col"></th>
                 <th scope="col" width="40%">品項</th>
@@ -367,8 +366,6 @@ export default ({
         })
     },
     getRandomProducts () {
-      // const { category, id } = this.product
-      // const filterProducts = this.products.filter(product => product.category === category && product.id !== id)
       const arrSet = new Set([])
       const maxSize = this.products.length < 4 ? this.products.length : 4
       for (let i = 0; arrSet.size < maxSize; i += 1) {

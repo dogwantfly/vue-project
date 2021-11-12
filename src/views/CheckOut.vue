@@ -1,6 +1,4 @@
 <template>
-<!-- http://localhost:8080/#/checkout/-MmE0wRI4QLlgsc4hT9f -->
-<!-- https://dribbble.com/shots/15024858-Marketplace-UIKIT -->
   <Loading :active="isLoading" :z-index="100" :loader="'dots'" :color="'#384D48'"/>
   <div class="banner" v-if="!order.is_paid">
     <div class="container h-100 d-flex align-items-center justify-content-center">
@@ -54,7 +52,7 @@
                     <br>
                     <small class="text-success me-1">折扣價</small>
                   </template>
-                    <span class="text-success">${{ $filters.currency(product.final_total) }}</span>
+                  <span class="text-success">${{ $filters.currency(product.final_total) }}</span>
                 </td>
               </tr>
             </tbody>
@@ -105,7 +103,7 @@
           </table>
         </div>
         <h3 class="h5 border-top pt-3">訂單狀態</h3>
-        <label for="is_paid" class="form-label d-block mb-5" :class="order.is_paid ? 'text-success' : 'text-muted'">{{ order.is_paid ? '已付款' : '未付款'}}</label>
+        <label for="is_paid" class="form-label d-block mb-5" :class="order.is_paid ? 'text-success' : 'text-muted'">{{ order.is_paid ? '已付款' : '未付款' }}</label>
         <div class="text-center text-lg-end p-3 mt-auto">
           <button v-if="!order.is_paid" type="button" class="btn btn-primary" @click="payOrder">確認後付款</button>
         </div>
@@ -126,7 +124,7 @@ export default {
       isLoading: false
     }
   },
-  inject: ['$httpMessageState', 'emitter'],
+  inject: ['$httpMessageState'],
   methods: {
     getOrder () {
       this.isLoading = true
@@ -152,6 +150,11 @@ export default {
       const api = `/api/${process.env.VUE_APP_APIPATH}/pay/${id}`
       this.$http.post(api)
         .then(response => {
+          if (!response.data.success) {
+            this.$httpMessageState('付款失敗，請再試一次', '付款')
+            this.isLoading = false
+            return
+          }
           if (!response.data.success) return
           this.getOrder()
         })

@@ -78,7 +78,7 @@ export default {
       articleIndex: 0
     }
   },
-  inject: ['$httpMessageState', 'emitter'],
+  inject: ['$httpMessageState'],
   methods: {
     getArticle () {
       this.isLoading = true

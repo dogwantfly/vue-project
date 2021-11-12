@@ -12,7 +12,7 @@
       <div class="input-text px-3">
         <i class="bi bi-search"></i>
       </div>
-       <input type="search" v-model="orderSearchBar" placeholder="搜尋訂單編號" class="form-control border-0 flex-shrink-0">
+      <input type="search" v-model.trim="orderSearchBar" placeholder="搜尋訂單編號" class="form-control border-0 flex-shrink-0">
     </div>
     <div class="input-group w-auto align-items-center">
       <label for="sort" class="me-2">排序</label>
@@ -59,7 +59,9 @@
           <td>
             {{ $filters.date(item.create_at) }}
           </td>
-          <td :class="item.is_paid ? 'text-success' : 'text-muted'">{{item.is_paid ? "已付款" : "未付款" }}</td>
+          <td :class="item.is_paid ? 'text-success' : 'text-muted'">
+            {{ item.is_paid ? "已付款" : "未付款" }}
+          </td>
           <td class="text-end">
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
               <button type="button" class="btn btn-outline-secondary border-0 bi bi-eye-fill" @click="openModal('edit',item)"></button>
@@ -74,10 +76,12 @@
   <OrderModal :temp-order="tempOrder" ref="orderModal" @update="getOrders"/>
   <DelOrderModal :temp-order="tempOrder" ref="delOrderModal" @delete="getOrders"/>
 </template>
+
 <script>
 import Pagination from '@/components/Pagination.vue'
-import OrderModal from '@/components/OrderModal.vue'
-import DelOrderModal from '@/components/DelOrderModal.vue'
+import OrderModal from '@/components/backend/OrderModal.vue'
+import DelOrderModal from '@/components/backend/DelOrderModal.vue'
+
 export default ({
   components: {
     Pagination,
@@ -98,6 +102,7 @@ export default ({
       sortBy: ''
     }
   },
+  inject: ['$httpMessageState'],
   methods: {
     getOrders (page = this.current_page) {
       this.isLoading = true
@@ -152,7 +157,7 @@ export default ({
       }
     },
     searchOrders () {
-      const matchOrders = this.allOrders.filter(order => order.id.toLowerCase().includes(this.orderSearchBar.trim().toLowerCase()))
+      const matchOrders = this.allOrders.filter(order => order.id.toLowerCase().includes(this.orderSearchBar.toLowerCase()))
       if (matchOrders.length) {
         this.searchResults = ''
         this.orders = matchOrders

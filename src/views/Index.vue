@@ -19,8 +19,8 @@
     <div class="container">
       <p class="position-absolute background-text fw-bold">CATEGORIES</p>
       <h2 class="mb-5">找到想要的樂器或配件 —— </h2>
-      <div class="row g-0">
-        <div class="col-md-6">
+      <ul class="row g-0">
+        <li class="col-md-6">
           <div class="bg-image ratio ratio-16x9" style="background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1629996922696.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=h%2FFLPes8%2BA7d5XXPCiHVpxVXWqlE%2FgVi%2FIWWo3S1isX9zxNgl%2FKrE8oLHFyDF5Vgl6LeRX8oWIQAcUn3iXGSazMm1hH8N1B2MpZG0YrON5AL2kaFQyLHoB7fUJjYFyznIkiLMsgHft84LLIvFJ2G2xMSFVYUXWdzwel0KVhfPABv7kNx%2F%2FuTvovUGgUUgU8JAfRfFEnXUEx0RvA%2BrFqDgQR1FqwxV%2BVmzvcSlIGtYcKfWFLxPakYVsOyOB5%2Bb4ZeUtiGtsCwi6ZffjnZihxZVV3kkKAlSCv7vT0ZyxYqBM5D%2BPCPL%2Fpv19OaU1CvHUqz9rUU9PtYhCKc1yikQLWG7Q%3D%3D');">
             <a href="#" @click.prevent="updateCategory('木吉他')" class="d-flex align-items-center text-center justify-content-center">
               <h3>
@@ -29,8 +29,8 @@
               </h3>
             </a>
           </div>
-        </div>
-        <div class="col-md-6">
+        </li>
+        <li class="col-md-6">
           <div class="bg-image ratio ratio-16x9" style="background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1630001055721.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=EWJSACO0ybJ3rgmj8eN3kGyvVFr%2B9cKGDvzlreYMBqke1X3SkvCIUlIeJSwvgdydvKT1%2BkCHwbWvv0CKWM9eJzeEDWQ7T13aGeWu8pNtjSXB%2FqZ1YAGu2CYWF0g2zAnlOLqTM3wq7hFCqurmSe3VTgB8zeoDuQT7ydBCMeeJX86AtX2aKnYuL21ZocDWTWjGF7X4Y%2F2WvynNpYg7MagHeitolYaiak4l8R%2B8GmUrE03a7sTUdH4q6FIVVlOlvKt%2BbLGURSxEsPOsbYFdhHMhMyNTwGiC3F1WIvKEYRr%2F8npS2nkY%2FFuJq23TdOwFDG7uGMbuy9TI2qESXogQW2Efdg%3D%3D');">
             <a href="#" @click.prevent="updateCategory('烏克麗麗')"  class="d-flex align-items-center text-center justify-content-center">
               <h3>
@@ -39,8 +39,8 @@
               </h3>
             </a>
           </div>
-        </div>
-        <div class="col-md-6">
+        </li>
+        <li class="col-md-6">
           <div class="bg-image ratio ratio-16x9" style="background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1630000969521.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=Bqfd2J7p35NBACpLZecZQIp%2FHjU4%2FabO8omLliU5QB3Y4JPU3%2BG60EYMP8mgm%2BIbhmMw7pbE1ChSPrJ%2FEJENdV4J7%2FEo5cHKpvAjC1%2Bcm5w9m2h67mPpLtANXbbYhNNrgcYPDZZc%2BlTw7jvh%2B5jSJ0nbXAi9mMu51wUcnjw%2FZhD3Sb9UHYe8aNWyQfAIsznRLRsF4zsMqi%2BupMmJHxIwJ5zNc9mRghEbQ3FWyEh2wcSr4f%2BmH6Sch4ek6WvVL7WRuzETJfkNmW3qE1vD%2FpRaYpPwaiPgILyoaNYfCGVWig06WpsrP2Llm%2BtOsVrE986WAlJOr766rSWDIcCH%2FvbKMQ%3D%3D');">
             <a href="#" @click.prevent="updateCategory('吉他配件')"  class="d-flex align-items-center text-center justify-content-center">
               <h3>
@@ -49,8 +49,8 @@
               </h3>
             </a>
           </div>
-        </div>
-        <div class="col-md-6">
+        </li>
+        <li class="col-md-6">
           <div class="bg-image ratio ratio-16x9" style="background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1629999853653.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=R18jfjACKnagmGaH48YPcGE3OQ10HtUNUoD4ObavBA359xfVipIdNoi8uERIIOGKDCtXqZQrYLbHAVJC3yxRtKKzMkBKh3BMVINm5wSuiGvqh0yOslOvytccl12f6tbJk%2FQcz23J3sy46D4fqunPGR9PuvDez%2BIbqzZXYc1g7oszbFWcc0Fn3508RlelASeAORlf0JOsiixu%2FPFOhQ1U0IkPBztRV1dvz3QsW7%2BSpZPFH5HfSAdKe8EmaZ%2FgnflQfqCpUWp%2FIOc6XKtbDetr83%2F9UGGPM10UlxT7AUrN7HHMBDhWvn8Ww0U9U%2FfKoiHEO1w9k%2FKbTwkHPFD67ldt2Q%3D%3D');">
             <a href="#" @click.prevent="updateCategory('電吉他')"  class="d-flex align-items-center text-center justify-content-center">
               <h3>
@@ -59,8 +59,8 @@
               </h3>
             </a>
           </div>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
   </div>
   <div class="features position-relative">
@@ -482,7 +482,7 @@ export default ({
       articles: ''
     }
   },
-  inject: ['$httpMessageState', 'emitter'],
+  inject: ['$httpMessageState'],
   components: {
     Swiper,
     SwiperSlide

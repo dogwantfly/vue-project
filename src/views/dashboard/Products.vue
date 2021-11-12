@@ -13,7 +13,7 @@
       <div class="input-text px-3">
         <i class="bi bi-search"></i>
       </div>
-      <input type="search" v-model="productSearchBar" placeholder="搜尋商品名稱" class="form-control border-0">
+      <input type="search" v-model.trim="productSearchBar" placeholder="搜尋商品名稱" class="form-control border-0">
     </div>
     <div class="input-group w-auto align-items-center">
       <label for="sort" class="me-2">排序</label>
@@ -44,7 +44,7 @@
         <td>{{ item.title }}</td>
         <td class="text-muted">{{ $filters.currency(item.origin_price) }}</td>
         <td>{{ $filters.currency(item.price) }}</td>
-        <td :class="item.is_enabled ? 'text-success': 'text-muted'" class="text-end">{{item.is_enabled ? "啟用" : "未啟用" }}</td>
+        <td :class="item.is_enabled ? 'text-success': 'text-muted'" class="text-end">{{ item.is_enabled ? "啟用" : "未啟用" }}</td>
         <td class="text-end">
           <div class="btn-group" role="group" aria-label="Basic mixed styles example">
             <button type="button" class="btn btn-outline-secondary border-0 bi bi-pencil-fill" @click="openModal('edit',item)"></button>
@@ -55,16 +55,14 @@
     </tbody>
   </table>
   <Pagination :pagination="pagination" @change-page="getProducts"/>
-
-  <!-- productModal -->
   <ProductModal :temp-product="tempProduct" :is-new="isNew" ref="productModal" @update="getProducts"/>
-  <!-- DelItemModal   -->
   <DelItemModal :temp-product="tempProduct" :products="products" ref="delItemModal" @delete="getProducts"/>
 </template>
+
 <script>
 import Pagination from '@/components/Pagination.vue'
-import ProductModal from '@/components/ProductModal.vue'
-import DelItemModal from '@/components/DelItemModal.vue'
+import ProductModal from '@/components/backend/ProductModal.vue'
+import DelItemModal from '@/components/backend/DelItemModal.vue'
 
 export default ({
   components: {
@@ -85,7 +83,7 @@ export default ({
       searchResults: ''
     }
   },
-  inject: ['$httpMessageState', 'emitter'],
+  inject: ['$httpMessageState'],
   methods: {
     openModal (isNew, item) {
       switch (isNew) {
@@ -186,7 +184,7 @@ export default ({
       }
     },
     searchProducts () {
-      const matchProducts = this.products.filter((product) => product.title.toLowerCase().includes(this.productSearchBar.trim().toLowerCase()))
+      const matchProducts = this.products.filter((product) => product.title.toLowerCase().includes(this.productSearchBar.toLowerCase()))
       if (matchProducts.length) {
         this.searchResults = ''
         this.products = matchProducts
@@ -223,10 +221,8 @@ export default ({
     if (token === '') {
       window.location = 'index.html'
     }
-    // 設定 request headers
     this.$http.defaults.headers.common.Authorization = token
     this.$http.defaults.baseURL = process.env.VUE_APP_API
-    // 取商品資料
     this.getProducts()
   }
 })

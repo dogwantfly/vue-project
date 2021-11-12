@@ -1,4 +1,3 @@
-<!-- pagination -->
 <template id="pagination-template">
   <nav aria-label="Page navigation" v-if="pagination.total_pages > 1">
     <ul class="pagination justify-content-end">
@@ -16,6 +15,7 @@
     </ul>
   </nav>
 </template>
+
 <script>
 export default {
   props: ['pagination'],

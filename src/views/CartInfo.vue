@@ -25,8 +25,20 @@
               Email
               <span class="text-danger">*</span>
             </label>
-            <Field id="email" name="email" type="email" class="form-control" placeholder="請輸入 Email" v-model="user.email" rules="email|required" :class="{ 'is-invalid': errors['email'] , 'is-valid': !errors['email'] && user.email!== ''}"/>
-            <Error-message name="email" class="invalid-feedback"/>
+            <Field
+              id="email"
+              name="email"
+              type="email"
+              class="form-control"
+              placeholder="請輸入 Email"
+              v-model="user.email"
+              rules="email|required"
+              :class="{ 'is-invalid': errors['email'] , 'is-valid': !errors['email'] && user.email!== ''}"
+            />
+            <ErrorMessage
+              name="email"
+              class="invalid-feedback"
+            />
           </div>
           <div class="mb-3">
             <label for="name" class="form-label">
@@ -40,8 +52,13 @@
               class="form-control"
               placeholder="請輸入姓名"
               rules="required"
-              :class="{ 'is-invalid': errors['姓名'] , 'is-valid': user.name!== '' && !errors['姓名']}" v-model="user.name"/>
-            <Error-message class="invalid-feedback" name="姓名"/>
+              :class="{ 'is-invalid': errors['姓名'] , 'is-valid': user.name!== '' && !errors['姓名']}"
+              v-model="user.name"
+            />
+            <ErrorMessage
+              class="invalid-feedback"
+              name="姓名"
+            />
           </div>
           <div class="mb-3">
             <label for="tel" class="form-label">
@@ -56,8 +73,12 @@
               class="form-control"
               placeholder="請輸入電話"
               rules="required|numeric|min:8"
-              :class="{ 'is-invalid': errors['電話'] , 'is-valid': !errors['電話'] && user.tel!== ''}"/>
-            <Error-message class="invalid-feedback" name="電話"/>
+              :class="{ 'is-invalid': errors['電話'] , 'is-valid': !errors['電話'] && user.tel!== ''}"
+            />
+            <ErrorMessage
+              class="invalid-feedback"
+              name="電話"
+            />
           </div>
           <div class="mb-3">
             <label for="address" class="form-label">
@@ -71,8 +92,13 @@
               class="form-control"
               placeholder="請輸入地址"
               rules="required"
-              :class="{ 'is-invalid': errors['地址'] , 'is-valid': user.address!== '' && !errors['地址']}" v-model="user.address"/>
-            <Error-message class="invalid-feedback" name="地址"/>
+              :class="{ 'is-invalid': errors['地址'] , 'is-valid': user.address!== '' && !errors['地址']}"
+              v-model="user.address"
+            />
+            <ErrorMessage
+              class="invalid-feedback"
+              name="地址"
+            />
           </div>
           <div class="mb-3">
             <label for="message" class="form-label">留言</label>
@@ -118,7 +144,6 @@ export default ({
   },
   inject: ['$httpMessageState', 'emitter'],
   methods: {
-    // 加入購物車
     addCart (id, qty = 1) {
       const api = `/api/${process.env.VUE_APP_APIPATH}/cart`
       const data = {
@@ -140,84 +165,24 @@ export default ({
           this.$httpMessageState(error, '連線錯誤')
         })
     },
-    // 取得購物車
     getCart () {
+      this.isLoading = true
       const api = `/api/${process.env.VUE_APP_APIPATH}/cart`
       this.$http.get(api)
         .then(response => {
           if (!response.data.success) {
             this.$httpMessageState(response, '取得購物車列表')
-            return
-          }
-          this.carts = response.data.data
-        })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-        })
-    },
-    updateCart (cartId, productId, qty) {
-      this.isLoading = true
-      const api = `/api/${process.env.VUE_APP_APIPATH}/cart/${cartId}`
-      const data = {
-        product_id: productId,
-        qty
-      }
-      this.loadingStatus.updateCart = cartId
-      this.$http.put(api, { data })
-        .then(response => {
-          if (!response.data.success) {
-            alert(response.data.message)
             this.isLoading = false
             return
           }
-          this.getCart()
-          this.loadingStatus.updateCart = ''
+          this.carts = response.data.data
           this.isLoading = false
-          this.$httpMessageState(response, '更新購物車')
         })
         .catch(error => {
+          this.$httpMessageState(error, '連線錯誤')
           this.isLoading = false
-          this.$httpMessageState(error, '連線錯誤')
         })
     },
-    // 移除購物車
-    removeCartItem (id) {
-      const api = `/api/${process.env.VUE_APP_APIPATH}/cart/${id}`
-      this.loadingStatus.loadingRemoveCart = id
-      this.$http.delete(api)
-        .then(response => {
-          if (!response.data.success) {
-            this.$httpMessageState(response, '移除購物車')
-            return
-          }
-          this.getCart()
-          this.emitter.emit('update-cart', id)
-          this.loadingStatus.loadingRemoveCart = ''
-          this.$httpMessageState(response, '移除購物車')
-        })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-        })
-    },
-    removeCarts () {
-      const api = `/api/${process.env.VUE_APP_APIPATH}/carts`
-      this.loadingStatus.loadingRemoveCart = 'deleteAll'
-      this.$http.delete(api)
-        .then(response => {
-          if (!response.data.success) {
-            this.$httpMessageState(response, '移除購物車')
-            return
-          }
-          this.getCart()
-          this.emitter.emit('update-cart')
-          this.loadingStatus.loadingRemoveCart = ''
-          this.$httpMessageState(response, '移除購物車')
-        })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-        })
-    },
-    // 套用優惠券
     useCoupon () {
       const api = `/api/${process.env.VUE_APP_APIPATH}/coupon`
       const data = {
@@ -237,9 +202,9 @@ export default ({
         })
         .catch(error => {
           this.$httpMessageState(error, '連線錯誤')
+          this.isLoading = false
         })
     },
-    // 建立訂單
     createOrder (values, { resetForm }) {
       const api = `/api/${process.env.VUE_APP_APIPATH}/order`
       const data = {
@@ -279,6 +244,7 @@ export default ({
         })
         .catch(error => {
           this.$httpMessageState(error, '連線錯誤')
+          this.isLoading = false
         })
     }
   },

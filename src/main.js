@@ -11,16 +11,15 @@ import Loading from 'vue3-loading-overlay'
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import { currency, date } from '@/methods/filters'
-// vee-validate 基本設定
+
 defineRule('email', email)
 defineRule('required', required)
 defineRule('min', min)
 defineRule('numeric', numeric)
 
-// Activate the locale
 configure({
   generateMessage: localize({ zh_TW: zhTw }),
-  validateOnInput: true // 調整為輸入字元立即進行驗證
+  validateOnInput: true
 })
 setLocale('zh_TW')
 
