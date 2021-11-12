@@ -1,0 +1,50 @@
+.progress-bar {
+  flex-direction: row;
+  background-color: transparent;
+  color: $gray-300;
+  counter-reset: step;
+  li.active, li.done {
+    color: $primary;
+  }
+  li {
+    position: relative;
+    font-size: 0.875rem;
+    @include media-breakpoint-up(md) {
+      font-size: 1rem;
+    }
+  }
+  li::before {
+    content: counter(step);
+    counter-increment: step;
+    width: 45px;
+    line-height: 40px;
+    display: block;
+    font-size: 20px;
+    color: $gray-200;
+    border: 2px solid $gray-300;
+    border-radius: 50%;
+    margin: 0 auto 5px auto;
+    background-color: $white;
+  }
+  li.done::before {
+    content: '✓';
+  }
+  li:first-child::after {
+    content: none; 
+  }
+  li::after {
+    content: '';
+    width: 100%;
+    height: 5px;
+    background: $gray-300;
+    position: absolute;
+    left: -50%;
+    top: 20px;
+    z-index: -1;
+  }
+  li.active::before, li.active::after, li.done::before , li.done::after{
+    background: $primary;
+    color: white;
+    border: 2px solid $primary;
+  }
+} 

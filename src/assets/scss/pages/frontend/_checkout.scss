@@ -1,0 +1,24 @@
+.checkout {
+  &-product {
+    .table {
+      min-width: 500px;
+    }
+  }
+  .img-size {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+}
+.order-success {
+  &.banner {
+    background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1634656077351.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=h92VHr2kEA8gXVOS9zxFn4OKxav%2Br67ELsV7EB6hNLCZmjcewXayN6iubwxpTbGXVXADJH7nE9nPjekcemi3cJoAG4ejS%2BZY2Fij%2F2JihEyDgio3Luk8ziANPMRF3c90Z%2Bg04v4HYeswxUcffeuu0xcmVzXLMLMU%2Bfs0Gge8q0bQE6sjY0uQ0zPNF%2BIc%2Fs4wRvzEBg27zSs8end3uFyv5PPYBwTV82VmvdtsyR2GmIKr8rkSxtMxN9rVKZzkDEpNCi1vlONHku6MROHdPB2mH4TYemmn3axkkGwFZzKCk6ZV1SeOfPFKDeqNxeGwSWlpeQ4ONFx58ghyfUdZUz%2BYSA%3D%3D');
+    background-color: transparent;
+    background-position: center bottom;
+    background-size: cover;
+    @include media-breakpoint-up(lg) {
+      height: 400px;
+      text-shadow: 0 0 0 #212529;
+    }
+  }
+}

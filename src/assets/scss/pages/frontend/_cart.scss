@@ -1,0 +1,27 @@
+.carts {
+  .img-size {
+    width: 50px;
+  }
+  .form-control.count {
+    @include media-breakpoint-up(md) {
+      flex-grow: 0.2;
+    }
+  }
+  .input-group-append {
+    .btn {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+  .input-group.coupon {
+    @include media-breakpoint-up(md) {
+      width: 400px;
+    }
+  }
+  thead {
+    background-color: $gray-200;
+  }
+}
+.cart {
+  padding-top: 80px;
+}
