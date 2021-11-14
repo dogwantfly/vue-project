@@ -10,7 +10,7 @@
           <h2 class="mb-5">
             帶著一把適合的吉他，踏上屬於你的音樂之旅
           </h2>
-          <button type="button" class="btn btn-outline-light rounded-pill px-5 py-3">前往逛逛</button>
+          <router-link to="/products" class="btn btn-outline-light rounded-pill px-5 py-3">前往逛逛</router-link>
         </div>
       </div>
     </div>
