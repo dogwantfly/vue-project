@@ -20,6 +20,7 @@
     <div class="row mb-5 pb-5">
       <div class="col-md-8 mx-auto bg-light rounded-3 py-5 p-md-5">
         <Form @submit="createOrder" v-slot="{ errors }">
+          <p class="text-danger">* 為必填欄位</p>
           <div class="mb-3">
             <label for="email" class="form-label">
               Email

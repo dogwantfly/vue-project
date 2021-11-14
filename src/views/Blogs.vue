@@ -3,7 +3,7 @@
   <div class="banner">
     <div class="container h-100 d-flex align-items-center justify-content-center">
       <h1>
-        關於樂器我們可以了解 ——
+        關於樂器我們可以了解
       </h1>
     </div>
   </div>

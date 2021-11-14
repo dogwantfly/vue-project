@@ -19,7 +19,7 @@
     </div>
     <div class="justify-content-center cart py-5">
       <div v-if="carts.carts">
-        <button type="button" class="btn btn-outline-danger" @click="removeCarts" :disabled="loadingStatus.loadingRemoveCart === 'deleteAll'" v-if="carts.carts.length">
+        <button type="button" class="btn btn-outline-danger mb-2" @click="removeCarts" :disabled="loadingStatus.loadingRemoveCart === 'deleteAll'" v-if="carts.carts.length">
           <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingRemoveCart === 'deleteAll'">
             <span class="visually-hidden">Loading...</span>
           </div>
@@ -28,74 +28,76 @@
             刪除全部商品
           </small>
         </button>
-        <div class="table-responsive bg-light p-md-5 my-5 rounded-1" v-if="carts.carts.length">
-          <table class="table table-borderless table-hover">
-            <thead class="rounded-3">
-              <tr>
-                <th scope="col"></th>
-                <th scope="col" width="40%">品項</th>
-                <th scope="col" class="text-end">數量</th>
-                <th scope="col" class="text-end">價錢</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in carts.carts" :key="item.id">
-                <td>
-                  <button type="button" class="btn btn-outline-danger border-0 rounded-circle" @click="removeCartItem(item.id)" :disabled="loadingStatus.loadingRemoveCart === item.id">
-                    <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingRemoveCart === item.id">
-                      <span class="visually-hidden">Loading...</span>
+        <div class="p-3 p-md-5 bg-light my-5">
+          <div class="table-responsive rounded-1" v-if="carts.carts.length">
+            <table class="table table-borderless table-hover">
+              <thead class="rounded-3">
+                <tr>
+                  <th scope="col" width="5%"></th>
+                  <th scope="col" width="40%">品項</th>
+                  <th scope="col" class="text-end">數量</th>
+                  <th scope="col" class="text-end">價錢</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in carts.carts" :key="item.id">
+                  <td>
+                    <button type="button" class="btn btn-outline-danger border-0 rounded-circle" @click="removeCartItem(item.id)" :disabled="loadingStatus.loadingRemoveCart === item.id">
+                      <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingRemoveCart === item.id">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <div class="d-flex">
+                      <img :src="item.product.imageUrl" :alt="item.product.title" class="img-fluid img-size me-3 d-none d-sm-block">
+                      <div>
+                        {{ item.product.title }}
+                        <br>
+                        <small class="text-success" v-if="item.coupon">
+                          優惠券: {{ item.coupon.code }}
+                        </small>
+                      </div>
                     </div>
-                    <i class="bi bi-trash-fill"></i>
-                  </button>
-                </td>
-                <td>
-                  <div class="d-flex">
-                    <img :src="item.product.imageUrl" :alt="item.product.title" class="img-fluid img-size me-3 d-none d-sm-block">
-                    <div>
-                      {{ item.product.title }}
+                  </td>
+                  <td>
+                    <div class="input-group input-group-sm justify-content-end">
+                      <input type="number" class="form-control border-0 count" v-model.number="item.qty" min="1" @change="updateCart(item.id, item.product_id, item.qty)" :disabled="loadingStatus.updateCart === item.id">
+                      <div class="input-group-text border-0 d-none d-md-block">{{ item.product.unit }}</div>
+                    </div>
+                  </td>
+                  <td class="text-end">
+                    <template v-if="item.final_total !== item.total">
+                      <del class="text-muted small">{{ $filters.currency(item.total) }}</del>
                       <br>
-                      <small class="text-success" v-if="item.coupon">
-                        優惠券: {{ item.coupon.code }}
-                      </small>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="input-group input-group-sm justify-content-end">
-                    <input type="number" class="form-control border-0 count" v-model.number="item.qty" min="1" @change="updateCart(item.id, item.product_id, item.qty)" :disabled="loadingStatus.updateCart === item.id">
-                    <div class="input-group-text border-0 d-none d-md-block">{{ item.product.unit }}</div>
-                  </div>
-                </td>
-                <td class="text-end">
-                  <template v-if="item.final_total !== item.total">
-                    <del class="text-muted small">{{ $filters.currency(item.total) }}</del>
-                    <br>
-                  </template>
-                  <span :class="{ 'text-success': item.final_total !== item.total }">
-                   {{ $filters.currency(item.final_total) }}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="3" class="text-end border-0">運費</td>
-                <td class="text-end border-0">0</td>
-              </tr>
-              <tr>
-                <td colspan="3" class="text-end">合計</td>
-                <td class="text-end text-nowrap">NT$ {{ $filters.currency(carts.total) }}</td>
-              </tr>
-              <tr v-if="carts.final_total !== carts.total" class="text-success">
-                <td colspan="3" class="text-end">折扣後合計</td>
-                <td class="text-end text-nowrap">NT$ {{ $filters.currency(carts.final_total) }}</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-        <div class="text-center" v-else>
-          <p class="p-3 bg-light">購物車無商品，敬請前往購物</p>
-          <router-link to="/products" class="btn btn-primary mb-5">前往購物</router-link>
+                    </template>
+                    <span :class="{ 'text-success': item.final_total !== item.total }">
+                    {{ $filters.currency(item.final_total) }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="3" class="text-end border-0">運費</td>
+                  <td class="text-end border-0">0</td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="text-end">合計</td>
+                  <td class="text-end text-nowrap">NT$ {{ $filters.currency(carts.total) }}</td>
+                </tr>
+                <tr v-if="carts.final_total !== carts.total" class="text-success">
+                  <td colspan="3" class="text-end">折扣後合計</td>
+                  <td class="text-end text-nowrap">NT$ {{ $filters.currency(carts.final_total) }}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div class="text-center" v-else>
+            <p class="p-3 bg-light">購物車無商品，敬請前往購物</p>
+            <router-link to="/products" class="btn btn-primary mb-5">前往購物</router-link>
+          </div>
         </div>
       </div>
       <template v-if="carts.carts">
@@ -200,6 +202,7 @@ export default ({
             return
           }
           this.getCart()
+          this.emitter.emit('update-cart', id)
           this.loadingStatus.loadingCart = ''
           this.$httpMessageState(response, '加入購物車')
         })
@@ -218,6 +221,43 @@ export default ({
             return
           }
           this.carts = response.data.data
+          this.isLoading = false
+        })
+        .catch(error => {
+          this.$httpMessageState(error, '連線錯誤')
+          this.isLoading = false
+        })
+    },
+    getProductInfo (productId) {
+      this.$router.push(`/product/${productId}`)
+      this.getProduct(productId)
+      this.saveProductViewed(productId)
+    },
+    saveProductViewed (productId) {
+      const maxLength = 6
+      const productsIdViewed = JSON.parse(localStorage.getItem('productsViewed')) || []
+      if (productsIdViewed.includes(productId)) {
+        productsIdViewed.splice(productsIdViewed.indexOf(productId), 1)
+      }
+      productsIdViewed.unshift(productId)
+      if (productsIdViewed.length > maxLength) {
+        productsIdViewed.pop()
+      }
+      localStorage.setItem('productsViewed', JSON.stringify(productsIdViewed))
+    },
+    getProduct (productId) {
+      this.isLoading = true
+      const id = productId || this.$route.params.productId
+      const api = `/api/${process.env.VUE_APP_APIPATH}/product/${id}`
+      this.$http.get(api)
+        .then(response => {
+          if (!response.data.success) {
+            this.isLoading = false
+            this.$httpMessageState(response, '取得產品資料')
+            return
+          }
+          this.product = response.data.product
+          this.getAllProducts()
           this.isLoading = false
         })
         .catch(error => {

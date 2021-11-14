@@ -1,5 +1,5 @@
 .hero {
-  height: calc(100vh - 300px);
+  height: calc(100vh - 200px);
   background: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1629971110523.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=I5KyVV%2BWOWi2xN%2FMdf%2FL%2FZHkUeyzZNkD3mQI3qN1lhwQpn6mcOr8p%2Fbr8%2BpM03NHymRJz9cPed%2BhW5WNpdsLwKeSJeB3Dg6gn1Mdz%2FTji4JRupuozuYvJ73dNbuYy3JouWTRoXiwPSRWDKiJfKgHnPoRfAaJ1%2FjfxZ6OP%2Fog4noBfp3bXOvULFGb1usgAqgPFqaqPdR6g5LmH7mRtMio8yFCzuRPYXEkx%2BcIHovtRTBH9hNapPVjiA%2BtU%2BIaxnq7pMcjzmM5FukHUqfxdclZBBEsWN2SVfmmZgJGBzeOVR872vvYdlt7xyPb4C3CcIo92Smd2G7a3khCbv6EgitIow%3D%3D') no-repeat center/cover;
   text-align: center;
   @include media-breakpoint-up(md) {
@@ -163,6 +163,7 @@
     background-color: $primary;
   }
   .swiper-container {
+    cursor: grab;
     height: 400px;
     padding: 15px;
     @include media-breakpoint-up(md) {

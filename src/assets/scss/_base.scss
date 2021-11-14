@@ -11,3 +11,6 @@ ul {
 .btn:focus {
   box-shadow: none;
 }
+.btn:disabled{
+  cursor: not-allowed;
+}

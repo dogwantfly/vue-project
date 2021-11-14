@@ -2,7 +2,7 @@
   <div class="banner">
     <div class="container h-100 d-flex align-items-center justify-content-center">
       <h1>
-        關於我們 ——
+        關於我們
       </h1>
     </div>
   </div>
@@ -41,18 +41,18 @@
         </ul>
       </div>
     </section>
-    <section class="about-contact border p-5 text-center mb-5">
-      <h2 class="fs-4 mb-4">透過以下方式或社群聯絡我們</h2>
+    <section class="about-contact border p-3 p-md-5 text-center mb-5">
+      <h2 class="fs-5 mb-4">透過以下方式或社群聯絡我們</h2>
       <ul class="fs-5">
         <li class="mb-3">
           <a href="tel:+0912345678">
-            <i class="bi bi-telephone-fill me-3"></i>
+            <i class="bi bi-telephone-fill me-2 me-md-3"></i>
             0912345678
           </a>
         </li>
         <li>
           <a href="mailto:chrod@example.com">
-            <i class="bi bi-envelope-open-fill me-3"></i>
+            <i class="bi bi-envelope-open-fill me-2 me-md-3"></i>
             chrod@example.com
           </a>
         </li>

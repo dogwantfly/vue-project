@@ -157,7 +157,7 @@
         class="mySwiper2 text-center"
         :scrollbar="{ draggable: true }"
         :breakpoints="{
-          '375': {
+          '320': {
             direction: 'vertical',
             slidesPerView: 1.5,
           },
@@ -489,7 +489,7 @@ export default ({
   },
   methods: {
     countDown () {
-      const expires = 1638230400
+      const expires = 1640908800
       const currentTime = Math.floor(Date.now() / 1000)
       this.time = expires - currentTime
       this.daysLeft = parseInt(this.time / 60 / 60 / 24)
@@ -505,7 +505,7 @@ export default ({
       this.isDiscounting = true
       this.discountResult = ''
       setTimeout(() => {
-        const discounts = ['firstPrize', 'secondPrize', 'thirdPrize', 'lastPrize']
+        const discounts = ['firstPrize50', 'secondPrize60', 'thirdPrize70', 'lastPrize80']
         this.discountResult = discounts[getRandomInt(discounts.length)]
         this.isDiscounting = false
       }, 2000)
