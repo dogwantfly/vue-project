@@ -209,6 +209,11 @@
     img {
       object-fit: cover;
     }
+    .img-fluid {
+      @include media-breakpoint-up(md) {
+        height: 100%;
+      }
+    }
     @include media-breakpoint-up(lg) {
       position: absolute;
       height: 400px;
