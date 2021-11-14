@@ -1,5 +1,5 @@
 <template>
-  <div class="hero">
+  <div class="hero d-flex align-items-center justify-content-center p-5">
     <div class="container h-100">
       <div class="row h-100">
         <div class="col-lg-5 d-flex flex-column align-items-lg-start justify-content-center">
