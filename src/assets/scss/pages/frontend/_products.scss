@@ -75,6 +75,9 @@
   }
 }
 .product {
+  .swiper-slide {
+    height: auto;
+  }
   .mySwiper {
     background-color: #f6f6f6;
     img {
@@ -86,8 +89,10 @@
   .mySwiper2 {
     flex-grow: 1;
     height: 600px;
-    margin-right: 20px;
     background-color: #f6f6f6;
+    @include media-breakpoint-up(md) {
+      margin-right: 20px;
+    }
     img {
       object-fit: cover;
       height: 100%;

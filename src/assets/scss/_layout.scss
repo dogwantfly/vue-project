@@ -36,6 +36,7 @@
     overflow-y: scroll;
     z-index: 100;
     top: 60px;
+    padding: 1rem;
     @include media-breakpoint-up(md) {
       left: auto;
     }
@@ -101,4 +102,7 @@
       color: transparent;
     }
   }
+}
+.scroll-top-btn {
+  z-index: 1060;
 }

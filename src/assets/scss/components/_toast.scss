@@ -1,11 +1,13 @@
 .toast-container {
   top: 80px;
   position: fixed;
-  left: 0;
-  right: 0;
-  @include media-breakpoint-up(md) {
-    left: auto;
-    right: 20%;
-  }
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1061;
+}
+.toast {
+  width: 100%;
+  @include media-breakpoint-up(sm) {
+    width: auto;
+  }
 }

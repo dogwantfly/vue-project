@@ -9,7 +9,7 @@
   </div>
   <div class="container pb-5">
     <div class="row pt-5">
-      <div class="col-lg-3">
+      <div class="col-lg-3 mb-3">
         <ul class="list-group sticky-top sticky-position">
           <li>
             <a href="#" class="list-group-item list-group-item-action" @click.prevent="selectedCategory = ''" :class="{ active : selectedCategory === '' }">全部</a>

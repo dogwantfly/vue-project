@@ -37,7 +37,7 @@
                   </div>
                 </router-link>
               </li>
-              <li v-if="!products.length">
+              <li v-if="!products.length" class="text-center p-3">
                 <p>目前無收藏商品</p>
                 <router-link to="/products" class="btn btn-primary">前往瀏覽商品</router-link>
               </li>

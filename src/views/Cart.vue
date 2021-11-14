@@ -101,7 +101,7 @@
         </div>
       </div>
       <template v-if="carts.carts">
-        <div v-if="carts.carts.length" class="d-block d-md-flex justify-content-between align-items-center">
+        <div v-if="carts.carts.length" class="d-block d-md-flex justify-content-between align-items-center text-end">
           <div class="input-group me-5 input-group-sm mb-3 mb-md-0 coupon">
             <input type="text" class="form-control" v-model="coupon_code" placeholder="請輸入優惠碼">
             <div class="input-group-append">
@@ -113,7 +113,7 @@
               </button>
             </div>
           </div>
-          <router-link to="/cartinfo" class="btn btn-outline-secondary flex-shrink-0">
+          <router-link to="/cartinfo" class="btn btn-primary flex-shrink-0">
             前往結帳
             <i class="bi bi-caret-right-fill"></i>
           </router-link>

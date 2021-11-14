@@ -4,7 +4,7 @@
   <Navbar/>
   <router-view/>
   <Footer/>
-  <div class="pe-3 pb-3 position-fixed end-0 bottom-0" v-if="isShowed">
+  <div class="pe-3 pb-3 position-fixed end-0 bottom-0 scroll-top-btn" v-if="isShowed">
     <button type="button" class="btn btn-secondary rounded-circle" @click="scrollToTop">
       <i class="bi bi-arrow-bar-up fs-4"></i>
     </button>

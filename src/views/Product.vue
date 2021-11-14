@@ -1,8 +1,24 @@
 <template>
   <Loading :active="isLoading" :z-index="1080" :loader="'dots'" :color="'#384D48'"/>
   <div class="product container py-5">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <router-link to="/">首頁</router-link>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          <router-link to="/products">樂器</router-link>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          <a href="#" @click.prevent="updateCategory(product.category)">{{ product.category }}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          {{ product.title }}
+        </li>
+      </ol>
+    </nav>
     <div class="row pt-5">
-      <div class="col-lg-7 d-flex mb-5">
+      <div class="col-lg-7 d-md-flex mb-5">
         <Swiper
           :style="{'--swiper-navigation-color': '#fff','--swiper-pagination-color': '#fff'}"
           :loop="false"
@@ -24,8 +40,13 @@
           :spaceBetween="10"
           :watchSlidesVisibility="true"
           :watchSlidesProgress="true"
+          :direction="'horizontal'"
           class="mySwiper"
-          :direction="'vertical'"
+          :breakpoints="{
+            '768': {
+              direction: 'vertical',
+            }
+          }"
         >
           <SwiperSlide>
             <img :src="product.imageUrl" :alt="product.title" class="img-fluid">
@@ -310,6 +331,14 @@ export default {
     },
     setThumbsSwiper (swiper) {
       this.thumbsSwiper = swiper
+    },
+    updateCategory (category) {
+      this.$router.push({
+        name: 'Products',
+        params: {
+          selectedCategory: category
+        }
+      })
     }
   },
   mounted () {
