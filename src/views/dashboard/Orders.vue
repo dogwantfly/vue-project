@@ -18,14 +18,32 @@
       <label for="sort" class="me-2">排序</label>
       <select class="form-select" aria-label="select" v-model="sortBy" id="sort">
         <option selected value="">日期由新到舊（預設）</option>
-        <option value="totalFromHighest">金額由高至低</option>
-        <option value="totalFromLowest">金額由低至高</option>
+        <option value="createdFromOldest" :disabled="orders.length ? false : true">日期由舊到新</option>
+        <option value="totalFromHighest" :disabled="orders.length ? false : true">金額由高至低</option>
+        <option value="totalFromLowest"  :disabled="orders.length ? false : true">金額由低至高</option>
       </select>
     </div>
   </div>
   <div class="alert alert-danger border-0" v-if="orderSearchBar && searchResults">
     {{ searchResults }}
   </div>
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item">
+      <a class="nav-link rounded-pill" :class="{'active': filterBy === ''}" href="#" @click.prevent="getOrders">
+        所有訂單
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link rounded-pill" :class="{'active': filterBy === 'paid'}" href="#" @click.prevent="filterData('paid')">
+        已付款
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link rounded-pill" href="#" :class="{'active': filterBy === 'unpaid'}" @click.prevent="filterData('unpaid')">
+        未付款
+      </a>
+    </li>
+  </ul>
   <div class="table-responsive">
     <table class="table table-borderless table-hover table-striped">
       <thead>
@@ -72,6 +90,10 @@
       </tbody>
     </table>
   </div>
+  <p class="text-center text-muted" v-if="filterBy !== '' && !orders.length">
+    <span v-if="filterBy === 'unpaid'">無未付款訂單</span>
+    <span v-else-if="filterBy === 'paid'">無已付款訂單</span>
+  </p>
   <Pagination :pagination="pagination" @change-page="getOrders"/>
   <OrderModal :temp-order="tempOrder" ref="orderModal" @update="getOrders"/>
   <DelOrderModal :temp-order="tempOrder" ref="delOrderModal" @delete="getOrders"/>
@@ -92,19 +114,27 @@ export default ({
     return {
       orders: [],
       tempOrder: {},
-      pagination: {},
+      pagination: '',
       loadingStatus: {},
       current_page: 1,
       isLoading: false,
       orderSearchBar: '',
       searchResults: '',
       allOrders: [],
-      sortBy: ''
+      sortBy: '',
+      filterBy: '',
+      filtedOrders: '',
+      sortedOrders: '',
+      matchOrders: ''
     }
   },
   inject: ['$httpMessageState'],
   methods: {
     getOrders (page = this.current_page) {
+      if (this.pagination !== '') {
+        this.isLoading = false
+        return
+      }
       this.isLoading = true
       const api = `/api/${process.env.VUE_APP_APIPATH}/admin/orders?page=${page}`
       this.$http.get(api)
@@ -116,8 +146,9 @@ export default ({
           this.orders = response.data.orders
           this.pagination = response.data.pagination
           this.current_page = response.data.pagination.current_page
-          this.orderSearchBar = ''
-          this.sortBy = ''
+          this.filterBy = ''
+          this.filtedOrders = ''
+          this.matchOrders = ''
           this.allOrders = []
           this.orders.forEach(order => {
             this.allOrders.push(order)
@@ -134,6 +165,12 @@ export default ({
                   orders.forEach(order => {
                     this.allOrders.push(order)
                   })
+                  if (this.orderSearchBar !== '') {
+                    this.searchOrders()
+                  }
+                  if (this.sortedOrders !== '') {
+                    this.sortOrders(this.sortBy)
+                  }
                 })
             }
           }
@@ -157,33 +194,79 @@ export default ({
       }
     },
     searchOrders () {
-      const matchOrders = this.allOrders.filter(order => order.id.toLowerCase().includes(this.orderSearchBar.toLowerCase()))
-      if (matchOrders.length) {
+      this.matchOrders = this.allOrders.filter(order => order.id.toLowerCase().includes(this.orderSearchBar.toLowerCase()))
+      if (this.matchOrders.length) {
         this.searchResults = ''
-        this.orders = matchOrders
+        this.orders = this.matchOrders
+        if (this.sortedOrders) {
+          this.sortOrders(this.sortBy)
+        } else {
+          this.sortBy = ''
+          this.sortedOrders = ''
+        }
+        this.filterBy = ''
+        this.filtedOrders = ''
         this.pagination = ''
       } else {
         this.searchResults = '無符合搜尋結果，請再試試其他關鍵字～'
       }
     },
     sortOrders (sortBy) {
+      let orders = []
+      this.pagination = ''
+      if (this.filtedOrders) {
+        orders = this.filtedOrders
+      } else if (this.matchOrders) {
+        orders = this.matchOrders
+      } else {
+        orders = this.allOrders
+      }
       switch (sortBy) {
         case 'totalFromLowest':
-          this.allOrders.sort(function (a, b) {
+          orders.sort(function (a, b) {
             return a.total - b.total
           })
-          this.orders = this.allOrders
-          this.pagination = ''
           break
         case 'totalFromHighest':
-          this.allOrders.sort(function (a, b) {
+          orders.sort(function (a, b) {
             return b.total - a.total
           })
-          this.orders = this.allOrders
-          this.pagination = ''
+          break
+        case 'createdFromOldest':
+          orders.sort(function (a, b) {
+            return a.create_at - b.create_at
+          })
           break
         default:
           break
+      }
+      this.sortedOrders = orders
+      this.orders = this.sortedOrders
+    },
+    filterData (filterBy) {
+      if (this.filterBy === filterBy) return
+      this.pagination = ''
+      this.filterBy = filterBy
+      let orders = []
+      if (this.matchOrders) {
+        orders = this.matchOrders
+      } else {
+        orders = this.allOrders
+      }
+      switch (filterBy) {
+        case 'paid':
+          this.filtedOrders = orders.filter(order => order.is_paid)
+          break
+        case 'unpaid':
+          this.filtedOrders = orders.filter(order => !order.is_paid)
+          break
+        default:
+          break
+      }
+      if (this.sortedOrders) {
+        this.sortOrders(this.sortBy)
+      } else {
+        this.orders = this.filtedOrders
       }
     }
   },
@@ -191,9 +274,10 @@ export default ({
     sortBy (newSort, oldSort) {
       if (newSort === oldSort) {
         if (newSort === 'totalFromLowest' || newSort === 'totalFromHighest') {
-          this.sortOrders()
+          this.sortOrders(newSort)
         }
       } else if (newSort === '') {
+        this.sortedOrders = ''
         this.getOrders()
       } else {
         this.sortOrders(newSort)

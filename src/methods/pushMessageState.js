@@ -21,7 +21,7 @@ export default function (response, title = '更新') {
     emitter.emit('push-message', {
       style: 'danger',
       title: '連線錯誤',
-      content: response.message || response
+      content: `${response.message}，請嘗試重新整理` || `${response}，請嘗試重新整理`
     })
   }
 }

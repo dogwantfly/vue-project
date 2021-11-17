@@ -65,9 +65,14 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    redirect: '/dashboard/products',
+    redirect: '/dashboard/charts',
     component: () => import('../views/dashboard/Dashboard.vue'),
     children: [
+      {
+        path: 'charts',
+        name: 'DashboardCharts',
+        component: () => import('../views/dashboard/Charts.vue')
+      },
       {
         path: 'products',
         name: 'DashboardProducts',

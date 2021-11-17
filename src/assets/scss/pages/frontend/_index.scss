@@ -252,3 +252,18 @@
     }
   }
 }
+
+.sidebar-link{
+  text-align: center;
+  width: 30px;
+  display: block;
+  padding: 0.5rem 0;
+  &.active {
+    background-color: $primary;
+    color: $light;
+  }
+  &:not(active) {
+    color: rgba($gray-200, 0.5);
+    background-color: transparent;
+  }
+}

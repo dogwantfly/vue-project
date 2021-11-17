@@ -25,6 +25,23 @@
   <div class="alert alert-danger border-0" v-if="articleSearchBar && searchResults">
     {{ searchResults }}
   </div>
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item">
+      <a class="nav-link rounded-pill" :class="{'active': filterBy === ''}" href="#" @click.prevent="getArticles">
+        所有文章
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link rounded-pill" :class="{'active': filterBy === 'public'}" href="#" @click.prevent="filterData('public')">
+        已發佈
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link rounded-pill" href="#" :class="{'active': filterBy === 'private'}" @click.prevent="filterData('private')">
+        未發佈
+      </a>
+    </li>
+  </ul>
   <table class="table table-borderless table-hover">
     <thead class="bg-light rounded-3">
       <tr>
@@ -50,6 +67,10 @@
       </tr>
     </tbody>
   </table>
+  <p class="text-center text-muted" v-if="filterBy !== '' && !articles.length">
+    <span v-if="filterBy === 'private'">無未發佈文章</span>
+    <span v-else-if="filterBy === 'public'">無已發佈文章</span>
+  </p>
   <Pagination :pagination="pagination" @change-page="getArticles"/>
   <ArticleModal ref="articleModal" :is-new="isNew" :article="tempArticle" @update="getArticles"/>
   <DelItemModal :temp-article="tempArticle" ref="delItemModal" @delete="getArticles"/>
@@ -78,7 +99,11 @@ export default ({
       isLoading: false,
       articleSearchBar: '',
       searchResults: '',
-      sortBy: ''
+      sortBy: '',
+      filterBy: '',
+      originArticles: [],
+      filtedArticles: '',
+      sortedArticles: ''
     }
   },
   methods: {
@@ -93,10 +118,18 @@ export default ({
             return
           }
           this.articles = response.data.articles
+          this.originArticles = response.data.articles
           this.pagination = response.data.pagination
           this.current_page = response.data.pagination.current_page
-          this.articleSearchBar = ''
-          this.sortBy = ''
+          this.matchArticles = ''
+          this.filterBy = ''
+          this.filtedArticles = ''
+          if (this.articleSearchBar !== '') {
+            this.searchArticles()
+          }
+          if (this.sortedArticles !== '') {
+            this.sortArticles(this.sortBy)
+          }
           this.isLoading = false
         })
         .catch(error => {
@@ -160,24 +193,70 @@ export default ({
       if (matchArticles.length) {
         this.searchResults = ''
         this.articles = matchArticles
+        if (this.sortedArticles) {
+          this.sortArticles(this.sortBy)
+        } else {
+          this.sortBy = ''
+          this.sortedArticles = ''
+        }
+        this.filterBy = ''
+        this.filtedArticles = ''
+        this.pagination = ''
       } else {
         this.searchResults = '無符合搜尋結果，請再試試其他關鍵字～'
       }
     },
     sortArticles (sortBy) {
+      let articles = []
+      this.pagination = ''
+      if (this.filtedArticles) {
+        articles = this.filtedArticles
+      } else if (this.matchArticles) {
+        articles = this.matchArticles
+      } else {
+        articles = this.originArticles
+      }
       switch (sortBy) {
         case 'postDateFromNewest':
-          this.articles.sort(function (a, b) {
+          articles.sort(function (a, b) {
             return b.create_at - a.create_at
           })
           break
         case 'postDateFromOldest':
-          this.articles.sort(function (a, b) {
+          articles.sort(function (a, b) {
             return a.create_at - b.create_at
           })
           break
         default:
           break
+      }
+      this.sortedArticles = articles
+      this.articles = this.sortedArticles
+    },
+    filterData (filterBy) {
+      if (this.filterBy === filterBy) return
+      this.pagination = ''
+      this.filterBy = filterBy
+      let articles = []
+      if (this.matchArticles) {
+        articles = this.matchArticles
+      } else {
+        articles = this.originArticles
+      }
+      switch (filterBy) {
+        case 'public':
+          this.filtedArticles = articles.filter(article => article.isPublic)
+          break
+        case 'private':
+          this.filtedArticles = articles.filter(article => !article.isPublic)
+          break
+        default:
+          break
+      }
+      if (this.sortedArticles) {
+        this.sortArticles(this.sortBy)
+      } else {
+        this.articles = this.filtedArticles
       }
     }
   },
@@ -190,6 +269,7 @@ export default ({
           this.getArticles()
         }
       } else if (newSort === '') {
+        this.sortedArticles = ''
         this.getArticles()
       } else {
         this.sortArticles(newSort)

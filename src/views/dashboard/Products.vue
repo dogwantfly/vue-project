@@ -15,18 +15,35 @@
       </div>
       <input type="search" v-model.trim="productSearchBar" placeholder="搜尋商品名稱" class="form-control border-0">
     </div>
-    <div class="input-group w-auto align-items-center">
+    <div class="input-group w-auto align-items-center" v-if="products">
       <label for="sort" class="me-2">排序</label>
       <select class="form-select" aria-label="select" v-model="sortBy" id="sort">
         <option selected value="">日期由新到舊（預設）</option>
-        <option value="priceFromHighest">售價由高至低</option>
-        <option value="priceFromLowest">售價由低至高</option>
+        <option value="priceFromHighest" :disabled="products.length ? false : true">售價由高至低</option>
+        <option value="priceFromLowest" :disabled="products.length ? false : true">售價由低至高</option>
       </select>
     </div>
   </div>
   <div class="alert alert-danger border-0" v-if="productSearchBar && searchResults">
     {{ searchResults }}
   </div>
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item">
+      <a class="nav-link rounded-pill" :class="{'active': filterBy === ''}" href="#" @click.prevent="getProducts">
+        所有產品
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link rounded-pill" :class="{'active': filterBy === 'active'}" href="#" @click.prevent="filterData('active')">
+        已啟用
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link rounded-pill" href="#" :class="{'active': filterBy === 'inactive'}" @click.prevent="filterData('inactive')">
+        未啟用
+      </a>
+    </li>
+  </ul>
   <table class="table table-borderless table-hover">
     <thead class="bg-light rounded-3">
       <tr>
@@ -54,6 +71,10 @@
       </tr>
     </tbody>
   </table>
+  <p class="text-center text-muted" v-if="filterBy !== '' && !products.length">
+    <span v-if="filterBy === 'inactive'">無未啟用產品</span>
+    <span v-else-if="filterBy === 'active'">無已啟用產品</span>
+  </p>
   <Pagination :pagination="pagination" @change-page="getProducts"/>
   <ProductModal :temp-product="tempProduct" :is-new="isNew" ref="productModal" @update="getProducts"/>
   <DelItemModal :temp-product="tempProduct" :products="products" ref="delItemModal" @delete="getProducts"/>
@@ -72,15 +93,20 @@ export default ({
   },
   data () {
     return {
-      products: [],
+      products: '',
       tempProduct: {},
-      pagination: {},
+      pagination: '',
       isNew: false,
       isLoading: false,
       current_page: 1,
       sortBy: '',
       productSearchBar: '',
-      searchResults: ''
+      searchResults: '',
+      filterBy: '',
+      filtedProducts: '',
+      sortedProducts: '',
+      allProducts: '',
+      matchProducts: ''
     }
   },
   inject: ['$httpMessageState'],
@@ -132,10 +158,12 @@ export default ({
             return
           }
           this.products = response.data.products
-          this.sortBy = ''
-          this.productSearchBar = ''
+          this.filterBy = ''
+          this.filtedProducts = ''
+          this.matchProducts = ''
           this.pagination = response.data.pagination
           this.current_page = response.data.pagination.current_page
+          this.getAllProducts()
           this.isLoading = false
         })
         .catch(error => {
@@ -153,12 +181,13 @@ export default ({
             this.isLoading = false
             return
           }
-          this.products = Object.values(response.data.products)
-          this.sortProducts(this.sortBy)
+          this.allProducts = Object.values(response.data.products)
           if (this.productSearchBar !== '') {
             this.searchProducts()
           }
-          this.pagination = ''
+          if (this.sortedProducts !== '') {
+            this.sortProducts(this.sortBy)
+          }
           this.isLoading = false
         })
         .catch(error => {
@@ -167,42 +196,89 @@ export default ({
         })
     },
     sortProducts (sortBy) {
+      let products = []
+      this.pagination = ''
+      if (this.filtedProducts) {
+        products = this.filtedProducts
+      } else if (this.matchProducts) {
+        products = this.matchProducts
+      } else {
+        products = this.allProducts
+      }
       switch (sortBy) {
         case 'priceFromLowest':
-          this.products.sort(function (a, b) {
+          products.sort(function (a, b) {
             return a.price - b.price
           })
           break
         case 'priceFromHighest':
-          this.getAllProducts()
-          this.products.sort(function (a, b) {
+          products.sort(function (a, b) {
             return b.price - a.price
           })
           break
         default:
           break
       }
+      this.sortedProducts = products
+      this.products = this.sortedProducts
     },
     searchProducts () {
-      const matchProducts = this.products.filter((product) => product.title.toLowerCase().includes(this.productSearchBar.toLowerCase()))
-      if (matchProducts.length) {
+      this.matchProducts = this.allProducts.filter(product => product.title.toLowerCase().includes(this.productSearchBar.toLowerCase()))
+      if (this.matchProducts.length) {
         this.searchResults = ''
-        this.products = matchProducts
+        this.products = this.matchProducts
+        if (this.sortedProducts !== '') {
+          this.sortProducts(this.sortBy)
+        } else {
+          this.sortBy = ''
+          this.sortedProducts = ''
+        }
+        this.filterBy = ''
+        this.filtedProducts = ''
+        this.pagination = ''
       } else {
         this.searchResults = '無符合搜尋結果，請再試試其他關鍵字～'
+      }
+    },
+    filterData (filterBy) {
+      if (this.filterBy && this.filterBy === filterBy) return
+      this.pagination = ''
+      this.filterBy = filterBy
+      let products = []
+      if (this.matchProducts) {
+        products = this.matchProducts
+      } else {
+        products = this.allProducts
+      }
+      switch (filterBy) {
+        case 'active':
+          this.filtedProducts = products.filter(product => product.is_enabled)
+          break
+        case 'inactive':
+          this.filtedProducts = products.filter(product => !product.is_enabled)
+          break
+        default:
+          break
+      }
+      if (this.sortedProducts) {
+        this.sortProducts(this.sortBy)
+      } else {
+        this.products = this.filtedProducts
       }
     }
   },
   watch: {
     sortBy (newSort, oldSort) {
+      this.pagination = ''
       if (newSort === oldSort) {
         if (newSort === 'priceFromLowest' || newSort === 'priceFromHighest') {
-          this.getAllProducts()
+          this.sortProducts(this.sortBy)
         }
       } else if (newSort === '') {
+        this.sortedProducts = ''
         this.getProducts()
       } else {
-        this.getAllProducts()
+        this.sortProducts(this.sortBy)
       }
     },
     productSearchBar (newValue) {
@@ -214,14 +290,6 @@ export default ({
     }
   },
   mounted () {
-    const token = document.cookie.split('; ')
-      .find(row => row.startsWith('token='))
-      .split('=')[1]
-
-    if (token === '') {
-      window.location = 'index.html'
-    }
-    this.$http.defaults.headers.common.Authorization = token
     this.$http.defaults.baseURL = process.env.VUE_APP_API
     this.getProducts()
   }

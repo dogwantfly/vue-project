@@ -1,5 +1,5 @@
 <template>
-  <Loading :active="isLoading"/>
+  <Loading :active="isLoading" :z-index="100" :loader="'dots'" :color="'#384D48'"/>
   <div class="banner">
     <div class="container h-100 d-flex align-items-center justify-content-center">
       <h1>

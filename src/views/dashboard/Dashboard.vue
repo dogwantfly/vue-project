@@ -1,13 +1,18 @@
 <template>
   <Loading :active="isLoading" :z-index="100" :loader="'dots'" :color="'#384D48'"/>
   <ToastMessages/>
-  <div class="dashboard d-flex">
+  <div class="dashboard d-flex" :class="isExpand ? 'expand' : ''">
     <Navbar/>
-    <div class="w-100 main">
+    <main class="w-100 main">
+      <div class="bg-white mb-3">
+        <button type="button" class="btn d-inline-block py-2 px-4 sticky-top rounded-end bg-light shadow-sm" @click="isExpand = !isExpand">
+          <i class="bi bi-arrow-bar-left"></i>
+        </button>
+      </div>
       <div class="container">
         <router-view v-if="isLogin"/>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 
@@ -21,7 +26,8 @@ export default ({
   data () {
     return {
       isLogin: false,
-      isLoading: false
+      isLoading: false,
+      isExpand: true
     }
   },
   provide () {
@@ -59,6 +65,13 @@ export default ({
     }
   },
   created () {
+    const token = document.cookie.split('; ')
+      .find(row => row.startsWith('token='))
+      .split('=')[1]
+    if (token === '') {
+      window.location = 'index.html'
+    }
+    this.$http.defaults.headers.common.Authorization = token
     this.$http.defaults.baseURL = process.env.VUE_APP_API
     this.checkLogin()
   }

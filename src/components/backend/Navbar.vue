@@ -1,8 +1,16 @@
 <template>
-  <nav class="navbar flex-column align-items-stretch bg-light">
+  <nav class="navbar flex-column align-items-stretch bg-light flex-nowrap">
     <div>
-      <router-link to="/" class="navbar-brand w-100 mb-5">後台首頁</router-link>
-      <ul class="navbar-nav">
+      <router-link to="/" class="navbar-brand w-100 mb-5">前台首頁</router-link>
+      <ul class="navbar-nav overflow-auto">
+        <li class="nav-item">
+          <router-link to="/dashboard/charts" class="nav-link d-flex align-items-center py-0 mb-3">
+            <div class="ps-4 icon">
+              <i class="bi bi-clipboard-data rounded-circle p-3 d-block"></i>
+            </div>
+            後台首頁
+          </router-link>
+        </li>
         <li class="nav-item">
           <router-link to="/dashboard/products" class="nav-link d-flex align-items-center py-0 mb-3">
             <div class="ps-4 icon">
@@ -37,8 +45,8 @@
         </li>
       </ul>
     </div>
-    <button type="button" @click="logOut" class="btn btn-transparent text-start ps-5 py-3">
-      <i class="bi bi-box-arrow-left me-3"></i>
+    <button type="button" @click="logOut" class="btn btn-transparent text-start ps-4 py-3">
+      <i class="bi bi-box-arrow-left me-2 ps-3"></i>
       登出
     </button>
   </nav>

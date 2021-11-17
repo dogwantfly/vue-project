@@ -17,16 +17,33 @@
       <label for="sort" class="me-2">排序</label>
       <select class="form-select" aria-label="select" v-model="sortBy" id="sort">
         <option selected value="">新增日期由新到舊（預設）</option>
-        <option value="percentFromHighest">折扣率由高至低</option>
-        <option value="percentFromLowest">折扣率由低至高</option>
-        <option value="expireFromNewest">到期日由新至舊</option>
-        <option value="expireFromOldest">到期日由舊至新</option>
+        <option value="percentFromHighest" :disabled="coupons.length ? false : true">折扣率由高至低</option>
+        <option value="percentFromLowest" :disabled="coupons.length ? false : true">折扣率由低至高</option>
+        <option value="expireFromNewest" :disabled="coupons.length ? false : true">到期日由新至舊</option>
+        <option value="expireFromOldest" :disabled="coupons.length ? false : true">到期日由舊至新</option>
       </select>
     </div>
   </div>
   <div class="alert alert-danger border-0" v-if="couponSearchBar && searchResults">
     {{ searchResults }}
   </div>
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item">
+      <a class="nav-link rounded-pill" :class="{'active': filterBy === ''}" href="#" @click.prevent="getCoupons">
+        所有優惠券
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link rounded-pill" :class="{'active': filterBy === 'active'}" href="#" @click.prevent="filterData('active')">
+        已啟用
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link rounded-pill" href="#" :class="{'active': filterBy === 'inactive'}" @click.prevent="filterData('inactive')">
+        未啟用
+      </a>
+    </li>
+  </ul>
   <table class="table coupon table-borderless table-hover">
     <thead class="bg-light rounded-3">
       <tr>
@@ -56,6 +73,10 @@
       </tr>
     </tbody>
   </table>
+  <p class="text-center text-muted" v-if="filterBy !== '' && !coupons.length">
+    <span v-if="filterBy === 'inactive'">無未啟用優惠券</span>
+    <span v-else-if="filterBy === 'active'">無已啟用優惠券</span>
+  </p>
   <Pagination :pagination="pagination" @change-page="getCoupons"/>
   <CouponModal :coupon="tempCoupon" ref="couponModal" @update="getCoupons" :is-new="isNew"/>
   <DelItemModal :temp-coupon="tempCoupon" ref="delItemModal" @delete="getCoupons"/>
@@ -76,19 +97,25 @@ export default ({
     return {
       coupons: [],
       tempCoupon: '',
-      pagination: {},
+      pagination: '',
       loadingStatus: {},
       current_page: 1,
       isNew: false,
       isLoading: false,
       couponSearchBar: '',
       searchResults: '',
-      sortBy: ''
+      sortBy: '',
+      filterBy: '',
+      originCoupons: [],
+      filtedCoupons: '',
+      sortedCoupons: '',
+      matchCoupons: ''
     }
   },
   inject: ['$httpMessageState'],
   methods: {
     getCoupons (page = this.current_page) {
+      if (this.pagination !== '') return
       this.isLoading = true
       const api = `/api/${process.env.VUE_APP_APIPATH}/admin/coupons?page=${page}`
       this.$http.get(api)
@@ -99,10 +126,18 @@ export default ({
             return
           }
           this.coupons = response.data.coupons
+          this.originCoupons = response.data.coupons
           this.pagination = response.data.pagination
           this.current_page = response.data.pagination.current_page
-          this.couponSearchBar = ''
-          this.sortBy = ''
+          this.filterBy = ''
+          this.filtedCoupons = ''
+          this.matchCoupons = ''
+          if (this.couponSearchBar !== '') {
+            this.searchCoupons()
+          }
+          if (this.sortedCoupons !== '') {
+            this.sortCoupons(this.sortBy)
+          }
           this.isLoading = false
         })
         .catch(error => {
@@ -141,38 +176,84 @@ export default ({
       }
     },
     searchCoupons () {
-      const matchCoupons = this.coupons.filter(coupon => coupon.title.toLowerCase().includes(this.couponSearchBar.toLowerCase()))
-      if (matchCoupons.length) {
+      this.matchCoupons = this.coupons.filter(coupon => coupon.title.toLowerCase().includes(this.couponSearchBar.toLowerCase()))
+      if (this.matchCoupons.length) {
         this.searchResults = ''
-        this.coupons = matchCoupons
+        this.coupons = this.matchCoupons
+        if (this.sortedCoupons) {
+          this.sortCoupons(this.sortBy)
+        } else {
+          this.sortBy = ''
+          this.sortedCoupons = ''
+        }
+        this.filterBy = ''
+        this.filtedCoupons = ''
+        this.pagination = ''
       } else {
         this.searchResults = '無符合搜尋結果，請再試試其他關鍵字～'
       }
     },
     sortCoupons (sortBy) {
+      let coupons = []
+      this.pagination = ''
+      if (this.filtedCoupons) {
+        coupons = this.filtedCoupons
+      } else if (this.matchCoupons) {
+        coupons = this.matchCoupons
+      } else {
+        coupons = this.originCoupons
+      }
       switch (sortBy) {
         case 'percentFromHighest':
-          this.coupons.sort(function (a, b) {
+          coupons.sort(function (a, b) {
             return b.percent - a.percent
           })
           break
         case 'percentFromLowest':
-          this.coupons.sort(function (a, b) {
+          coupons.sort(function (a, b) {
             return a.percent - b.percent
           })
           break
         case 'expireFromNewest':
-          this.coupons.sort(function (a, b) {
+          coupons.sort(function (a, b) {
             return b.due_date - a.due_date
           })
           break
         case 'expireFromOldest':
-          this.coupons.sort(function (a, b) {
+          coupons.sort(function (a, b) {
             return a.due_date - b.due_date
           })
           break
         default:
           break
+      }
+      this.sortedCoupons = coupons
+      this.coupons = this.sortedCoupons
+    },
+    filterData (filterBy) {
+      if (this.filterBy === filterBy) return
+      this.pagination = ''
+      this.filterBy = filterBy
+      let coupons = []
+      if (this.matchCoupons) {
+        coupons = this.matchCoupons
+      } else {
+        coupons = this.originCoupons
+      }
+      switch (filterBy) {
+        case 'inactive':
+          this.filtedCoupons = coupons.filter(coupon => !coupon.is_enabled)
+          break
+        case 'active':
+          this.filtedCoupons = coupons.filter(coupon => coupon.is_enabled)
+          break
+        default:
+          break
+      }
+      if (this.sortedCoupons) {
+        this.sortCoupons(this.sortBy)
+      } else {
+        this.coupons = this.filtedCoupons
       }
     }
   },
@@ -185,6 +266,7 @@ export default ({
           this.getCoupons()
         }
       } else if (newSort === '') {
+        this.sortedCoupons = ''
         this.getCoupons()
       } else {
         this.sortCoupons(newSort)
