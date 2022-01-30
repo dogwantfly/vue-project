@@ -13,7 +13,7 @@
         <li class="col-lg-12 card border-0 mb-3 mb-md-5" v-if="articles.length">
           <div class="row g-0">
             <div class="col-md-7">
-              <img :src="articles[0].image" :alt="articles[0].title" class="img-fluid h-100 object-fit-cover">
+              <img :src="articles[0].image" :alt="articles[0].title" class="img-fluid h-lg-100 object-fit-cover">
             </div>
             <div class="col-md-5 d-flex align-items-center">
               <div class="card-body">
