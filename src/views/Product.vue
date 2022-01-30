@@ -66,9 +66,9 @@
             <i class="bi" :class="myFavorite.includes(product.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
           </button>
         </div>
-        <div class="h5" v-if="!product.price">{{ product.origin_price }} 元</div>
-        <del class="h6 text-muted"> NT${{ product.origin_price }} </del>
-        <div class="h5 mb-3">NT${{ product.price }}</div>
+        <div class="h5" v-if="!product.price">{{ $filters.currency(product.origin_price) }} 元</div>
+        <del class="h6 text-muted"> NT${{ $filters.currency(product.origin_price) }} </del>
+        <div class="h5 mb-3">NT${{ $filters.currency(product.price) }}</div>
         <div class="input-group mb-5">
           <input type="number" class="form-control" v-model.number="qty" min="1">
           <button type="button" class="btn btn-primary" @click="addCart(product.id)">
@@ -93,8 +93,8 @@
           </li>
         </ul>
       </div>
-      <div class="product-detail col-12 bg-light py-5 text-center mb-5">
-        <ul class="nav nav-pills mb-3 justify-content-center mb-5" id="pills-tab" role="tablist">
+      <div class="product-detail col-12 bg-light text-center py-5 mb-5">
+        <ul class="nav nav-pills justify-content-center mb-5" id="pills-tab" role="tablist">
           <li class="nav-item" role="presentation">
             <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">商品內容</button>
           </li>
@@ -104,7 +104,7 @@
         </ul>
         <div class="tab-content" id="pills-tabContent">
           <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-            <p>
+            <p class="text-pre-line w-max-content mx-auto">
               {{ product.content }}
             </p>
           </div>
@@ -139,7 +139,7 @@
             </div>
             <div class="card-body">
               <div class="d-flex align-items-center justify-content-between">
-                <h4 class="card-title mb-0 fs-5">
+                <h4 class="card-title fs-5 mb-0">
                   <a href="#" @click.prevent="getProductInfo(item.id)" class="text-dark d-block stretched-link" >
                     {{ item.title }}
                   </a>
@@ -154,10 +154,10 @@
         <h3 class="mb-4">最近瀏覽商品</h3>
         <ul class="row">
           <li class="card col-lg-2 border-0" v-for="item in productsViewed" :key="item.id">
-            <img :src="item.imageUrl" :alt="item.title" class="product-img card-img-top">
+            <img :src="item.imageUrl" :alt="item.title" class="product-img object-fit-cover card-img-top">
             <div class="card-body">
               <div class="d-flex align-items-center justify-content-between">
-                <h4 class="card-title mb-0 h6">
+                <h4 class="card-title h6 mb-0">
                   <a href="#" @click.prevent="getProductInfo(item.id)" class="text-dark d-block stretched-link">
                     {{ item.title }}
                   </a>
@@ -180,10 +180,6 @@ import 'swiper/components/thumbs/thumbs.min.css'
 import SwiperCore, { Navigation, Thumbs } from 'swiper/core'
 
 SwiperCore.use([Navigation, Thumbs])
-
-function getRandomInt (max) {
-  return Math.floor(Math.random() * max)
-}
 
 export default {
   data () {
@@ -248,7 +244,7 @@ export default {
       const arrSet = new Set([])
       const maxSize = filterProducts.length < 4 ? filterProducts.length : 4
       for (let i = 0; arrSet.size < maxSize; i += 1) {
-        const num = getRandomInt(filterProducts.length)
+        const num = this.$filters.randomInt(filterProducts.length)
         arrSet.add(filterProducts[num])
       }
       this.randomProducts = []

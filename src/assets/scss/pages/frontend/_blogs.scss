@@ -1,8 +1,3 @@
-.ratio {
-  .card-img {
-    object-fit: cover;
-  }
-}
 .articles {
   .card {
     transition: all 0.3s;
@@ -29,4 +24,10 @@
       color: rgb(43, 43, 43);
     }
   }
+}
+.bg-title-gradient {
+  background-image: linear-gradient(to right, transparent, rgba(255,255,255,0.5), transparent);
+}
+.bg-blogs-banner {
+  background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1638978571145.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=YF0%2FRGxPQQJcrolo%2FiU5Tb0CdsPrF97neuQbLf12iT%2BalYaMbDSPr%2BeyD9jMQVZyvMwOzYdOYOOaDQY1T8fL8LAQ1UAxzYhMABSHZvwcegEJSwDZhrA96A1Ic6oVV1RoxP5PB%2FPhU3h0ujS2a%2B7GrtjTY2cFHRmFeTbl3mnKDoeBKycHpwsr5OAZ0HBrcSD%2FytmwwnDNlpoergqFDqiW9c7hJB8xKz4MbTqgtmXy0VOXoQ0J4PK7DQUzGr6VYr0cSXwCPeK0PFcU6t8gf4ljNe%2BqWm0Z7sIjiPuwTgL28HD4QyS8MUTS9jbzN%2BIaaSfhQxOXJ%2F3Fdm6SG2Byo8XHPg%3D%3D');
 }

@@ -55,7 +55,7 @@
                     </tr>
                     <tr v-if="tempOrder.is_paid">
                       <th scope="row">付款時間</th>
-                      <td> {{ new Date(tempOrder.paid_date * 1000).toLocaleString() }}</td>
+                      <td> {{ $filters.date(tempOrder.paid_date) }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -73,7 +73,7 @@
                 </table>
               </div>
               <h3 class="h5">付款狀態</h3>
-              <input type="checkbox" name="" id="is_paid" :checked="tempOrder.is_paid" class="me-2" v-model="tempOrder.is_paid">
+              <input type="checkbox" id="is_paid" :checked="tempOrder.is_paid" class="me-2" v-model="tempOrder.is_paid">
               <label for="is_paid" class="form-label" :class="tempOrder.is_paid ? 'text-success' : 'text-muted'">{{ tempOrder.is_paid ? '已付款' : '未付款' }}</label>
             </div>
           </div>

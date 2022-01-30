@@ -36,6 +36,11 @@ const routes = [
         component: () => import('../views/CheckOut.vue')
       },
       {
+        path: 'checkoutsuccess/:orderId',
+        name: 'CheckoutSuccess',
+        component: () => import('../views/CheckOutSuccess.vue')
+      },
+      {
         path: 'blogs',
         name: 'Blogs',
         component: () => import('../views/Blogs.vue')
@@ -106,7 +111,8 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-  linkActiveClass: 'active'
+  linkActiveClass: '',
+  linkExactActiveClass: 'active'
 })
 
 export default router

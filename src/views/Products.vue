@@ -1,59 +1,61 @@
 <template>
   <Loading :active="isLoading" :z-index="1080" :loader="'dots'" :color="'#384D48'"/>
-  <div class="banner">
-    <div class="container h-100 d-flex align-items-center justify-content-center">
-      <h1>
+  <div class="banner bg-cover bg-products-banner bg-attachment-fixed">
+    <div class="container h-100 d-flex align-items-center justify-content-center" >
+      <h1 class="text-light p-2 p-sm-3">
         找到想要的樂器或配件
       </h1>
     </div>
   </div>
-  <div class="container pb-5">
-    <div class="row pt-5">
-      <div class="col-lg-3 mb-3">
-        <ul class="list-group sticky-top sticky-position">
-          <li>
-            <a href="#" class="list-group-item list-group-item-action" @click.prevent="selectedCategory = ''" :class="{ active : selectedCategory === '' }">全部</a>
-          </li>
-          <li v-for="item in categories" :key="item">
-            <a href="#" class="list-group-item list-group-item-action" @click.prevent="selectedCategory = item" :class="{ active : selectedCategory === item }">
-            {{ item }}
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="col-lg-9">
-        <ul class="row">
-          <li class="card col-md-6 col-lg-3 border-0 mb-4" v-for="item in filterProducts" :key="item.id">
-            <div class="overflow-hidden position-relative">
-              <button type="button" @click.stop="toggleFavorite(item)" class="btn btn-favorite position-absolute">
-                <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
-              </button>
-              <div class="ratio ratio-3x4">
-                <img :src="item.imageUrl" :alt="item.title" class="cart-img card-img-top">
-              </div>
-              <div class="btn-group position-absolute">
-                <button type="button" class="btn btn-primary btn-cart" @click.stop="addCart(item.id, 1)" :disabled="loadingStatus.loadingCart === item.id">
-                  <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingCart === item.id">
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
-                  加到購物車
+  <div class="bg-secondary-light">
+    <div class="container pb-5">
+      <div class="row pt-5">
+        <div class="col-lg-3 mb-3">
+          <ul class="list-group sticky-top sticky-position">
+            <li>
+              <a href="#" class="list-group-item list-group-item-action" @click.prevent="selectedCategory = ''; this.$route.params.selectedCategory = ''" :class="{ active : selectedCategory === '' }">全部</a>
+            </li>
+            <li v-for="item in categories" :key="item">
+              <a href="#" class="list-group-item list-group-item-action" @click.prevent="selectedCategory = item" :class="{ active : selectedCategory === item }">
+                {{ item }}
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-9">
+          <ul class="row">
+            <li class="card col-md-6 col-lg-3 border-0 mb-4" v-for="item in filterProducts" :key="item.id">
+              <div class="overflow-hidden position-relative">
+                <button type="button" @click.stop="toggleFavorite(item)" class="btn btn-favorite position-absolute">
+                  <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
                 </button>
+                <div class="ratio ratio-3x4">
+                  <img :src="item.imageUrl" :alt="item.title" class="cart-img object-fit-cover card-img-top">
+                </div>
+                <div class="btn-group position-absolute">
+                  <button type="button" class="btn btn-primary btn-cart" @click.stop="addCart(item.id, 1)" :disabled="loadingStatus.loadingCart === item.id">
+                    <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingCart === item.id">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    加到購物車
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="card-body">
-              <div class="d-flex align-items-center justify-content-between">
-                <h2 class="card-title mb-3 fs-5">
-                  <router-link :to="`/product/${item.id}`" class="text-dark d-block stretched-link" >
-                    {{ item.title }}
-                  </router-link>
-                </h2>
+              <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                  <h2 class="card-title fs-5 mb-3">
+                    <router-link :to="`/product/${item.id}`" class="text-dark d-block stretched-link" >
+                      {{ item.title }}
+                    </router-link>
+                  </h2>
+                </div>
+                <del class="text-muted">NT$ {{ $filters.currency(item.origin_price) }} </del>
+                <p class="fw-bold card-text">NT$ {{ $filters.currency(item.price) }} </p>
               </div>
-              <del class="text-muted">NT$ {{ $filters.currency(item.origin_price) }} </del>
-              <p class="fw-bold card-text">NT$ {{ $filters.currency(item.price) }} </p>
-            </div>
-          </li>
-        </ul>
-        <Pagination :pagination="pagination" @change-page="getAllProducts"/>
+            </li>
+          </ul>
+          <Pagination :pagination="pagination" @change-page="getAllProducts"/>
+        </div>
       </div>
     </div>
   </div>
@@ -68,7 +70,6 @@ export default ({
     return {
       products: [],
       pagination: '',
-      tempProduct: {},
       loadingStatus: {},
       myFavorite: handleFavorite.getFavorite() || [],
       isLoading: false,
@@ -135,9 +136,6 @@ export default ({
       const maxPage = (this.pagination.current_page * perPage)
       this.products = this.products.slice(minPage, maxPage)
     },
-    getProductInfo (productId) {
-      this.$router.push(`/product/${productId}`)
-    },
     addCart (id, qty = 1) {
       const api = `/api/${process.env.VUE_APP_APIPATH}/cart`
       const data = {
@@ -148,9 +146,10 @@ export default ({
       this.$http.post(api, { data })
         .then(response => {
           if (!response.data.success) {
-            alert(response.data.message)
+            this.$httpMessageState(response, '加入購物車')
             return
           }
+          this.$httpMessageState(response, '加入購物車')
           this.emitter.emit('update-cart')
           this.loadingStatus.loadingCart = ''
         })

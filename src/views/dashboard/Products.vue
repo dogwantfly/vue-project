@@ -29,7 +29,7 @@
   </div>
   <ul class="nav nav-pills mb-3">
     <li class="nav-item">
-      <a class="nav-link rounded-pill" :class="{'active': filterBy === ''}" href="#" @click.prevent="getProducts">
+      <a class="nav-link rounded-pill" :class="{'active': filterBy === ''}" href="#" @click.prevent="getProducts(1, 'allProducts')">
         所有產品
       </a>
     </li>
@@ -147,7 +147,8 @@ export default ({
           break
       }
     },
-    getProducts (page = this.current_page) {
+    getProducts (page = this.current_page, filter) {
+      if (this.pagination !== '' && filter === 'allProducts') return
       this.isLoading = true
       const api = `/api/${process.env.VUE_APP_APIPATH}/admin/products?page=${page}`
       this.$http.get(api)
@@ -207,14 +208,10 @@ export default ({
       }
       switch (sortBy) {
         case 'priceFromLowest':
-          products.sort(function (a, b) {
-            return a.price - b.price
-          })
+          products.sort((a, b) => a.price - b.price)
           break
         case 'priceFromHighest':
-          products.sort(function (a, b) {
-            return b.price - a.price
-          })
+          products.sort((a, b) => b.price - a.price)
           break
         default:
           break

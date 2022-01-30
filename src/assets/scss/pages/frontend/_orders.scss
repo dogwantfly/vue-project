@@ -1,6 +1,5 @@
 .orders {
   .img-size {
-    object-fit: cover;
     width: 80px;
   }
   .table {
@@ -19,4 +18,7 @@
   .accordion-button {
     background-color: $gray-100;
   }
+}
+.bg-orders-banner {
+  background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1638980853082.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=aXfMnBgDRb9kU2N%2FLzQ8Xprf82lib6YCD1cdHxYOUMoSt%2Bel0c%2FHEvWxR0K%2BcffXT8cNnXiDtdaaZjQdi%2B9LivCqgEvTRMa9yrujpMPKvYjUclnYox7IXj3gK%2FAGg5LOQ4%2FlBRfs583syRgV2HEAnsW%2BhIFPjl%2FDK7hNk7I0XZu9uLHdgglbL5J0yoNrJIN%2BGTsDcnM%2BqWDSDOaQp%2FWWY4whgrnEMkp4ayeC4Luv8KsfmtJdnjMlfYSLb6v0wRdQzLP%2BQo1rQoUyjqEVrooKf%2BA3b8PJnv26ARMxRUkPRW3X4QAfrMnRvBHhjK4Se9Elj%2BNhrT8dFuDu4trqILxM6A%3D%3D');
 }

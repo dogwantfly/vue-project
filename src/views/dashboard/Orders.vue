@@ -20,7 +20,7 @@
         <option selected value="">日期由新到舊（預設）</option>
         <option value="createdFromOldest" :disabled="orders.length ? false : true">日期由舊到新</option>
         <option value="totalFromHighest" :disabled="orders.length ? false : true">金額由高至低</option>
-        <option value="totalFromLowest"  :disabled="orders.length ? false : true">金額由低至高</option>
+        <option value="totalFromLowest" :disabled="orders.length ? false : true">金額由低至高</option>
       </select>
     </div>
   </div>
@@ -29,7 +29,7 @@
   </div>
   <ul class="nav nav-pills mb-3">
     <li class="nav-item">
-      <a class="nav-link rounded-pill" :class="{'active': filterBy === ''}" href="#" @click.prevent="getOrders">
+      <a class="nav-link rounded-pill" :class="{'active': filterBy === ''}" href="#" @click.prevent="getOrders(1, 'allOrders')">
         所有訂單
       </a>
     </li>
@@ -130,16 +130,14 @@ export default ({
   },
   inject: ['$httpMessageState'],
   methods: {
-    getOrders (page = this.current_page) {
-      if (this.pagination !== '') {
-        this.isLoading = false
-        return
-      }
+    getOrders (page = this.current_page, filter) {
+      if (this.pagination !== '' && filter === 'allOrders') return
       this.isLoading = true
       const api = `/api/${process.env.VUE_APP_APIPATH}/admin/orders?page=${page}`
       this.$http.get(api)
         .then(response => {
           if (!response.data.success) {
+            this.$httpMessageState(response, '取得訂單')
             this.isLoading = false
             return
           }
@@ -158,6 +156,7 @@ export default ({
               this.$http.get(`/api/${process.env.VUE_APP_APIPATH}/admin/orders?page=${i}`)
                 .then(response => {
                   if (!response.data.success) {
+                    this.$httpMessageState(response, '取得訂單')
                     this.isLoading = false
                     return
                   }
@@ -223,19 +222,13 @@ export default ({
       }
       switch (sortBy) {
         case 'totalFromLowest':
-          orders.sort(function (a, b) {
-            return a.total - b.total
-          })
+          orders.sort((a, b) => a.total - b.total)
           break
         case 'totalFromHighest':
-          orders.sort(function (a, b) {
-            return b.total - a.total
-          })
+          orders.sort((a, b) => b.total - a.total)
           break
         case 'createdFromOldest':
-          orders.sort(function (a, b) {
-            return a.create_at - b.create_at
-          })
+          orders.sort((a, b) => a.create_at - b.create_at)
           break
         default:
           break

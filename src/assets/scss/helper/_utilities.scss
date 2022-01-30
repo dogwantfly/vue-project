@@ -143,7 +143,8 @@ $utilities: map-merge(
         50: 50%,
         75: 75%,
         100: 100%,
-        auto: auto
+        auto: auto,
+        max-content: max-content,
       )
     ),
     "max-width": (
@@ -488,6 +489,7 @@ $utilities: map-merge(
       values: (
         wrap: normal,
         nowrap: nowrap,
+        pre-line: pre-line,
       )
     ),
     "word-wrap": (
@@ -597,6 +599,30 @@ $utilities: map-merge(
         cover: cover,
         contain: contain,
         50: 50%,
+      )
+    ),
+    "object-fit": (
+      property: object-fit,
+      class: object-fit,
+      responsive: true,
+      values: (
+        cover: cover
+      )
+    ),
+    "background-attachment": (
+      property: background-attachment,
+      class: bg-attachment,
+      responsive: true,
+      values: (
+        fixed: fixed
+      )
+    ),
+    "cursor": (
+      property: cursor,
+      class: cursor,
+      responsive: true,
+      values: (
+        not-allowed: not-allowed
       )
     ),
   ),

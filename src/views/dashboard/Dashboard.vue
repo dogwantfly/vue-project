@@ -5,7 +5,7 @@
     <Navbar/>
     <main class="w-100 main">
       <div class="bg-white mb-3">
-        <button type="button" class="btn d-inline-block py-2 px-4 sticky-top rounded-end bg-light shadow-sm" @click="isExpand = !isExpand">
+        <button type="button" class="btn d-inline-block sticky-top rounded-end bg-light shadow-sm py-2 px-4" @click="isExpand = !isExpand">
           <i class="bi bi-arrow-bar-left"></i>
         </button>
       </div>
@@ -65,15 +65,13 @@ export default ({
     }
   },
   created () {
-    const token = document.cookie.split('; ')
-      .find(row => row.startsWith('token='))
-      .split('=')[1]
-    if (token === '') {
-      window.location = 'index.html'
-    }
-    this.$http.defaults.headers.common.Authorization = token
     this.$http.defaults.baseURL = process.env.VUE_APP_API
-    this.checkLogin()
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, '$1')
+    if (token) {
+      this.checkLogin()
+    } else {
+      this.$router.push('/login')
+    }
   }
 })
 </script>

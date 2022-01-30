@@ -7,7 +7,6 @@
   .img-size {
     width: 100px;
     height: 100px;
-    object-fit: cover;
   }
 }
 .order-success {
@@ -16,9 +15,26 @@
     background-color: transparent;
     background-position: center bottom;
     background-size: cover;
+    height: calc(100vh - 100px);
+    text-shadow: 0 0 0 #212529;
     @include media-breakpoint-up(lg) {
-      height: 400px;
-      text-shadow: 0 0 0 #212529;
+      height: calc(100vh - 360px);
     }
+  }
+  .btn-lg {
+    width: 100%;
+    @include media-breakpoint-up(md) {
+      width: calc(50% - 1rem);
+    }
+  }
+}
+.order-info-header {
+  @include media-breakpoint-up(lg) {
+    display: none;
+  }
+}
+.order-info.collapse {
+  @include media-breakpoint-up(lg) {
+    display: block;
   }
 }

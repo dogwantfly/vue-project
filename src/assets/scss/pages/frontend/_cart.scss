@@ -24,6 +24,11 @@
   thead {
     background-color: $gray-200;
   }
+  .card-body {
+    list-style: disc;
+    list-style-position: inside;
+    color: $gray-600;
+  }
 }
 .cart {
   padding-top: 80px;

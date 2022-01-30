@@ -1,6 +1,6 @@
 <template>
   <Loading :active="isLoading" :z-index="100" :loader="'dots'" :color="'#384D48'"/>
-  <ul class="list-unstyled row g-4 row-cols-md-2 mb-4">
+  <ul class="list-unstyled row row-cols-md-2 g-4 mb-4">
     <li class="col">
       <div class="card shadow-sm bg-light border-0">
         <div class="card-body text-end d-flex justify-content-between">
@@ -101,20 +101,20 @@ export default ({
                   })
                 })
             }
+            this.allOrders.forEach(order => {
+              this.revenue += order.total
+            })
+            this.getPieChart()
+            this.getBarChart()
+            this.isLoading = false
           }
-          this.allOrders.forEach(order => {
-            this.revenue += order.total
-          })
-          this.getPieChart()
-          this.getBarChart()
-          this.isLoading = false
         })
         .catch(error => {
           this.$httpMessageState(error, '連線錯誤')
           this.isLoading = false
         })
     },
-    getPieChart () {
+    organizePieData () {
       const productRevenue = {}
       this.allOrders.forEach((item, index) => {
         const productsInOrder = this.allOrders[index].products
@@ -127,8 +127,12 @@ export default ({
           }
         }
       })
-      const productRevenueLabels = Object.keys(productRevenue)
-      const productRevenueDatas = Object.values(productRevenue)
+      return productRevenue
+    },
+    getPieChart () {
+      let data = this.organizePieData()
+      const productRevenueLabels = Object.keys(data)
+      const productRevenueDatas = Object.values(data)
       const pieCtx = this.$refs.pieChart
       const config = {
         type: 'pie',
@@ -150,14 +154,19 @@ export default ({
           responsive: true
         }
       }
-      this.pieChart = new Chart(pieCtx, config)
+      if (this.pieChart) {
+        data = this.organizePieData()
+        this.pieChart.data.labels = Object.keys(data)
+        this.pieChart.data.datasets[0].data = Object.values(data)
+        this.pieChart.update()
+      } else {
+        this.pieChart = new Chart(pieCtx, config)
+      }
     },
-    getBarChart () {
+    organizeBarData () {
       const productRevenue = {}
-      this.allOrders.sort(function (a, b) {
-        return a.create_at - b.create_at
-      })
-      this.allOrders.forEach((order, index) => {
+      this.allOrders.sort((a, b) => a.create_at - b.create_at)
+      this.allOrders.forEach(order => {
         const orderDate = this.$filters.date(order.create_at).toString()
         if (productRevenue[orderDate] === undefined) {
           productRevenue[orderDate] = order.total
@@ -165,8 +174,12 @@ export default ({
           productRevenue[orderDate] += order.total
         }
       })
-      const productRevenueLabels = Object.keys(productRevenue)
-      const productRevenueDatas = Object.values(productRevenue)
+      return productRevenue
+    },
+    getBarChart () {
+      let data = this.organizeBarData()
+      const productRevenueLabels = Object.keys(data)
+      const productRevenueDatas = Object.values(data)
       const barCtx = this.$refs.barChart
       const barConfig = {
         type: 'bar',
@@ -188,7 +201,29 @@ export default ({
           responsive: true
         }
       }
-      this.barChart = new Chart(barCtx, barConfig)
+      if (this.barChart) {
+        data = this.organizeBarData()
+        this.barChart.data.labels = Object.keys(data)
+        this.barChart.data.datasets[0].data = Object.values(data)
+        this.barChart.update()
+      } else {
+        this.barChart = new Chart(barCtx, barConfig)
+      }
+    }
+  },
+  computed: {
+    allOrdersLength () {
+      return this.allOrders.length
+    }
+  },
+  watch: {
+    allOrdersLength () {
+      this.revenue = 0
+      this.allOrders.forEach(order => {
+        this.revenue += order.total
+      })
+      this.getPieChart()
+      this.getBarChart()
     }
   },
   created () {

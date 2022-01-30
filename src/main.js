@@ -10,7 +10,7 @@ import zhTw from '@vee-validate/i18n/dist/locale/zh_TW.json'
 import Loading from 'vue3-loading-overlay'
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
-import { currency, date } from '@/methods/filters'
+import { currency, date, randomInt } from '@/methods/filters'
 
 defineRule('email', email)
 defineRule('required', required)
@@ -26,7 +26,8 @@ setLocale('zh_TW')
 const app = createApp(App)
 app.config.globalProperties.$filters = {
   currency,
-  date
+  date,
+  randomInt
 }
 app.use(router)
 app.use(VueAxios, axios)

@@ -1,34 +1,67 @@
 <template>
   <Loading :active="isLoading" :z-index="100" :loader="'dots'" :color="'#384D48'"/>
-  <div class="banner">
-    <div class="container h-100 d-flex align-items-center justify-content-center">
-      <h1>
-        購物車
-      </h1>
-    </div>
-  </div>
   <div class="carts container py-5">
-    <div class="row"  v-if="carts.carts">
+    <div class="row" v-if="carts.carts">
       <div class="col-md-10 mx-auto" v-if="carts.carts.length">
-        <ol class="progress-bar row list-unstyled justify-content-between text-center">
+        <ol class="row progress-bar list-unstyled justify-content-between text-center">
           <li class="col-4 active">確認購物車品項</li>
           <li class="col-4">填寫資料</li>
           <li class="col-4">確認訂單並付款</li>
         </ol>
       </div>
     </div>
-    <div class="justify-content-center cart py-5">
-      <div v-if="carts.carts">
-        <button type="button" class="btn btn-outline-danger mb-2" @click="removeCarts" :disabled="loadingStatus.loadingRemoveCart === 'deleteAll'" v-if="carts.carts.length">
-          <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingRemoveCart === 'deleteAll'">
-            <span class="visually-hidden">Loading...</span>
+    <div class="accordion accordion-flush" id="accordionFlushExample" v-if="couponsGot.length">
+      <div class="accordion-item">
+        <h2 class="accordion-header bg-light" id="flush-headingCoupon">
+          <button class="accordion-button collapsed bg-transparent shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseCoupon" aria-expanded="false" aria-controls="flush-collapseCoupon">
+            可使用的優惠券
+            <span class="ms-1 badge bg-primary">{{ couponsGot.length }}</span>
+          </button>
+        </h2>
+        <div id="flush-collapseCoupon" class="accordion-collapse collapse bg-light border-top" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">
+            <ul class="row list-unstyled">
+              <li class="col-md-6 col-xl-3" v-for="coupon in couponsGot" :key="coupon">
+                <div class="coupon-code fs-4 d-md-flex rounded-3 shadow-sm px-md-2 mb-3 mx-auto">
+                  <div class="coupon-name mb-0">
+                    <div class="bg-primary text-light fs-6 p-1">
+                      商品<br class="d-none d-md-inline-block">
+                      <span v-if="coupon === 'firstPrize50'"> 5 折</span>
+                      <span v-else-if="coupon === 'secondPrize60'"> 6 折</span>
+                      <span v-else-if="coupon === 'thirdPrize70'"> 7 折</span>
+                      <span v-else-if="coupon === 'fourthPrize80'"> 8 折</span>
+                    </div>
+                  </div>
+                  <code class="text-center text-primary px-2 mb-0" :ref="coupon">{{ coupon }}</code>
+                  <button type="button" class="btn btn-link" title="點擊複製" @click="copyCouponCode(coupon)">
+                    <i class="bi bi-clipboard"></i>
+                  </button>
+                </div>
+              </li>
+            </ul>
           </div>
-          <small>
-            <i class="bi bi-trash2"></i>
-            刪除全部商品
-          </small>
-        </button>
-        <div class="p-3 p-md-5 bg-light my-5">
+        </div>
+      </div>
+    </div>
+    <div class="cart justify-content-center py-5">
+      <template v-if="carts.carts">
+        <div class="d-flex justify-content-between align-items-center">
+          <h1 class="fs-4 text-primary mb-0">
+            <i class="bi bi-cart-fill"></i>
+            購物車
+          </h1>
+          <button type="button" class="btn btn-outline-danger" @click="removeCarts" :disabled="loadingStatus.loadingRemoveCart === 'deleteAll'" v-if="carts.carts.length">
+            <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingRemoveCart === 'deleteAll'">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <small>
+              <i class="bi bi-trash2"></i>
+              刪除全部商品
+            </small>
+          </button>
+        </div>
+        <small class="text-muted" v-if="carts.carts.length">總計 {{ carts.carts.length }} 項商品</small>
+        <div class="bg-light shadow-sm p-3 p-md-5 mt-3 mb-5">
           <div class="table-responsive rounded-1" v-if="carts.carts.length">
             <table class="table table-borderless table-hover">
               <thead class="rounded-3">
@@ -53,10 +86,10 @@
                     <div class="d-flex">
                       <img :src="item.product.imageUrl" :alt="item.product.title" class="img-fluid img-size me-3 d-none d-sm-block">
                       <div>
-                        {{ item.product.title }}
-                        <br>
-                        <small class="text-success" v-if="item.coupon">
-                          優惠券: {{ item.coupon.code }}
+                        <p class="mb-1">{{ item.product.title }}</p>
+                        <small class="text-primary bg-info rounded-pill badge py-1 px-2" v-if="item.coupon">
+                          <i class="bi bi-tag-fill"></i>
+                          {{ item.coupon.code }}
                         </small>
                       </div>
                     </div>
@@ -64,7 +97,9 @@
                   <td>
                     <div class="input-group input-group-sm justify-content-end">
                       <input type="number" class="form-control border-0 count" v-model.number="item.qty" min="1" @change="updateCart(item.id, item.product_id, item.qty)" :disabled="loadingStatus.updateCart === item.id">
-                      <div class="input-group-text border-0 d-none d-md-block">{{ item.product.unit }}</div>
+                      <p class="input-group-text border-0 d-none d-md-block mb-0">
+                        {{ item.product.unit }}
+                      </p>
                     </div>
                   </td>
                   <td class="text-end">
@@ -72,8 +107,8 @@
                       <del class="text-muted small">{{ $filters.currency(item.total) }}</del>
                       <br>
                     </template>
-                    <span :class="{ 'text-success': item.final_total !== item.total }">
-                    {{ $filters.currency(item.final_total) }}
+                    <span :class="{ 'text-primary fw-bold': item.final_total !== item.total }">
+                      ${{ $filters.currency(item.final_total) }}
                     </span>
                   </td>
                 </tr>
@@ -81,28 +116,27 @@
               <tfoot>
                 <tr>
                   <td colspan="3" class="text-end border-0">運費</td>
-                  <td class="text-end border-0">0</td>
+                  <td class="text-end border-0">$0</td>
                 </tr>
                 <tr>
                   <td colspan="3" class="text-end">合計</td>
-                  <td class="text-end text-nowrap">NT$ {{ $filters.currency(carts.total) }}</td>
+                  <td class="text-end text-nowrap fs-5">NT$ {{ $filters.currency(carts.total) }}</td>
                 </tr>
-                <tr v-if="carts.final_total !== carts.total" class="text-success">
+                <tr v-if="carts.final_total !== carts.total" class="text-primary fw-bold">
                   <td colspan="3" class="text-end">折扣後合計</td>
-                  <td class="text-end text-nowrap">NT$ {{ $filters.currency(carts.final_total) }}</td>
+                  <td class="text-end text-nowrap fs-5">NT$ {{ $filters.currency(carts.final_total) }}</td>
                 </tr>
               </tfoot>
             </table>
           </div>
           <div class="text-center" v-else>
-            <p class="p-3 bg-light">購物車無商品，敬請前往購物</p>
-            <router-link to="/products" class="btn btn-primary mb-5">前往購物</router-link>
+            <i class="bi bi-cart4 display-1 fw-bold text-primary"></i>
+            <p class="bg-light text-primary fs-4 p-3">購物車目前無商品，歡迎選購</p>
+            <router-link to="/products" class="btn btn-primary btn-lg mb-5">前往逛逛！</router-link>
           </div>
         </div>
-      </div>
-      <template v-if="carts.carts">
-        <div v-if="carts.carts.length" class="d-block d-md-flex justify-content-between align-items-center text-end">
-          <div class="input-group me-5 input-group-sm mb-3 mb-md-0 coupon">
+        <div v-if="carts.carts.length" class="d-block d-md-flex justify-content-between align-items-center text-end mb-5">
+          <div class="coupon input-group input-group-sm me-5 mb-3 mb-md-0">
             <input type="text" class="form-control" v-model="coupon_code" placeholder="請輸入優惠碼">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary" type="button" @click="useCoupon" :disabled="!coupon_code">
@@ -118,63 +152,75 @@
             <i class="bi bi-caret-right-fill"></i>
           </router-link>
         </div>
+        <h3 class="title text-primary fs-4 mb-2">
+          <i class="bi bi-megaphone-fill"></i>
+          重要提醒
+        </h3>
+        <div class="border rounded-3">
+          <ul class="card-body mb-0">
+            <li>
+              付款方式限 <span class="fw-bold">信用卡</span> 付款。
+            </li>
+            <li>
+              大部分商品體積較大，因此不適用超商取貨，只提供 <span class="fw-bold">宅配到府</span>。
+            </li>
+            <li>
+              無庫存商品調貨時間請參考「商品平均調貨時間」。
+            </li>
+            <li>
+              目前無提供海外服務。
+            </li>
+          </ul>
+        </div>
       </template>
     </div>
   </div>
-  <div class="product-also-buy container mb-5" v-if="randomProducts.length">
-    <h3 class="title mb-4">你可能會喜歡...</h3>
-    <ul class="row">
-      <li class="card col-md-4 col-lg-3 col-xl-2 border-0" v-for="item in randomProducts" :key="item.id">
-        <div class="overflow-hidden position-relative">
-          <button type="button" @click.stop="toggleFavorite(item)" class="btn btn-favorite position-absolute">
-              <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
-          </button>
-          <div class="ratio ratio-3x4">
-            <img :src="item.imageUrl" :alt="item.title" class="cart-img card-img-top">
-          </div>
-          <div class="btn-group position-absolute">
-            <button type="button" class="btn btn-primary btn-cart" @click.stop="addCart(item.id, 1)" :disabled="loadingStatus.loadingCart === item.id">
-              <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingCart === item.id">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              加到購物車
+  <div class="container mb-5" v-if="randomProducts.length">
+    <div class="product-also-buy border-info rounded-3 px-3">
+      <h3 class="title text-primary fs-4 mb-4">
+        <i class="bi bi-star-fill"></i>
+        你可能會喜歡...
+      </h3>
+      <ul class="row">
+        <li class="card col-md-4 col-lg-3 col-xl-2 border-0" v-for="item in randomProducts" :key="item.id">
+          <div class="overflow-hidden position-relative">
+            <button type="button" @click.stop="toggleFavorite(item)" class="btn btn-favorite position-absolute">
+                <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
             </button>
+            <div class="ratio ratio-3x4">
+              <img :src="item.imageUrl" :alt="item.title" class="cart-img card-img-top">
+            </div>
+            <div class="btn-group position-absolute">
+              <button type="button" class="btn btn-primary btn-cart" @click.stop="addCart(item.id, 1)" :disabled="loadingStatus.loadingCart === item.id">
+                <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingCart === item.id">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                加到購物車
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between">
-            <h4 class="card-title mb-0 fs-5">
-              <a href="#" @click.prevent="getProductInfo(item.id)" class="text-dark d-block stretched-link" >
-                {{ item.title }}
-              </a>
-            </h4>
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between">
+              <h4 class="card-title fs-5 mb-0">
+                <a href="#" @click.prevent="getProductInfo(item.id)" class="text-dark d-block stretched-link">
+                  {{ item.title }}
+                </a>
+              </h4>
+            </div>
+            <p class="fw-bold card-text text-muted">NT$ {{ $filters.currency(item.price) }}</p>
           </div>
-          <p class="fw-bold card-text text-muted">NT$ {{ $filters.currency(item.price) }}</p>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 import handleFavorite from '@/methods/handleFavorite'
 
-function getRandomInt (max) {
-  return Math.floor(Math.random() * max)
-}
-
 export default ({
   data () {
     return {
-      user: {
-        email: '',
-        tel: '',
-        name: '',
-        region: '',
-        address: '',
-        payment: ''
-      },
-      message: '',
       products: {},
       carts: {},
       pagination: '',
@@ -183,7 +229,8 @@ export default ({
       coupon_code: '',
       isLoading: false,
       randomProducts: [],
-      myFavorite: handleFavorite.getFavorite() || []
+      myFavorite: handleFavorite.getFavorite() || [],
+      couponsGot: JSON.parse(localStorage.getItem('couponsGot')) || []
     }
   },
   inject: ['$httpMessageState', 'emitter'],
@@ -276,18 +323,18 @@ export default ({
       this.$http.put(api, { data })
         .then(response => {
           if (!response.data.success) {
-            alert(response.data.message)
+            this.$httpMessageState(response, '更新購物車')
             this.isLoading = false
             return
           }
           this.getCart()
           this.loadingStatus.updateCart = ''
-          this.isLoading = false
           this.$httpMessageState(response, '更新購物車')
+          this.isLoading = false
         })
         .catch(error => {
-          this.isLoading = false
           this.$httpMessageState(error, '連線錯誤')
+          this.isLoading = false
         })
     },
     removeCartItem (id) {
@@ -326,6 +373,17 @@ export default ({
           this.$httpMessageState(error, '連線錯誤')
         })
     },
+    copyCouponCode (couponCode) {
+      const str = this.$refs[couponCode]
+      window.getSelection().selectAllChildren(str)
+      document.execCommand('Copy')
+      this.$httpMessageState({
+        data: {
+          success: true,
+          message: `已複製優惠碼： ${couponCode}`
+        }
+      }, '複製優惠券')
+    },
     useCoupon () {
       const api = `/api/${process.env.VUE_APP_APIPATH}/coupon`
       const data = {
@@ -336,53 +394,19 @@ export default ({
         .then(response => {
           if (!response.data.success) {
             this.loadingStatus.loadingCoupon = ''
-            this.coupon_code = ''
             this.$httpMessageState(response, '套用優惠券')
+            if (response.data.message === '優惠券無法使用或已過期') {
+              let couponsGot = JSON.parse(localStorage.getItem('couponsGot'))
+              couponsGot = couponsGot.filter(coupon => coupon !== this.coupon_code)
+              localStorage.setItem('couponsGot', JSON.stringify(couponsGot))
+              this.couponsGot = JSON.parse(localStorage.getItem('couponsGot'))
+            }
+            this.coupon_code = ''
             return
           }
           this.getCart()
           this.loadingStatus.loadingCoupon = ''
-        })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-        })
-    },
-    createOrder (values, { resetForm }) {
-      const api = `/api/${process.env.VUE_APP_APIPATH}/order`
-      const data = {
-        user: this.user,
-        message: this.message
-      }
-      if (!this.carts.carts.length) {
-        this.$httpMessageState({
-          data: {
-            success: false,
-            message: '購物車無內容'
-          }
-        }, '建立訂單')
-        return
-      }
-      this.$http.post(api, { data })
-        .then(response => {
-          if (response.data.success) {
-            this.user = {
-              email: '',
-              tel: '',
-              name: '',
-              region: '',
-              address: '',
-              payment: ''
-            }
-            this.message = ''
-            resetForm()
-            this.getCart()
-            this.$httpMessageState(response, '建立訂單')
-            const { orderId } = response.data
-            this.emitter.emit('update-cart')
-            this.$router.push(`/checkout/${orderId}`)
-          } else {
-            this.$httpMessageState(response, '建立訂單')
-          }
+          this.$httpMessageState(response, '套用優惠券')
         })
         .catch(error => {
           this.$httpMessageState(error, '連線錯誤')
@@ -409,7 +433,7 @@ export default ({
       const arrSet = new Set([])
       const maxSize = this.products.length < 4 ? this.products.length : 4
       for (let i = 0; arrSet.size < maxSize; i += 1) {
-        const num = getRandomInt(this.products.length)
+        const num = this.$filters.randomInt(this.products.length)
         arrSet.add(this.products[num])
       }
       this.randomProducts = []

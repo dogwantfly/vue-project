@@ -7,8 +7,10 @@
   border-right: 0;
   border-top: 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: transparent;
 }
 .card {
+  background-color: transparent;
   &:hover .cart-img{
     filter: brightness(0.7);
   }
@@ -29,7 +31,6 @@
 }
 .cart-img{
   width: 100%;
-  object-fit: cover;
   transition: all 0.3s;
   filter: brightness(1);
 }
@@ -106,7 +107,6 @@
   .product-img {
     height: 150px;
     width: 100%;
-    object-fit: cover;
   }
   .table.products{
     margin-top: 80px;
@@ -132,4 +132,7 @@
       padding: 0 0.75rem;
     }
   }
+}
+.bg-products-banner {
+  background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1638975683324.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=mMGmCUcUXHUQ1a4hohT%2BO4ZYtM3hvF3m13DQ5Qnx51%2Bkegy%2F9ARM%2FBSmksmpzupSymnUj8Z4%2B1fdbWYjrLiGVrjmwr97FRrLWwrmyW%2FnWnY1DUJUgPU99YRSbq1j0myo0a%2BIqedhB8SsWWQuAi7OrSOIp%2FWhvF0k2%2B9%2FdlBHhUC2SH61baehs0wS73f59%2B7Vp7c%2FC6ijMrFAgLuVU0nAYhqI%2B53fln%2F6qsbTv7EKLQQ2%2FWh3%2BhB0%2Bo5D%2FVskTL4WF2vI7fFVJmqjneqep2X1uYOkWfE1zQteelhxGgSeigtN5z7%2FZcgZHnqdiYTbcIwsLIZ3WDm4qjYkDjUEsqSA8A%3D%3D');
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="banner">
+  <div class="banner bg-cover bg-about-banner bg-attachment-fixed">
     <div class="container h-100 d-flex align-items-center justify-content-center">
       <h1>
         關於我們
@@ -7,7 +7,7 @@
     </div>
   </div>
   <div class="about container py-5">
-    <div class="bg-primary text-light about-intro p-3 mb-5 fs-5">
+    <div class="about-intro bg-primary text-light fs-5 p-3 mb-5">
       <div class="border border-light h-100 d-flex justify-content-center p-5">
         <p>
           我們是 Chord，提供優質樂器是我們的首要目標，目前提供的樂器主要為吉他、電吉他、烏克麗麗及相關配件，我們很喜歡吉他創作出的弦律，並致力於分享吉他的相關資訊，當買家訂購樂器，我們也會確保樂器於運送過程中不損害樂器本身，完好的交至客戶手中
@@ -29,19 +29,20 @@
             <h3 class="mb-4">注重運送過程</h3>
             <p>
               在運送過程中會極力保護運送樂器，若在運送過程中樂器遭到損壞也有相關退換貨提賠償措施
+              <br>
               並會在運送過程盡量減少碳足跡，希望在能力之內兼顧環保減少環境污染
             </p>
           </li>
           <li class="mb-5">
-            <h3 class="mb-4">適用所有學習階段</h3>
+            <h3 class="mb-4">適用所有學習階段及專業人士</h3>
             <p>
-              不管是初學者或是進階學習都有提供適合的樂器及配件，讓不同學習階段的使用者都可以挑選到適合且能夠幫助學習彈奏技巧或沈浸在樂器的音色中
+              不管是初學者或是進階學習及專業音樂人都有提供適合的樂器及配件，讓不同學習階段的使用者都可以挑選到適合並且能夠幫助學習彈奏技巧或沈浸在樂器的音色中
             </p>
           </li>
         </ul>
       </div>
     </section>
-    <section class="about-contact border p-3 p-md-5 text-center mb-5">
+    <section class="about-contact border text-center p-3 p-md-5 mb-5">
       <h2 class="fs-5 mb-4">透過以下方式或社群聯絡我們</h2>
       <ul class="fs-5">
         <li class="mb-3">

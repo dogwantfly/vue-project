@@ -27,7 +27,7 @@
   </div>
   <ul class="nav nav-pills mb-3">
     <li class="nav-item">
-      <a class="nav-link rounded-pill" :class="{'active': filterBy === ''}" href="#" @click.prevent="getArticles">
+      <a class="nav-link rounded-pill" :class="{'active': filterBy === ''}" href="#" @click.prevent="getArticles(1, 'allArticles')">
         所有文章
       </a>
     </li>
@@ -107,7 +107,8 @@ export default ({
     }
   },
   methods: {
-    getArticles (page = this.current_page) {
+    getArticles (page = this.current_page, filter) {
+      if (this.pagination !== '' && filter === 'allArticles') return
       this.isLoading = true
       const api = `/api/${process.env.VUE_APP_APIPATH}/admin/articles?page=${page}`
       this.$http.get(api)
@@ -218,14 +219,10 @@ export default ({
       }
       switch (sortBy) {
         case 'postDateFromNewest':
-          articles.sort(function (a, b) {
-            return b.create_at - a.create_at
-          })
+          articles.sort((a, b) => b.create_at - a.create_at)
           break
         case 'postDateFromOldest':
-          articles.sort(function (a, b) {
-            return a.create_at - b.create_at
-          })
+          articles.sort((a, b) => a.create_at - b.create_at)
           break
         default:
           break

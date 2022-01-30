@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary" :key="$route.path">
-    <div class="container">
+    <div class="container position-relative">
       <router-link to="/" class="navbar-brand nav-link-color">CHORD</router-link>
       <div class="d-flex order-lg-last">
         <ul class="navbar-nav fs-3 flex-row">
@@ -12,27 +12,24 @@
               <i class="bi bi-cart-fill"></i>
             </router-link>
           </li>
-          <li class="nav-item position-relative">
-            <span class="badge rounded-pill bg-danger position-absolute" v-if="myFavorite.length">
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-link-color position-relative" id="dropdownMenuFavorite" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="badge rounded-pill bg-danger position-absolute" v-if="myFavorite.length">
               {{ myFavorite.length ? myFavorite.length : '' }}
-            </span>
-            <a href="#" class="nav-link nav-link-color" id="dropdownMenuFavorite" data-bs-toggle="dropdown" aria-expanded="false">
+              </span>
               <i class="bi bi-heart"></i>
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuFavorite" ref="dropdown">
               <li class="card border-0 px-2" v-for="product in products" :key="product.id">
-                <router-link class="row g-0 align-items-center" :to="`/product/${product.id}`">
-                  <div class="col-3">
-                    <img :src="product.imageUrl" :alt="product.title" style="width:70px; height: 70px" class="img-fluid">
-                  </div>
-                  <div class="col-9 d-flex align-items-center">
-                    <div class="card-body">
-                      <h5 class="card-title h6">{{ product.title }}</h5>
-                      <del class="card-text text-muted small">${{ $filters.currency(product.origin_price) }} </del>
-                      <p class="card-text">${{ $filters.currency(product.price) }}</p>
-                    </div>
-                    <button type="button" class="btn remove-btn" @click.stop.prevent="removeFavorite(product)">
-                      <i class="bi bi-x-lg"></i>
+                <router-link class="d-flex w-100 flex-nowrap align-items-center justify-content-between" :to="`/product/${product.id}`">
+                  <img :src="product.imageUrl" :alt="product.title" class="img-fluid collection-img object-fit-cover">
+                  <div class="card-body">
+                    <h5 class="card-title h6">{{ product.title }}</h5>
+                    <p class="card-text d-inline-block me-2 fw-bold">${{ $filters.currency(product.price) }}</p>
+                    <del class="card-text text-muted small">${{ $filters.currency(product.origin_price) }} </del>
+                    <button type="button" class="btn badge bg-info remove-btn position-absolute end-0 bottom-0 mb-2 me-2" @click.stop.prevent="removeFavorite(product)">
+                      <i class="bi bi-x"></i>
+                      移除
                     </button>
                   </div>
                 </router-link>

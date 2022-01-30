@@ -3,15 +3,15 @@
   background-color: transparent;
   color: $gray-300;
   counter-reset: step;
-  li.active, li.done {
-    color: $primary;
-  }
   li {
     position: relative;
     font-size: 0.875rem;
     @include media-breakpoint-up(md) {
       font-size: 1rem;
     }
+  }
+  li.active, li.done {
+    color: $primary;
   }
   li::before {
     content: counter(step);
@@ -23,8 +23,10 @@
     color: $gray-200;
     border: 2px solid $gray-300;
     border-radius: 50%;
-    margin: 0 auto 5px auto;
+    margin: 0 auto 5px;
     background-color: $white;
+    z-index: 2;
+    position: relative;
   }
   li.done::before {
     content: '✓';
@@ -40,9 +42,9 @@
     position: absolute;
     left: -50%;
     top: 20px;
-    z-index: -1;
+    z-index: 0;
   }
-  li.active::before, li.active::after, li.done::before , li.done::after{
+  li.active::before, li.active::after, li.done::before, li.done::after {
     background: $primary;
     color: white;
     border: 2px solid $primary;

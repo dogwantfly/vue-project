@@ -1,23 +1,28 @@
 <template>
   <Loading :active="isLoading" :z-index="100" :loader="'dots'" :color="'#384D48'"/>
-  <div class="banner">
+  <div class="banner bg-cover bg-orders-banner bg-attachment-fixed">
     <div class="container h-100 d-flex align-items-center justify-content-center">
-      <h1>
+      <h1 class="d-none d-md-block">
         查看您的歷史訂單 / 訂單狀態
+      </h1>
+      <h1 class="d-md-none">
+        歷史訂單 / 訂單狀態
       </h1>
     </div>
   </div>
   <div class="orders container">
     <div class="row py-5">
       <div class="col-md-10 col-xl-8 mx-auto">
-        <div class="input-group mb-5 flex-nowrap">
+        <div class="input-group flex-nowrap mb-5">
           <span class="input-group-text bi bi-search border-0"></span>
           <input type="search" name="searchOrder" class="d-block w-100 form-control border-0" id="searchOrder" placeholder="搜尋您的訂單編號" @keydown="searchOrder($event)" v-model="searchOrderId">
           <button class="btn btn-primary flex-shrink-0" type="button" @click="searchOrder">搜尋</button>
         </div>
         <template v-if="searchOrderResult && orderResult">
-          <div class="bg-light rounded-3 p-3 text-primary">
-            <h2 class="fs-4 text-center mb-3">訂單編號:<br> {{ orderResult.id }}</h2>
+          <div class="bg-light rounded-3 text-primary p-3">
+            <h2 class="fs-4 text-center mb-3">
+              訂單編號<br> {{ orderResult.id }}
+            </h2>
             <h3 class="fs-5">付款狀態</h3>
             <p :class="orderResult.is_paid ? 'text-success' : 'text-muted'">
               {{ orderResult.is_paid ? '已付款' : '未付款' }}
@@ -76,7 +81,7 @@
               <tbody>
                 <tr v-for="product in orderResult.products" :key="product.id">
                   <td>
-                    <img :src="product.product.imageUrl" :alt="product.product.title" class="img-fluid mb-3 img-size">
+                    <img :src="product.product.imageUrl" :alt="product.product.title" class="img-fluid mb-3 img-size object-fit-cover">
                   </td>
                   <td>
                     {{ product.product.title }}
@@ -122,7 +127,7 @@
                     <tbody>
                       <tr v-for="product in order.products" :key="product.id">
                         <td>
-                          <img :src="product.product.imageUrl" :alt="product.product.title" class="img-fluid mb-3 img-size">
+                          <img :src="product.product.imageUrl" :alt="product.product.title" class="img-fluid mb-3 img-size object-fit-cover">
                         </td>
                         <td>
                           {{ product.product.title }}

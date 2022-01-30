@@ -1,26 +1,29 @@
 <template>
   <Loading :active="isLoading" :z-index="1080" :loader="'dots'" :color="'#384D48'"/>
-  <div class="banner">
-    <div class="container h-100 d-flex align-items-center justify-content-center">
-      <h1>
+  <div class="banner bg-cover bg-blogs-banner bg-attachment-fixed">
+    <div class="container h-100 d-flex align-items-center justify-content-center ">
+      <h1 class="bg-title-gradient p-2 p-sm-3">
         關於樂器我們可以了解
       </h1>
     </div>
   </div>
-  <div class="articles">
+  <div class="articles bg-secondary-light">
     <div class="container py-5">
       <ul class="row">
-        <li class="col-lg-12 mb-3 border-0 mb-5 card" v-if="articles.length">
+        <li class="col-lg-12 card border-0 mb-3 mb-md-5" v-if="articles.length">
           <div class="row g-0">
             <div class="col-md-7">
-              <img :src="articles[0].image" :alt="articles[0].title" class="img-fluid">
+              <img :src="articles[0].image" :alt="articles[0].title" class="img-fluid h-100 object-fit-cover">
             </div>
             <div class="col-md-5 d-flex align-items-center">
               <div class="card-body">
                 <h2 class="card-title mb-5">{{ articles[0].title }}</h2>
                 <p class="card-text">{{ articles[0].description }}</p>
-                <p class="card-text"><small class="text-muted">{{ new Date((articles[0].create_at + 8 * 3600) * 1000)
-            .toISOString().split('T')[0] }}</small></p>
+                <p class="card-text">
+                  <small class="text-muted">
+                    {{ new Date((articles[0].create_at + 8 * 3600) * 1000).toISOString().split('T')[0] }}
+                  </small>
+                </p>
                 <router-link :to="`/blog/${articles[0].id}`" class="btn btn-link stretched-link btn-zindex ps-0">
                   查看內文
                   <i class="bi bi-chevron-right"></i>
@@ -29,19 +32,21 @@
             </div>
           </div>
         </li>
-        <li class="col-md-6 col-lg-4 card mb-3 border-0" v-for="article in articles.slice(1)" :key="article.id">
-          <div class="ratio ratio-4x3">
-            <img :src="article.image" :alt="article.title" class="img-fluid card-img">
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">{{ article.title }}</h5>
-            <p class="card-text text-truncate">{{ article.description }}</p>
-            <p class="card-text"><small class="text-muted">{{ new Date((article.create_at + 8 * 3600) * 1000)
-        .toISOString().split('T')[0] }}</small></p>
-            <router-link :to="`/blog/${article.id}`" class="btn btn-link stretched-link btn-zindex ps-0">
-              查看內文
-              <i class="bi bi-chevron-right"></i>
-            </router-link>
+        <li class="col-md-6 col-lg-4 mb-3" v-for="article in articles.slice(1)" :key="article.id">
+          <div class="card border-0">
+            <div class="ratio ratio-4x3">
+              <img :src="article.image" :alt="article.title" class="img-fluid object-fit-cover">
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ article.title }}</h5>
+              <p class="card-text text-truncate">{{ article.description }}</p>
+              <p class="card-text"><small class="text-muted">{{ new Date((article.create_at + 8 * 3600) * 1000)
+          .toISOString().split('T')[0] }}</small></p>
+              <router-link :to="`/blog/${article.id}`" class="btn btn-link stretched-link btn-zindex ps-0">
+                查看內文
+                <i class="bi bi-chevron-right"></i>
+              </router-link>
+            </div>
           </div>
         </li>
       </ul>

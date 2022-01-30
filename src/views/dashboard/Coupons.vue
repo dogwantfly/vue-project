@@ -29,7 +29,7 @@
   </div>
   <ul class="nav nav-pills mb-3">
     <li class="nav-item">
-      <a class="nav-link rounded-pill" :class="{'active': filterBy === ''}" href="#" @click.prevent="getCoupons">
+      <a class="nav-link rounded-pill" :class="{'active': filterBy === ''}" href="#" @click.prevent="getCoupons(1, 'allCoupons')">
         所有優惠券
       </a>
     </li>
@@ -114,8 +114,8 @@ export default ({
   },
   inject: ['$httpMessageState'],
   methods: {
-    getCoupons (page = this.current_page) {
-      if (this.pagination !== '') return
+    getCoupons (page = this.current_page, filter) {
+      if (this.pagination !== '' && filter === 'allCoupons') return
       this.isLoading = true
       const api = `/api/${process.env.VUE_APP_APIPATH}/admin/coupons?page=${page}`
       this.$http.get(api)
@@ -205,24 +205,16 @@ export default ({
       }
       switch (sortBy) {
         case 'percentFromHighest':
-          coupons.sort(function (a, b) {
-            return b.percent - a.percent
-          })
+          coupons.sort((a, b) => b.percent - a.percent)
           break
         case 'percentFromLowest':
-          coupons.sort(function (a, b) {
-            return a.percent - b.percent
-          })
+          coupons.sort((a, b) => a.percent - b.percent)
           break
         case 'expireFromNewest':
-          coupons.sort(function (a, b) {
-            return b.due_date - a.due_date
-          })
+          coupons.sort((a, b) => b.due_date - a.due_date)
           break
         case 'expireFromOldest':
-          coupons.sort(function (a, b) {
-            return a.due_date - b.due_date
-          })
+          coupons.sort((a, b) => a.due_date - b.due_date)
           break
         default:
           break
