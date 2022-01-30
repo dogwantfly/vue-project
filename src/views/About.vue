@@ -1,5 +1,5 @@
 <template>
-  <div class="banner bg-cover bg-about-banner bg-attachment-fixed">
+  <div class="banner bg-cover bg-about-banner bg-attachment-lg-fixed">
     <div class="container h-100 d-flex align-items-center justify-content-center">
       <h1>
         關於我們

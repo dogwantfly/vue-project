@@ -1,6 +1,6 @@
 <template>
   <Loading :active="isLoading" :z-index="1080" :loader="'dots'" :color="'#384D48'"/>
-  <div class="banner bg-cover bg-products-banner bg-attachment-fixed">
+  <div class="banner bg-cover bg-products-banner bg-attachment-lg-fixed">
     <div class="container h-100 d-flex align-items-center justify-content-center" >
       <h1 class="text-light p-2 p-sm-3">
         找到想要的樂器或配件
