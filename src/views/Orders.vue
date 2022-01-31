@@ -1,6 +1,6 @@
 <template>
   <Loading :active="isLoading" :z-index="100" :loader="'dots'" :color="'#384D48'"/>
-  <div class="banner bg-cover bg-orders-banner bg-attachment-fixed">
+  <div class="banner bg-cover bg-orders-banner bg-attachment-lg-fixed">
     <div class="container h-100 d-flex align-items-center justify-content-center">
       <h1 class="d-none d-md-block">
         查看您的歷史訂單 / 訂單狀態
