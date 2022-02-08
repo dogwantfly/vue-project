@@ -5,26 +5,26 @@
 </template>
 
 <script>
-import Toast from '@/components/Toast.vue'
+import Toast from '@/components/Toast.vue';
 
 export default ({
-  data () {
+  data() {
     return {
-      messages: []
-    }
+      messages: [],
+    };
   },
   inject: ['emitter'],
   components: {
-    Toast
+    Toast,
   },
-  mounted () {
+  mounted() {
     this.emitter.on('push-message', (message) => {
-      const { style, title, content } = message
-      this.messages.push({ style, title, content })
-    })
+      const { style, title, content } = message;
+      this.messages.push({ style, title, content });
+    });
   },
-  unmounted () {
-    this.emitter.off('push-message', (message) => {})
-  }
-})
+  unmounted() {
+    this.emitter.off('push-message', () => {});
+  },
+});
 </script>

@@ -13,12 +13,21 @@
     <div class="accordion accordion-flush" id="accordionFlushExample" v-if="couponsGot.length">
       <div class="accordion-item">
         <h2 class="accordion-header bg-light" id="flush-headingCoupon">
-          <button class="accordion-button collapsed bg-transparent shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseCoupon" aria-expanded="false" aria-controls="flush-collapseCoupon">
+          <button
+            class="accordion-button collapsed bg-transparent shadow-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseCoupon"
+            aria-expanded="false"
+            aria-controls="flush-collapseCoupon">
             可使用的優惠券
             <span class="ms-1 badge bg-primary">{{ couponsGot.length }}</span>
           </button>
         </h2>
-        <div id="flush-collapseCoupon" class="accordion-collapse collapse bg-light border-top" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+        <div id="flush-collapseCoupon"
+          class="accordion-collapse collapse bg-light border-top"
+          aria-labelledby="flush-headingOne"
+          data-bs-parent="#accordionFlushExample">
           <div class="accordion-body">
             <ul class="row list-unstyled">
               <li class="col-md-6 col-xl-3" v-for="coupon in couponsGot" :key="coupon">
@@ -33,7 +42,10 @@
                     </div>
                   </div>
                   <code class="text-center text-primary px-2 mb-0" :ref="coupon">{{ coupon }}</code>
-                  <button type="button" class="btn btn-link" title="點擊複製" @click="copyCouponCode(coupon)">
+                  <button type="button"
+                    class="btn btn-link"
+                    title="點擊複製"
+                    @click="copyCouponCode(coupon)">
                     <i class="bi bi-clipboard"></i>
                   </button>
                 </div>
@@ -50,8 +62,14 @@
             <i class="bi bi-cart-fill"></i>
             購物車
           </h1>
-          <button type="button" class="btn btn-outline-danger" @click="removeCarts" :disabled="loadingStatus.loadingRemoveCart === 'deleteAll'" v-if="carts.carts.length">
-            <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingRemoveCart === 'deleteAll'">
+          <button type="button"
+            class="btn btn-outline-danger"
+            @click="removeCarts"
+            :disabled="loadingStatus.loadingRemoveCart === 'deleteAll'"
+            v-if="carts.carts.length">
+            <div class="spinner-border spinner-border-sm"
+              role="status"
+              v-if="loadingStatus.loadingRemoveCart === 'deleteAll'">
               <span class="visually-hidden">Loading...</span>
             </div>
             <small>
@@ -75,8 +93,13 @@
               <tbody>
                 <tr v-for="item in carts.carts" :key="item.id">
                   <td>
-                    <button type="button" class="btn btn-outline-danger border-0 rounded-circle" @click="removeCartItem(item.id)" :disabled="loadingStatus.loadingRemoveCart === item.id">
-                      <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingRemoveCart === item.id">
+                    <button type="button"
+                      class="btn btn-outline-danger border-0 rounded-circle"
+                      @click="removeCartItem(item.id)"
+                      :disabled="loadingStatus.loadingRemoveCart === item.id">
+                      <div class="spinner-border spinner-border-sm"
+                        role="status"
+                        v-if="loadingStatus.loadingRemoveCart === item.id">
                         <span class="visually-hidden">Loading...</span>
                       </div>
                       <i class="bi bi-trash-fill"></i>
@@ -84,10 +107,13 @@
                   </td>
                   <td>
                     <div class="d-flex">
-                      <img :src="item.product.imageUrl" :alt="item.product.title" class="img-fluid img-size me-3 d-none d-sm-block">
+                      <img :src="item.product.imageUrl"
+                        :alt="item.product.title"
+                        class="img-fluid img-size me-3 d-none d-sm-block">
                       <div>
                         <p class="mb-1">{{ item.product.title }}</p>
-                        <small class="text-primary bg-info rounded-pill badge py-1 px-2" v-if="item.coupon">
+                        <small class="text-primary bg-info rounded-pill badge py-1 px-2"
+                        v-if="item.coupon">
                           <i class="bi bi-tag-fill"></i>
                           {{ item.coupon.code }}
                         </small>
@@ -96,7 +122,13 @@
                   </td>
                   <td>
                     <div class="input-group input-group-sm justify-content-end">
-                      <input type="number" class="form-control border-0 count" v-model.number="item.qty" min="1" @change="updateCart(item.id, item.product_id, item.qty)" :disabled="loadingStatus.updateCart === item.id">
+                      <input
+                        type="number"
+                        class="form-control border-0 count"
+                        v-model.number="item.qty"
+                        min="1"
+                        @change="updateCart(item.id, item.product_id, item.qty)"
+                        :disabled="loadingStatus.updateCart === item.id">
                       <p class="input-group-text border-0 d-none d-md-block mb-0">
                         {{ item.product.unit }}
                       </p>
@@ -120,11 +152,15 @@
                 </tr>
                 <tr>
                   <td colspan="3" class="text-end">合計</td>
-                  <td class="text-end text-nowrap fs-5">NT$ {{ $filters.currency(carts.total) }}</td>
+                  <td class="text-end text-nowrap fs-5">
+                    NT$ {{ $filters.currency(carts.total) }}
+                  </td>
                 </tr>
                 <tr v-if="carts.final_total !== carts.total" class="text-primary fw-bold">
                   <td colspan="3" class="text-end">折扣後合計</td>
-                  <td class="text-end text-nowrap fs-5">NT$ {{ $filters.currency(carts.final_total) }}</td>
+                  <td class="text-end text-nowrap fs-5">
+                    NT$ {{ $filters.currency(carts.final_total) }}
+                  </td>
                 </tr>
               </tfoot>
             </table>
@@ -135,12 +171,18 @@
             <router-link to="/products" class="btn btn-primary btn-lg mb-5">前往逛逛！</router-link>
           </div>
         </div>
-        <div v-if="carts.carts.length" class="d-block d-md-flex justify-content-between align-items-center text-end mb-5">
+        <div v-if="carts.carts.length"
+          class="d-block d-md-flex justify-content-between align-items-center text-end mb-5">
           <div class="coupon input-group input-group-sm me-5 mb-3 mb-md-0">
             <input type="text" class="form-control" v-model="coupon_code" placeholder="請輸入優惠碼">
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" @click="useCoupon" :disabled="!coupon_code">
-                <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingCoupon === coupon_code && coupon_code !== ''">
+              <button class="btn btn-outline-secondary"
+                type="button"
+                @click="useCoupon"
+                :disabled="!coupon_code">
+                <div class="spinner-border spinner-border-sm"
+                  role="status"
+                  v-if="loadingStatus.loadingCoupon === coupon_code && coupon_code !== ''">
                   <span class="visually-hidden">Loading...</span>
                 </div>
                 套用優惠碼
@@ -182,17 +224,30 @@
         你可能會喜歡...
       </h3>
       <ul class="row">
-        <li class="card col-md-4 col-lg-3 col-xl-2 border-0" v-for="item in randomProducts" :key="item.id">
+        <li class="card col-md-4 col-lg-3 col-xl-2 border-0"
+          v-for="item in randomProducts" :key="item.id">
           <div class="overflow-hidden position-relative">
-            <button type="button" @click.stop="toggleFavorite(item)" class="btn btn-favorite position-absolute">
-                <i class="bi" :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
+            <button
+              type="button"
+              @click.stop="toggleFavorite(item)"
+              class="btn btn-favorite position-absolute">
+                <i
+                  class="bi"
+                  :class="myFavorite.includes(item.id) ? 'bi-heart-fill' : 'bi-heart'"></i>
             </button>
             <div class="ratio ratio-3x4">
               <img :src="item.imageUrl" :alt="item.title" class="cart-img card-img-top">
             </div>
             <div class="btn-group position-absolute">
-              <button type="button" class="btn btn-primary btn-cart" @click.stop="addCart(item.id, 1)" :disabled="loadingStatus.loadingCart === item.id">
-                <div class="spinner-border spinner-border-sm" role="status" v-if="loadingStatus.loadingCart === item.id">
+              <button
+                type="button"
+                class="btn btn-primary btn-cart"
+                @click.stop="addCart(item.id, 1)"
+                :disabled="loadingStatus.loadingCart === item.id">
+                <div
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  v-if="loadingStatus.loadingCart === item.id">
                   <span class="visually-hidden">Loading...</span>
                 </div>
                 加到購物車
@@ -202,7 +257,10 @@
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
               <h4 class="card-title fs-5 mb-0">
-                <a href="#" @click.prevent="getProductInfo(item.id)" class="text-dark d-block stretched-link">
+                <a
+                  href="#"
+                  @click.prevent="getProductInfo(item.id)"
+                  class="text-dark d-block stretched-link">
                   {{ item.title }}
                 </a>
               </h4>
@@ -216,10 +274,10 @@
 </template>
 
 <script>
-import handleFavorite from '@/methods/handleFavorite'
+import handleFavorite from '@/methods/handleFavorite';
 
 export default ({
-  data () {
+  data() {
     return {
       products: {},
       carts: {},
@@ -230,247 +288,247 @@ export default ({
       isLoading: false,
       randomProducts: [],
       myFavorite: handleFavorite.getFavorite() || [],
-      couponsGot: JSON.parse(localStorage.getItem('couponsGot')) || []
-    }
+      couponsGot: JSON.parse(localStorage.getItem('couponsGot')) || [],
+    };
   },
   inject: ['$httpMessageState', 'emitter'],
   methods: {
-    addCart (id, qty = 1) {
-      const api = `/api/${process.env.VUE_APP_APIPATH}/cart`
+    addCart(id, qty = 1) {
+      const api = `/api/${process.env.VUE_APP_APIPATH}/cart`;
       const data = {
         product_id: id,
-        qty
-      }
-      this.loadingStatus.loadingCart = id
+        qty,
+      };
+      this.loadingStatus.loadingCart = id;
       this.$http.post(api, { data })
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '加入購物車')
-            return
+            this.$httpMessageState(response, '加入購物車');
+            return;
           }
-          this.getCart()
-          this.emitter.emit('update-cart', id)
-          this.loadingStatus.loadingCart = ''
-          this.$httpMessageState(response, '加入購物車')
+          this.getCart();
+          this.emitter.emit('update-cart', id);
+          this.loadingStatus.loadingCart = '';
+          this.$httpMessageState(response, '加入購物車');
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+        });
     },
-    getCart () {
-      this.isLoading = true
-      const api = `/api/${process.env.VUE_APP_APIPATH}/cart`
+    getCart() {
+      this.isLoading = true;
+      const api = `/api/${process.env.VUE_APP_APIPATH}/cart`;
       this.$http.get(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '取得購物車列表')
-            this.isLoading = false
-            return
+            this.$httpMessageState(response, '取得購物車列表');
+            this.isLoading = false;
+            return;
           }
-          this.carts = response.data.data
-          this.isLoading = false
+          this.carts = response.data.data;
+          this.isLoading = false;
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
     },
-    getProductInfo (productId) {
-      this.$router.push(`/product/${productId}`)
-      this.getProduct(productId)
-      this.saveProductViewed(productId)
+    getProductInfo(productId) {
+      this.$router.push(`/product/${productId}`);
+      this.getProduct(productId);
+      this.saveProductViewed(productId);
     },
-    saveProductViewed (productId) {
-      const maxLength = 6
-      const productsIdViewed = JSON.parse(localStorage.getItem('productsViewed')) || []
+    saveProductViewed(productId) {
+      const maxLength = 6;
+      const productsIdViewed = JSON.parse(localStorage.getItem('productsViewed')) || [];
       if (productsIdViewed.includes(productId)) {
-        productsIdViewed.splice(productsIdViewed.indexOf(productId), 1)
+        productsIdViewed.splice(productsIdViewed.indexOf(productId), 1);
       }
-      productsIdViewed.unshift(productId)
+      productsIdViewed.unshift(productId);
       if (productsIdViewed.length > maxLength) {
-        productsIdViewed.pop()
+        productsIdViewed.pop();
       }
-      localStorage.setItem('productsViewed', JSON.stringify(productsIdViewed))
+      localStorage.setItem('productsViewed', JSON.stringify(productsIdViewed));
     },
-    getProduct (productId) {
-      this.isLoading = true
-      const id = productId || this.$route.params.productId
-      const api = `/api/${process.env.VUE_APP_APIPATH}/product/${id}`
+    getProduct(productId) {
+      this.isLoading = true;
+      const id = productId || this.$route.params.productId;
+      const api = `/api/${process.env.VUE_APP_APIPATH}/product/${id}`;
       this.$http.get(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.isLoading = false
-            this.$httpMessageState(response, '取得產品資料')
-            return
+            this.isLoading = false;
+            this.$httpMessageState(response, '取得產品資料');
+            return;
           }
-          this.product = response.data.product
-          this.getAllProducts()
-          this.isLoading = false
+          this.product = response.data.product;
+          this.getAllProducts();
+          this.isLoading = false;
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
     },
-    updateCart (cartId, productId, qty) {
-      this.isLoading = true
-      const api = `/api/${process.env.VUE_APP_APIPATH}/cart/${cartId}`
+    updateCart(cartId, productId, qty) {
+      this.isLoading = true;
+      const api = `/api/${process.env.VUE_APP_APIPATH}/cart/${cartId}`;
       const data = {
         product_id: productId,
-        qty
-      }
-      this.loadingStatus.updateCart = cartId
+        qty,
+      };
+      this.loadingStatus.updateCart = cartId;
       this.$http.put(api, { data })
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '更新購物車')
-            this.isLoading = false
-            return
+            this.$httpMessageState(response, '更新購物車');
+            this.isLoading = false;
+            return;
           }
-          this.getCart()
-          this.loadingStatus.updateCart = ''
-          this.$httpMessageState(response, '更新購物車')
-          this.isLoading = false
+          this.getCart();
+          this.loadingStatus.updateCart = '';
+          this.$httpMessageState(response, '更新購物車');
+          this.isLoading = false;
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
     },
-    removeCartItem (id) {
-      const api = `/api/${process.env.VUE_APP_APIPATH}/cart/${id}`
-      this.loadingStatus.loadingRemoveCart = id
+    removeCartItem(id) {
+      const api = `/api/${process.env.VUE_APP_APIPATH}/cart/${id}`;
+      this.loadingStatus.loadingRemoveCart = id;
       this.$http.delete(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '移除購物車')
-            return
+            this.$httpMessageState(response, '移除購物車');
+            return;
           }
-          this.getCart()
-          this.emitter.emit('update-cart', id)
-          this.loadingStatus.loadingRemoveCart = ''
-          this.$httpMessageState(response, '移除購物車')
+          this.getCart();
+          this.emitter.emit('update-cart', id);
+          this.loadingStatus.loadingRemoveCart = '';
+          this.$httpMessageState(response, '移除購物車');
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+        });
     },
-    removeCarts () {
-      const api = `/api/${process.env.VUE_APP_APIPATH}/carts`
-      this.loadingStatus.loadingRemoveCart = 'deleteAll'
+    removeCarts() {
+      const api = `/api/${process.env.VUE_APP_APIPATH}/carts`;
+      this.loadingStatus.loadingRemoveCart = 'deleteAll';
       this.$http.delete(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '移除購物車')
-            return
+            this.$httpMessageState(response, '移除購物車');
+            return;
           }
-          this.getCart()
-          this.emitter.emit('update-cart')
-          this.loadingStatus.loadingRemoveCart = ''
-          this.$httpMessageState(response, '移除購物車')
+          this.getCart();
+          this.emitter.emit('update-cart');
+          this.loadingStatus.loadingRemoveCart = '';
+          this.$httpMessageState(response, '移除購物車');
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+        });
     },
-    copyCouponCode (couponCode) {
-      const str = this.$refs[couponCode]
-      window.getSelection().selectAllChildren(str)
-      document.execCommand('Copy')
+    copyCouponCode(couponCode) {
+      const str = this.$refs[couponCode];
+      window.getSelection().selectAllChildren(str);
+      document.execCommand('Copy');
       this.$httpMessageState({
         data: {
           success: true,
-          message: `已複製優惠碼： ${couponCode}`
-        }
-      }, '複製優惠券')
+          message: `已複製優惠碼： ${couponCode}`,
+        },
+      }, '複製優惠券');
     },
-    useCoupon () {
-      const api = `/api/${process.env.VUE_APP_APIPATH}/coupon`
+    useCoupon() {
+      const api = `/api/${process.env.VUE_APP_APIPATH}/coupon`;
       const data = {
-        code: this.coupon_code
-      }
-      this.loadingStatus.loadingCoupon = this.coupon_code
+        code: this.coupon_code,
+      };
+      this.loadingStatus.loadingCoupon = this.coupon_code;
       this.$http.post(api, { data })
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.loadingStatus.loadingCoupon = ''
-            this.$httpMessageState(response, '套用優惠券')
+            this.loadingStatus.loadingCoupon = '';
+            this.$httpMessageState(response, '套用優惠券');
             if (response.data.message === '優惠券無法使用或已過期') {
-              let couponsGot = JSON.parse(localStorage.getItem('couponsGot'))
-              couponsGot = couponsGot.filter(coupon => coupon !== this.coupon_code)
-              localStorage.setItem('couponsGot', JSON.stringify(couponsGot))
-              this.couponsGot = JSON.parse(localStorage.getItem('couponsGot'))
+              let couponsGot = JSON.parse(localStorage.getItem('couponsGot'));
+              couponsGot = couponsGot.filter((coupon) => coupon !== this.coupon_code);
+              localStorage.setItem('couponsGot', JSON.stringify(couponsGot));
+              this.couponsGot = JSON.parse(localStorage.getItem('couponsGot'));
             }
-            this.coupon_code = ''
-            return
+            this.coupon_code = '';
+            return;
           }
-          this.getCart()
-          this.loadingStatus.loadingCoupon = ''
-          this.$httpMessageState(response, '套用優惠券')
+          this.getCart();
+          this.loadingStatus.loadingCoupon = '';
+          this.$httpMessageState(response, '套用優惠券');
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+        });
     },
-    getAllProducts () {
-      const api = `/api/${process.env.VUE_APP_APIPATH}/products/all`
+    getAllProducts() {
+      const api = `/api/${process.env.VUE_APP_APIPATH}/products/all`;
       this.$http.get(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '取得全部產品資料')
-            this.isLoading = false
-            return
+            this.$httpMessageState(response, '取得全部產品資料');
+            this.isLoading = false;
+            return;
           }
-          this.products = response.data.products
-          this.getRandomProducts()
+          this.products = response.data.products;
+          this.getRandomProducts();
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
     },
-    getRandomProducts () {
-      const arrSet = new Set([])
-      const maxSize = this.products.length < 4 ? this.products.length : 4
+    getRandomProducts() {
+      const arrSet = new Set([]);
+      const maxSize = this.products.length < 4 ? this.products.length : 4;
       for (let i = 0; arrSet.size < maxSize; i += 1) {
-        const num = this.$filters.randomInt(this.products.length)
-        arrSet.add(this.products[num])
+        const num = this.$filters.randomInt(this.products.length);
+        arrSet.add(this.products[num]);
       }
-      this.randomProducts = []
-      arrSet.forEach(product => {
-        this.randomProducts.push(product)
-      })
+      this.randomProducts = [];
+      arrSet.forEach((product) => {
+        this.randomProducts.push(product);
+      });
     },
-    toggleFavorite (item) {
+    toggleFavorite(item) {
       if (this.myFavorite.includes(item.id)) {
-        this.myFavorite.splice(this.myFavorite.indexOf(item.id), 1)
+        this.myFavorite.splice(this.myFavorite.indexOf(item.id), 1);
         this.$httpMessageState({
           data: {
             success: true,
-            message: `已將 ${item.title} 移除收藏`
-          }
-        }, '移除收藏')
+            message: `已將 ${item.title} 移除收藏`,
+          },
+        }, '移除收藏');
       } else {
-        this.myFavorite.push(item.id)
+        this.myFavorite.push(item.id);
         this.$httpMessageState({
           data: {
             success: true,
-            message: `已將 ${item.title} 加入收藏`
-          }
-        }, '加入收藏')
+            message: `已將 ${item.title} 加入收藏`,
+          },
+        }, '加入收藏');
       }
-      handleFavorite.storeFavorite(this.myFavorite)
-      this.emitter.emit('update-favorite')
+      handleFavorite.storeFavorite(this.myFavorite);
+      this.emitter.emit('update-favorite');
     },
-    updateFavorite () {
-      this.myFavorite = handleFavorite.getFavorite()
-      this.getProduct()
-    }
+    updateFavorite() {
+      this.myFavorite = handleFavorite.getFavorite();
+      this.getProduct();
+    },
   },
-  mounted () {
-    this.$http.defaults.baseURL = process.env.VUE_APP_API
-    this.getCart()
-    this.getAllProducts()
-  }
-})
+  mounted() {
+    this.$http.defaults.baseURL = process.env.VUE_APP_API;
+    this.getCart();
+    this.getAllProducts();
+  },
+});
 </script>

@@ -10,8 +10,16 @@
           感謝您的購買
         </h1>
         <div class="d-md-flex justify-content-md-between w-100 py-5">
-          <router-link :to="`/checkout/${orderId}`" class="custom-btn btn btn-outline-light shadow btn-lg mb-3 mb-md-0">查看訂單</router-link>
-          <router-link to="/products" class="custom-btn btn btn-light btn-lg shadow">繼續逛逛</router-link>
+          <router-link
+            :to="`/checkout/${orderId}`"
+            class="custom-btn btn btn-outline-light shadow btn-lg mb-3 mb-md-0">
+            查看訂單
+          </router-link>
+          <router-link
+            to="/products"
+            class="custom-btn btn btn-light btn-lg shadow">
+            繼續逛逛
+          </router-link>
         </div>
       </div>
     </div>
@@ -20,38 +28,38 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       order: '',
       orderId: '',
-      isLoading: false
-    }
+      isLoading: false,
+    };
   },
   inject: ['$httpMessageState'],
   methods: {
-    getOrder () {
-      this.isLoading = true
-      this.orderId = this.$route.params.orderId
-      const api = `/api/${process.env.VUE_APP_APIPATH}/order/${this.orderId}`
+    getOrder() {
+      this.isLoading = true;
+      this.orderId = this.$route.params.orderId;
+      const api = `/api/${process.env.VUE_APP_APIPATH}/order/${this.orderId}`;
       this.$http.get(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '取得訂單資料')
-            this.isLoading = false
-            return
+            this.$httpMessageState(response, '取得訂單資料');
+            this.isLoading = false;
+            return;
           }
-          this.order = response.data.order
-          this.isLoading = false
+          this.order = response.data.order;
+          this.isLoading = false;
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
-    }
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
+    },
   },
-  created () {
-    this.$http.defaults.baseURL = process.env.VUE_APP_API
-    this.getOrder()
-  }
-}
+  created() {
+    this.$http.defaults.baseURL = process.env.VUE_APP_API;
+    this.getOrder();
+  },
+};
 </script>

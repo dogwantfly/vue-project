@@ -21,15 +21,20 @@
       <div class="checkout row rounded-3 justify-content-center gy-3 py-3 mt-3">
         <div class="checkout-product col-lg-6 text-primary">
           <div class="h-100 d-flex flex-column">
-            <h3 class="h6 bg-primary d-inline-block text-white rounded-top align-self-start px-3 py-2 mb-0">
+            <h3 class="h6 bg-primary d-inline-block text-white
+              rounded-top align-self-start px-3 py-2 mb-0">
               商品資訊
             </h3>
-            <div class="table-responsive bg-white shadow-sm rounded-bottom border border-info h-100 p-3">
+            <div class="table-responsive bg-white shadow-sm
+              rounded-bottom border border-info h-100 p-3">
               <table class="table table-borderless mb-0" v-if="order.products">
                 <tbody>
                   <tr v-for="product in order.products" :key="product.id">
                     <td>
-                      <img :src="product.product.imageUrl" :alt="product.product.title" class="img-fluid img-size d-block object-fit-cover">
+                      <img
+                        :src="product.product.imageUrl"
+                        :alt="product.product.title"
+                        class="img-fluid img-size d-block object-fit-cover">
                     </td>
                     <td>
                       {{ product.product.title }}
@@ -43,7 +48,9 @@
                         <br>
                         <small class="text-primary me-1">折扣價</small>
                       </template>
-                      <span class="text-primary fw-bold">${{ $filters.currency(product.final_total) }}</span>
+                      <span class="text-primary fw-bold">
+                        ${{ $filters.currency(product.final_total) }}
+                      </span>
                     </td>
                   </tr>
                 </tbody>
@@ -52,8 +59,12 @@
           </div>
         </div>
         <div class="col-lg-4 border-start border-light d-flex flex-column">
-          <h3 class="h6 bg-primary d-inline-block text-white rounded-top align-self-start px-3 py-2 mb-0">訂購人資料</h3>
-          <div class="table-responsive bg-white shadow-sm rounded-bottom border border-info p-3 mb-4">
+          <h3 class="h6 bg-primary d-inline-block text-white
+            rounded-top align-self-start px-3 py-2 mb-0">
+            訂購人資料
+          </h3>
+          <div class="table-responsive bg-white shadow-sm
+            rounded-bottom border border-info p-3 mb-4">
             <table class="table">
               <tbody v-if="order.user">
                 <tr>
@@ -75,7 +86,10 @@
               </tbody>
             </table>
           </div>
-          <h3 class="h6 bg-primary d-inline-block text-white rounded-top align-self-start px-3 py-2 mb-0">訂單細節</h3>
+          <h3 class="h6 bg-primary d-inline-block text-white
+            rounded-top align-self-start px-3 py-2 mb-0">
+            訂單細節
+          </h3>
           <div class="table-responsive bg-white shadow-sm rounded-bottom border border-info p-3">
             <table class="table">
               <tbody>
@@ -84,7 +98,11 @@
                   <td class="border-0">
                     <div class="d-flex justify-content-between align-items-center">
                       <code class="text-dark mb-0" :ref="order.id">{{ order.id }}</code>
-                      <button type="button" class="btn btn-link p-0" title="點擊複製" @click="copyOrderId(order.id)">
+                      <button
+                        type="button"
+                        class="btn btn-link p-0"
+                        title="點擊複製"
+                        @click="copyOrderId(order.id)">
                         <i class="bi bi-clipboard"></i>
                       </button>
                     </div>
@@ -101,7 +119,10 @@
                 <tr>
                   <th scope="row" class="border-0">訂單狀態</th>
                   <td class="border-0">
-                    <label for="is_paid" class="form-label d-inline-block w-auto rounded p-1" :class="order.is_paid ? 'text-primary bg-info' : 'text-muted'">
+                    <label
+                      for="is_paid"
+                      class="form-label d-inline-block w-auto rounded p-1"
+                      :class="order.is_paid ? 'text-primary bg-info' : 'text-muted'">
                       <i class="bi bi-check" v-if="order.is_paid"></i>
                       {{ order.is_paid ? '已付款' : '未付款' }}
                     </label>
@@ -136,64 +157,64 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       order: '',
-      isLoading: false
-    }
+      isLoading: false,
+    };
   },
   inject: ['$httpMessageState'],
   methods: {
-    getOrder () {
-      this.isLoading = true
-      const id = this.$route.params.orderId
-      const api = `/api/${process.env.VUE_APP_APIPATH}/order/${id}`
+    getOrder() {
+      this.isLoading = true;
+      const id = this.$route.params.orderId;
+      const api = `/api/${process.env.VUE_APP_APIPATH}/order/${id}`;
       this.$http.get(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '取得訂單資料')
-            this.isLoading = false
-            return
+            this.$httpMessageState(response, '取得訂單資料');
+            this.isLoading = false;
+            return;
           }
-          this.order = response.data.order
-          this.isLoading = false
+          this.order = response.data.order;
+          this.isLoading = false;
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
     },
-    payOrder () {
-      const id = this.$route.params.orderId
-      const api = `/api/${process.env.VUE_APP_APIPATH}/pay/${id}`
+    payOrder() {
+      const id = this.$route.params.orderId;
+      const api = `/api/${process.env.VUE_APP_APIPATH}/pay/${id}`;
       this.$http.post(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState('付款失敗，請再試一次', '付款')
-            this.isLoading = false
-            return
+            this.$httpMessageState('付款失敗，請再試一次', '付款');
+            this.isLoading = false;
+            return;
           }
-          this.$router.push({ path: `/checkoutsuccess/${id}` })
+          this.$router.push({ path: `/checkoutsuccess/${id}` });
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+        });
     },
-    copyOrderId (orderId) {
-      const str = this.$refs[orderId]
-      window.getSelection().selectAllChildren(str)
-      document.execCommand('Copy')
+    copyOrderId(orderId) {
+      const str = this.$refs[orderId];
+      window.getSelection().selectAllChildren(str);
+      document.execCommand('Copy');
       this.$httpMessageState({
         data: {
           success: true,
-          message: `已複製訂單編號： ${orderId}`
-        }
-      }, '複製訂單編號')
-    }
+          message: `已複製訂單編號： ${orderId}`,
+        },
+      }, '複製訂單編號');
+    },
   },
-  created () {
-    this.$http.defaults.baseURL = process.env.VUE_APP_API
-    this.getOrder()
-  }
-}
+  created() {
+    this.$http.defaults.baseURL = process.env.VUE_APP_API;
+    this.getOrder();
+  },
+};
 </script>

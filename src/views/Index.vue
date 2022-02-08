@@ -11,7 +11,11 @@
             <h2 class="mb-5">
               帶著一把適合的吉他，踏上屬於你的音樂之旅
             </h2>
-            <router-link to="/products" class="custom-btn btn btn-outline-light rounded-pill px-5 py-3">前往逛逛</router-link>
+            <router-link
+              to="/products"
+              class="custom-btn btn btn-outline-light rounded-pill px-5 py-3">
+              前往逛逛
+            </router-link>
           </div>
         </div>
       </div>
@@ -23,7 +27,10 @@
         <ul class="row g-0">
           <li class="col-md-6">
             <div class="bg-image ratio ratio-16x9" style="background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1629996922696.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=h%2FFLPes8%2BA7d5XXPCiHVpxVXWqlE%2FgVi%2FIWWo3S1isX9zxNgl%2FKrE8oLHFyDF5Vgl6LeRX8oWIQAcUn3iXGSazMm1hH8N1B2MpZG0YrON5AL2kaFQyLHoB7fUJjYFyznIkiLMsgHft84LLIvFJ2G2xMSFVYUXWdzwel0KVhfPABv7kNx%2F%2FuTvovUGgUUgU8JAfRfFEnXUEx0RvA%2BrFqDgQR1FqwxV%2BVmzvcSlIGtYcKfWFLxPakYVsOyOB5%2Bb4ZeUtiGtsCwi6ZffjnZihxZVV3kkKAlSCv7vT0ZyxYqBM5D%2BPCPL%2Fpv19OaU1CvHUqz9rUU9PtYhCKc1yikQLWG7Q%3D%3D');">
-              <a href="#" @click.prevent="updateCategory('木吉他')" class="d-flex align-items-center text-center justify-content-center">
+              <a
+                href="#"
+                @click.prevent="updateCategory('木吉他')"
+                class="d-flex align-items-center text-center justify-content-center">
                 <h3>
                   木吉他<br>
                   Acoustic Guitar
@@ -33,7 +40,10 @@
           </li>
           <li class="col-md-6">
             <div class="bg-image ratio ratio-16x9" style="background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1630001055721.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=EWJSACO0ybJ3rgmj8eN3kGyvVFr%2B9cKGDvzlreYMBqke1X3SkvCIUlIeJSwvgdydvKT1%2BkCHwbWvv0CKWM9eJzeEDWQ7T13aGeWu8pNtjSXB%2FqZ1YAGu2CYWF0g2zAnlOLqTM3wq7hFCqurmSe3VTgB8zeoDuQT7ydBCMeeJX86AtX2aKnYuL21ZocDWTWjGF7X4Y%2F2WvynNpYg7MagHeitolYaiak4l8R%2B8GmUrE03a7sTUdH4q6FIVVlOlvKt%2BbLGURSxEsPOsbYFdhHMhMyNTwGiC3F1WIvKEYRr%2F8npS2nkY%2FFuJq23TdOwFDG7uGMbuy9TI2qESXogQW2Efdg%3D%3D');">
-              <a href="#" @click.prevent="updateCategory('烏克麗麗')" class="d-flex align-items-center text-center justify-content-center">
+              <a
+                href="#"
+                @click.prevent="updateCategory('烏克麗麗')"
+                class="d-flex align-items-center text-center justify-content-center">
                 <h3>
                   烏克麗麗<br>
                   Ukulele
@@ -43,7 +53,10 @@
           </li>
           <li class="col-md-6">
             <div class="bg-image ratio ratio-16x9" style="background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1630000969521.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=Bqfd2J7p35NBACpLZecZQIp%2FHjU4%2FabO8omLliU5QB3Y4JPU3%2BG60EYMP8mgm%2BIbhmMw7pbE1ChSPrJ%2FEJENdV4J7%2FEo5cHKpvAjC1%2Bcm5w9m2h67mPpLtANXbbYhNNrgcYPDZZc%2BlTw7jvh%2B5jSJ0nbXAi9mMu51wUcnjw%2FZhD3Sb9UHYe8aNWyQfAIsznRLRsF4zsMqi%2BupMmJHxIwJ5zNc9mRghEbQ3FWyEh2wcSr4f%2BmH6Sch4ek6WvVL7WRuzETJfkNmW3qE1vD%2FpRaYpPwaiPgILyoaNYfCGVWig06WpsrP2Llm%2BtOsVrE986WAlJOr766rSWDIcCH%2FvbKMQ%3D%3D');">
-              <a href="#" @click.prevent="updateCategory('吉他配件')" class="d-flex align-items-center text-center justify-content-center">
+              <a
+                href="#"
+                @click.prevent="updateCategory('吉他配件')"
+                class="d-flex align-items-center text-center justify-content-center">
                 <h3>
                   吉他配件<br>
                   Guitar Picks
@@ -53,7 +66,10 @@
           </li>
           <li class="col-md-6">
             <div class="bg-image ratio ratio-16x9" style="background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1629999853653.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=R18jfjACKnagmGaH48YPcGE3OQ10HtUNUoD4ObavBA359xfVipIdNoi8uERIIOGKDCtXqZQrYLbHAVJC3yxRtKKzMkBKh3BMVINm5wSuiGvqh0yOslOvytccl12f6tbJk%2FQcz23J3sy46D4fqunPGR9PuvDez%2BIbqzZXYc1g7oszbFWcc0Fn3508RlelASeAORlf0JOsiixu%2FPFOhQ1U0IkPBztRV1dvz3QsW7%2BSpZPFH5HfSAdKe8EmaZ%2FgnflQfqCpUWp%2FIOc6XKtbDetr83%2F9UGGPM10UlxT7AUrN7HHMBDhWvn8Ww0U9U%2FfKoiHEO1w9k%2FKbTwkHPFD67ldt2Q%3D%3D');">
-              <a href="#" @click.prevent="updateCategory('電吉他')" class="d-flex align-items-center text-center justify-content-center">
+              <a
+                href="#"
+                @click.prevent="updateCategory('電吉他')"
+                class="d-flex align-items-center text-center justify-content-center">
                 <h3>
                   電吉他<br>
                   Electric Guitar
@@ -116,7 +132,8 @@
             <p v-if="discountResult" class="fs-5 text-primary">
               恭喜你獲得優惠碼
             </p>
-            <div class="coupon-code fs-2 d-md-flex rounded-3 shadow-sm px-md-4 mb-3 mx-auto" v-if="discountResult">
+            <div class="coupon-code fs-2 d-md-flex rounded-3 shadow-sm px-md-4 mb-3 mx-auto"
+            v-if="discountResult">
               <div class="coupon-name p-3 mb-0 mx-auto">
                 <div class="bg-primary text-light p-1">
                   商品<br class="d-none d-md-inline-block">
@@ -133,7 +150,12 @@
                 <p class="text-muted mb-0" v-else>已領取</p>
               </div>
             </div>
-            <button type="button" class="btn btn-primary btn-lg w-100" @click="getDiscount" :disabled="this.couponsGot.indexOf(this.discountResult) >= 0 || this.time <= 0" ref="getDiscountBtn">
+            <button
+              type="button"
+              class="btn btn-primary btn-lg w-100"
+              @click="getDiscount"
+              :disabled="this.couponsGot.indexOf(this.discountResult) >= 0 || this.time <= 0"
+              ref="getDiscountBtn">
               <span v-if="this.couponsGot.indexOf(this.discountResult) < 0">點擊領取</span>
               <span v-else-if="this.time <= 0">優惠券已過期</span>
               <span v-else>已領取</span>
@@ -153,10 +175,16 @@
           </router-link>
         </div>
         <ul class="row">
-          <li class="col-md-6 col-lg-4 mb-3" v-for="article in articles.slice(0,3)" :key="article.id">
+          <li
+            class="col-md-6 col-lg-4 mb-3"
+            v-for="article in articles.slice(0,3)"
+            :key="article.id">
             <div class="card border-0">
               <div class="ratio ratio-4x3">
-                <img :src="article.image" :alt="article.title" class="img-fluid w-100 object-fit-cover">
+                <img
+                  :src="article.image"
+                  :alt="article.title"
+                  class="img-fluid w-100 object-fit-cover">
               </div>
               <div class="card-body">
                 <h5 class="card-title">{{ article.title }}</h5>
@@ -164,7 +192,9 @@
                 <p class="card-text text-muted small">
                   {{ new Date((article.create_at + 8 * 3600) * 1000).toISOString().split('T')[0] }}
                 </p>
-                <router-link :to="`/blog/${article.id}`" class="btn btn-link stretched-link btn-zindex ps-0">
+                <router-link
+                  :to="`/blog/${article.id}`"
+                  class="btn btn-link stretched-link btn-zindex ps-0">
                   查看內文
                   <i class="bi bi-chevron-right"></i>
                 </router-link>
@@ -371,7 +401,9 @@
                 </div>
                 <h5 class="card-title">幾霸分</h5>
                 <p class="card-text">手感很好，一開箱弦距就在正常範圍內</p>
-                <router-link to="/product/-Mc4urf48NhY-Fz6JV1d" class="d-flex justify-content-end mb-2">
+                <router-link
+                  to="/product/-Mc4urf48NhY-Fz6JV1d"
+                  class="d-flex justify-content-end mb-2">
                   <div class="product">
                     <span class="small mb-0 px-2">Cort 電吉他</span>
                     <img src="https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1640616912450.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=OsX6eF1rqOQWv%2FNLi1usHdDQgGGYDq%2BxCP%2B3FFQLhmTuq0oEG7kacuz37NCsAH3HQ3CmyekmaS7eHJuZMrKRxd5HxwBoIpfG%2FEnMoLPczwFlyVl0cp3OU%2FT50dzun%2BRPuv%2FghNUdt3jEiiIMsKLSN46sY49CEytF0ehwZ7Azicl0ovcQtmpprsjTz6eAOSZydcUMNCqpt%2FJGGlRknCLbPhhtXWEeaN00hpgxsWRh%2FJUjeQ0zH6n1c9BJGeizCElojeahtZrR1u%2BVm9LE%2F4nv6vCKPaVJkCf3oFQitVHve2CM4gyeoN9TP4JHpPXemQjnesc%2FOeYAbqKxOWvPndDzxQ%3D%3D" class="card-avatar object-fit-cover flex-shrink-0" alt="Cort 電吉他">
@@ -417,13 +449,16 @@
     </div>
     <div class="location scrollme" id="index-location">
       <div class="container">
-        <div class="row position-relative align-items-lg-center flex-md-row-reverse flex-lg-row g-0">
+        <div class="row position-relative
+          align-items-lg-center flex-md-row-reverse flex-lg-row g-0">
           <div class="col-md-6 end-0 map">
             <img src="https://storage.googleapis.com/vue-course-api.appspot.com/hsinyuuu/1631632532511.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=HwQB7kUFeErnbSiiaMHPByw%2FviMNaujZiJLkh1r9CNx34DF%2BggT1DZXU4xu4qbWETL20ts42yu0wO0%2BDs3gCga8XjNa1lhwpRx83cUps2fmGcB679UyJOvgvDwnLQ4CV0PyR9XtPoDsqh%2BNXHv0D%2Fph7mCaBqFlxrgc5kmpEWnl7LMSoeuQeeHvn2QX1CJ41RtIKFxjEOYQYvhxlkd3ZTIwnYU9Oncnrp9M7sPyj3QsBOuxhGrXUblHm2QS7%2BCBWT5p0QZYkJ9J%2Fz0u%2F2tq%2Be10jV6%2BPX3iET%2BNJlHmmOK%2BypYRXMuXz2BIImgEyxW%2FAhQ8Md6oiXUUFNueEOmzCnQ%3D%3D" alt="實體店示意圖" class="img-fluid">
           </div>
           <div class="col-md-6 col-lg-7">
             <div class="location-info bg-primary text-light p-3">
-              <div class="border border-light h-100 d-flex flex-column justify-content-center align-items-start">
+              <div
+                class="border border-light h-100 d-flex
+                  flex-column justify-content-center align-items-start">
                 <h3 class="mb-4">
                   來逛逛實體店，可享實體店專屬優惠！
                 </h3>
@@ -445,11 +480,20 @@
         <ul class="row accordion accordion-flush" id="accordionFlushFAQ">
           <li class="col-lg-6 accordion-item mb-4">
             <h2 class="accordion-header" id="flush-headingOne">
-              <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+              <button
+                class="accordion-button fw-bold collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseOne"
+                aria-expanded="false"
+                aria-controls="flush-collapseOne">
                 購買的吉他會有保固嗎？
               </button>
             </h2>
-            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushFAQ">
+            <div id="flush-collapseOne"
+            class="accordion-collapse collapse"
+            aria-labelledby="flush-headingOne"
+            data-bs-parent="#accordionFlushFAQ">
               <div class="accordion-body text-muted">
                 有的，我們提供一年內非人為損壞之服務檢測及零件更換（包含吉他弦鈕、弦釘、琴椼以及上下弦枕）。不適用於不當保養或經撞擊、人為使用等不當處理引起的損壞。
               </div>
@@ -457,11 +501,20 @@
           </li>
           <li class="col-lg-6 accordion-item mb-4">
             <h2 class="accordion-header" id="flush-headingTwo">
-              <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+              <button
+                class="accordion-button fw-bold collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseTwo"
+                aria-expanded="false"
+                aria-controls="flush-collapseTwo">
                 請問有寄送海外的服務嗎？
               </button>
             </h2>
-            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushFAQ">
+            <div id="flush-collapseTwo"
+            class="accordion-collapse collapse"
+            aria-labelledby="flush-headingTwo"
+            data-bs-parent="#accordionFlushFAQ">
               <div class="accordion-body text-muted">
                 目前我們僅限寄送台灣境內，尚不接受寄送至海外、國外。
               </div>
@@ -469,11 +522,20 @@
           </li>
           <li class="col-lg-6 accordion-item mb-4">
             <h2 class="accordion-header" id="flush-headingThree">
-              <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+              <button
+                class="accordion-button fw-bold collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseThree"
+                aria-expanded="false"
+                aria-controls="flush-collapseThree">
                 商品瑕疵退換貨該如何辦理？
               </button>
             </h2>
-            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushFAQ">
+            <div id="flush-collapseThree"
+            class="accordion-collapse collapse"
+            aria-labelledby="flush-headingThree"
+            data-bs-parent="#accordionFlushFAQ">
               <div class="accordion-body text-muted">
                 商品七天之內可接受瑕疵品退換貨服務，可由社群或來電的方式與我們的客服聯繫。
               </div>
@@ -481,11 +543,20 @@
           </li>
           <li class="col-lg-6 accordion-item mb-4">
             <h2 class="accordion-header" id="flush-headingFour">
-              <button class="accordion-button fw-bold  collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+              <button
+                class="accordion-button fw-bold collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseFour"
+                aria-expanded="false"
+                aria-controls="flush-collapseFour">
                 下單後大約何時會送達？
               </button>
             </h2>
-            <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushFAQ">
+            <div id="flush-collapseFour"
+            class="accordion-collapse collapse"
+            aria-labelledby="flush-headingFour"
+            data-bs-parent="#accordionFlushFAQ">
               <div class="accordion-body text-muted">
                 台灣本島的大多數地區，原則上出貨後貨件可於寄件之隔日送達，偏遠及離島地區時效請詢問服務人員。
                 如您的貨件須於週六、週日、假日送達，請於服務司機取件時告知或於貨件上註明。
@@ -494,11 +565,19 @@
           </li>
           <li class="col-lg-6 accordion-item mb-4">
             <h2 class="accordion-header" id="flush-headingTwo">
-              <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFifth" aria-expanded="false" aria-controls="flush-collapseFifth">
+              <button class="accordion-button fw-bold collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#flush-collapseFifth"
+              aria-expanded="false"
+              aria-controls="flush-collapseFifth">
                 若沒有找到想要的樂器，可以指定樂器品牌、型號嗎？
               </button>
             </h2>
-            <div id="flush-collapseFifth" class="accordion-collapse collapse" aria-labelledby="flush-headingFifth" data-bs-parent="#accordionFlushFAQ">
+            <div id="flush-collapseFifth"
+            class="accordion-collapse collapse"
+            aria-labelledby="flush-headingFifth"
+            data-bs-parent="#accordionFlushFAQ">
               <div class="accordion-body text-muted">
                 若沒有找到想要的樂器品牌、型號，歡迎聯絡我們，有機會將您想要的樂器進貨並提供您購買。
               </div>
@@ -506,11 +585,20 @@
           </li>
           <li class="col-lg-6 accordion-item mb-4">
             <h2 class="accordion-header" id="flush-headingThree">
-              <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSixth" aria-expanded="false" aria-controls="flush-collapseSixth">
+              <button
+                class="accordion-button fw-bold collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseSixth"
+                aria-expanded="false"
+                aria-controls="flush-collapseSixth">
                 目前提供哪些付款方式？
               </button>
             </h2>
-            <div id="flush-collapseSixth" class="accordion-collapse collapse" aria-labelledby="flush-headingSixth" data-bs-parent="#accordionFlushFAQ">
+            <div id="flush-collapseSixth"
+            class="accordion-collapse collapse"
+            aria-labelledby="flush-headingSixth"
+            data-bs-parent="#accordionFlushFAQ">
               <div class="accordion-body text-muted">
                 可透過以下方式付款：
                 <ul>
@@ -531,39 +619,61 @@
       </div>
     </div>
   </main>
-  <ul class="sidebar list-unstyled position-fixed top-50 end-0 translate-middle-y d-none d-xl-block" v-if="isShowed">
+  <ul class="sidebar list-unstyled position-fixed top-50 end-0 translate-middle-y d-none d-xl-block"
+    v-if="isShowed">
     <li>
-      <a href="#index-categories" class="sidebar-link" :class="{'active' : selected[0]}" @click.prevent="scrollTo($event)">
+      <a href="#index-categories"
+        class="sidebar-link"
+        :class="{'active' : selected[0]}"
+        @click.prevent="scrollTo($event)">
         樂器類別
       </a>
     </li>
     <li>
-      <a href="#index-features" class="sidebar-link" :class="{'active' : selected[1]}" @click.prevent="scrollTo($event)">
+      <a href="#index-features"
+        class="sidebar-link"
+        :class="{'active' : selected[1]}"
+        @click.prevent="scrollTo($event)">
         關於我們
       </a>
     </li>
     <li>
-      <a href="#index-lottery" class="sidebar-link" :class="{'active' : selected[2]}" @click.prevent="scrollTo($event)">
+      <a href="#index-lottery"
+        class="sidebar-link"
+        :class="{'active' : selected[2]}"
+        @click.prevent="scrollTo($event)">
         優惠活動
       </a>
     </li>
     <li>
-      <a href="#index-articles" class="sidebar-link" :class="{'active' : selected[3]}" @click.prevent="scrollTo($event)">
+      <a href="#index-articles"
+        class="sidebar-link"
+        :class="{'active' : selected[3]}"
+        @click.prevent="scrollTo($event)">
         部落格
       </a>
     </li>
     <li>
-      <a href="#index-recommend" class="sidebar-link" :class="{'active' : selected[4]}" @click.prevent="scrollTo($event)">
+      <a href="#index-recommend"
+        class="sidebar-link"
+        :class="{'active' : selected[4]}"
+        @click.prevent="scrollTo($event)">
         顧客評價
       </a>
     </li>
     <li>
-      <a href="#index-location" class="sidebar-link" :class="{'active' : selected[5]}" @click.prevent="scrollTo($event)">
+      <a href="#index-location"
+        class="sidebar-link"
+        :class="{'active' : selected[5]}"
+        @click.prevent="scrollTo($event)">
         實體門市
       </a>
     </li>
     <li>
-      <a href="#index-faq" class="sidebar-link" :class="{'active' : selected[6]}" @click.prevent="scrollTo($event)">
+      <a href="#index-faq"
+        class="sidebar-link"
+        :class="{'active' : selected[6]}"
+        @click.prevent="scrollTo($event)">
         常見問答
       </a>
     </li>
@@ -571,11 +681,11 @@
 </template>
 
 <script>
-import { Swiper, SwiperSlide } from 'swiper/vue'
-import 'swiper/swiper.scss'
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/swiper.scss';
 
 export default ({
-  data () {
+  data() {
     return {
       timer: null,
       time: 0,
@@ -588,98 +698,98 @@ export default ({
       articles: '',
       selected: [false, false, false, false, false, false],
       isShowed: false,
-      expires: 1646006400
-    }
+      expires: 1646006400,
+    };
   },
   inject: ['$httpMessageState'],
   components: {
     Swiper,
-    SwiperSlide
+    SwiperSlide,
   },
   methods: {
-    countDown () {
-      const expires = this.expires
-      const currentTime = Math.floor(Date.now() / 1000)
-      this.time = expires - currentTime
-      this.daysLeft = parseInt(this.time / 60 / 60 / 24)
-      this.hoursLeft = parseInt((this.time / 60 / 60) % 24)
-      this.minutesLeft = parseInt((this.time / 60) % 60)
-      this.secondsLeft = parseInt(this.time % 60)
-      this.time--
+    countDown() {
+      const { expires } = this;
+      const currentTime = Math.floor(Date.now() / 1000);
+      this.time = expires - currentTime;
+      this.daysLeft = parseInt(this.time / 60 / 60 / 24, 10);
+      this.hoursLeft = parseInt((this.time / 60 / 60) % 24, 10);
+      this.minutesLeft = parseInt((this.time / 60) % 60, 10);
+      this.secondsLeft = parseInt(this.time % 60, 10);
+      this.time -= 1;
       if (this.time <= 0) {
-        clearInterval(this.timer)
+        clearInterval(this.timer);
       }
     },
-    showDiscount () {
-      const discounts = ['firstPrize50', 'secondPrize60', 'thirdPrize70', 'fourthPrize80']
-      this.discountResult = discounts[this.$filters.randomInt(discounts.length)]
+    showDiscount() {
+      const discounts = ['firstPrize50', 'secondPrize60', 'thirdPrize70', 'fourthPrize80'];
+      this.discountResult = discounts[this.$filters.randomInt(discounts.length)];
     },
-    getDiscount () {
+    getDiscount() {
       if (this.couponsGot.indexOf(this.discountResult) < 0) {
-        this.couponsGot.push(this.discountResult)
+        this.couponsGot.push(this.discountResult);
       }
-      localStorage.setItem('couponsGot', JSON.stringify(this.couponsGot))
-      this.$refs.getDiscountBtn.disabled = true
+      localStorage.setItem('couponsGot', JSON.stringify(this.couponsGot));
+      this.$refs.getDiscountBtn.disabled = true;
     },
-    updateCategory (category) {
+    updateCategory(category) {
       this.$router.push({
         name: 'Products',
         params: {
-          selectedCategory: category
-        }
-      })
+          selectedCategory: category,
+        },
+      });
     },
-    getArticles (page = 1) {
-      this.isLoading = true
-      const api = `/api/${process.env.VUE_APP_APIPATH}/articles?page=${page}`
+    getArticles(page = 1) {
+      this.isLoading = true;
+      const api = `/api/${process.env.VUE_APP_APIPATH}/articles?page=${page}`;
       this.$http.get(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '取得文章')
-            this.isLoading = false
-            return
+            this.$httpMessageState(response, '取得文章');
+            this.isLoading = false;
+            return;
           }
-          this.articles = response.data.articles
-          this.isLoading = false
+          this.articles = response.data.articles;
+          this.isLoading = false;
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
     },
-    handleScroll () {
-      const elements = document.querySelectorAll('.scrollme')
+    handleScroll() {
+      const elements = document.querySelectorAll('.scrollme');
       elements.forEach((element, index) => {
-        const elTop = element.getBoundingClientRect().top
-        const elBottom = element.getBoundingClientRect().bottom
+        const elTop = element.getBoundingClientRect().top;
+        const elBottom = element.getBoundingClientRect().bottom;
         if (elTop <= 500 && elBottom >= 60) {
-          this.selected.splice(index, 1, true)
+          this.selected.splice(index, 1, true);
         }
         if (elTop >= 60 || elBottom <= 0) {
-          this.selected.splice(index, 1, false)
+          this.selected.splice(index, 1, false);
         }
-      })
-      const rootElement = document.documentElement
-      const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight
+      });
+      const rootElement = document.documentElement;
+      const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;
       if ((rootElement.scrollTop / scrollTotal) > 0.20) {
-        this.isShowed = true
+        this.isShowed = true;
       } else {
-        this.isShowed = false
+        this.isShowed = false;
       }
     },
-    scrollTo (e) {
-      document.querySelector(e.target.hash).scrollIntoView()
-    }
+    scrollTo(e) {
+      document.querySelector(e.target.hash).scrollIntoView();
+    },
   },
-  unmounted () {
-    clearInterval(this.timer)
-    window.removeEventListener('scroll', this.handleScroll)
+  unmounted() {
+    clearInterval(this.timer);
+    window.removeEventListener('scroll', this.handleScroll);
   },
-  mounted () {
-    this.timer = setInterval(this.countDown, 1000)
-    this.getArticles()
-    this.showDiscount()
-    window.addEventListener('scroll', this.handleScroll)
-  }
-})
+  mounted() {
+    this.timer = setInterval(this.countDown, 1000);
+    this.getArticles();
+    this.showDiscount();
+    window.addEventListener('scroll', this.handleScroll);
+  },
+});
 </script>

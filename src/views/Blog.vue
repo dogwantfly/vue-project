@@ -49,16 +49,24 @@
         #{{ tag }}
       </a>
     </template>
-    <div class="d-md-flex text-center justify-content-md-between p-5 border" v-if="articleIndex !== undefined">
+    <div
+      class="d-md-flex text-center justify-content-md-between p-5 border"
+      v-if="articleIndex !== undefined">
       <template v-if="articleIndex - 1 >= 0">
-         <a href="#" class="btn btn-link articles-link btn-zindex ps-0 text-start" @click.prevent="changeArticlePage(articleIndex - 1)">
+         <a
+          href="#"
+          class="btn btn-link articles-link btn-zindex ps-0 text-start"
+          @click.prevent="changeArticlePage(articleIndex - 1)">
           <i class="bi bi-chevron-left"></i>
           上一篇：
           {{ articles[articleIndex - 1].title }}
         </a>
       </template>
       <template v-if="articleIndex + 1 < articles.length">
-        <a href="#" class="btn btn-link articles-link btn-zindex ps-0 text-start" @click.prevent="changeArticlePage(articleIndex + 1)">
+        <a
+          href="#"
+          class="btn btn-link articles-link btn-zindex ps-0 text-start"
+          @click.prevent="changeArticlePage(articleIndex + 1)">
           下一篇：
           {{ articles[articleIndex + 1].title }}
           <i class="bi bi-chevron-right"></i>
@@ -70,76 +78,78 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       article: '',
       isLoading: false,
       articles: '',
-      articleIndex: 0
-    }
+      articleIndex: 0,
+    };
   },
   inject: ['$httpMessageState'],
   methods: {
-    getArticle () {
-      this.isLoading = true
-      const api = `/api/${process.env.VUE_APP_APIPATH}/article/${this.$route.params.blogId}`
+    getArticle() {
+      this.isLoading = true;
+      const api = `/api/${process.env.VUE_APP_APIPATH}/article/${this.$route.params.blogId}`;
       this.$http.get(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '取得文章')
-            this.isLoading = false
-            return
+            this.$httpMessageState(response, '取得文章');
+            this.isLoading = false;
+            return;
           }
-          this.article = response.data.article
-          this.getArticles()
+          this.article = response.data.article;
+          this.getArticles();
           setTimeout(() => {
-            const image = document.querySelector('.article-content img')
-            const links = document.querySelectorAll('.article-content a')
+            const image = document.querySelector('.article-content img');
+            const links = document.querySelectorAll('.article-content a');
             if (image) {
-              image.classList.add('img-fluid')
+              image.classList.add('img-fluid');
             }
             if (links.length) {
-              links.forEach(link => {
-                link.classList.add('text-success', 'fw-bold')
-              })
+              links.forEach((link) => {
+                link.classList.add('text-success', 'fw-bold');
+              });
             }
-            this.isLoading = false
-          })
+            this.isLoading = false;
+          });
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
     },
-    getArticles (page = 1) {
-      this.isLoading = true
-      const api = `/api/${process.env.VUE_APP_APIPATH}/articles?page=${page}`
+    getArticles(page = 1) {
+      this.isLoading = true;
+      const api = `/api/${process.env.VUE_APP_APIPATH}/articles?page=${page}`;
       this.$http.get(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '取得文章')
-            this.isLoading = false
-            return
+            this.$httpMessageState(response, '取得文章');
+            this.isLoading = false;
+            return;
           }
-          this.articles = response.data.articles
-          this.articleIndex = this.articles.filter(article => article.id === this.article.id)[0].num - 1
-          this.isLoading = false
+          this.articles = response.data.articles;
+          this.articleIndex = this.articles.filter(
+            (article) => article.id === this.article.id,
+          )[0].num - 1;
+          this.isLoading = false;
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
     },
-    changeArticlePage (index) {
-      this.$router.push({ path: `/blog/${this.articles[index].id}` })
+    changeArticlePage(index) {
+      this.$router.push({ path: `/blog/${this.articles[index].id}` });
       setTimeout(() => {
-        this.getArticle()
-      })
-    }
+        this.getArticle();
+      });
+    },
   },
-  mounted () {
-    this.$http.defaults.baseURL = process.env.VUE_APP_API
-    this.getArticle()
-  }
-}
+  mounted() {
+    this.$http.defaults.baseURL = process.env.VUE_APP_API;
+    this.getArticle();
+  },
+};
 </script>

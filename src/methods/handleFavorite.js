@@ -1,9 +1,9 @@
 export default {
-  storeFavorite (favorite) {
-    const favoriteStr = JSON.stringify(favorite)
-    localStorage.setItem('favoriteProduct', favoriteStr)
+  storeFavorite(favorite) {
+    const favoriteStr = JSON.stringify(favorite);
+    localStorage.setItem('favoriteProduct', favoriteStr);
   },
-  getFavorite () {
-    return JSON.parse(localStorage.getItem('favoriteProduct'))
-  }
-}
+  getFavorite() {
+    return JSON.parse(localStorage.getItem('favoriteProduct'));
+  },
+};

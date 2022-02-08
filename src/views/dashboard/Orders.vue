@@ -4,15 +4,23 @@
     <h1 class="mb-3">訂單管理</h1>
   </header>
   <div class="d-flex justify-content-between align-items-center mt-3 mb-5">
-    <button type="button" class="btn btn-outline-danger border-0" @click="openModal('delete',item)" :class="{'disabled': !orders.length}">
-      <i class="bi bi-trash-fill me-2"></i>
+    <button
+      type="button"
+      class="btn btn-outline-danger border-0"
+      @click="openModal('delete',item)"
+      :class="{'disabled': !orders.length}">
+        <i class="bi bi-trash-fill me-2"></i>
       刪除全部訂單
     </button>
     <div class="input-group w-25 align-items-center border rounded-3">
       <div class="input-text px-3">
         <i class="bi bi-search"></i>
       </div>
-      <input type="search" v-model.trim="orderSearchBar" placeholder="搜尋訂單編號" class="form-control border-0 flex-shrink-0">
+      <input
+        type="search"
+        v-model.trim="orderSearchBar"
+        placeholder="搜尋訂單編號"
+        class="form-control border-0 flex-shrink-0">
     </div>
     <div class="input-group w-auto align-items-center">
       <label for="sort" class="me-2">排序</label>
@@ -29,17 +37,28 @@
   </div>
   <ul class="nav nav-pills mb-3">
     <li class="nav-item">
-      <a class="nav-link rounded-pill" :class="{'active': filterBy === ''}" href="#" @click.prevent="getOrders(1, 'allOrders')">
+      <a
+        class="nav-link rounded-pill"
+        :class="{'active': filterBy === ''}"
+        href="#"
+        @click.prevent="getOrders(1, 'allOrders')">
         所有訂單
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link rounded-pill" :class="{'active': filterBy === 'paid'}" href="#" @click.prevent="filterData('paid')">
+      <a
+        class="nav-link rounded-pill"
+        :class="{'active': filterBy === 'paid'}"
+        href="#" @click.prevent="filterData('paid')">
         已付款
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link rounded-pill" href="#" :class="{'active': filterBy === 'unpaid'}" @click.prevent="filterData('unpaid')">
+      <a
+        class="nav-link rounded-pill"
+        href="#"
+        :class="{'active': filterBy === 'unpaid'}"
+        @click.prevent="filterData('unpaid')">
         未付款
       </a>
     </li>
@@ -82,8 +101,14 @@
           </td>
           <td class="text-end">
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-              <button type="button" class="btn btn-outline-secondary border-0 bi bi-eye-fill" @click="openModal('edit',item)"></button>
-              <button type="button" class="btn btn-outline-danger border-0 bi bi-trash-fill" @click="openModal('delete',item)"></button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary border-0 bi bi-eye-fill"
+                @click="openModal('edit',item)"></button>
+              <button
+                type="button"
+                class="btn btn-outline-danger border-0 bi bi-trash-fill"
+                @click="openModal('delete',item)"></button>
             </div>
           </td>
         </tr>
@@ -100,17 +125,17 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination.vue'
-import OrderModal from '@/components/backend/OrderModal.vue'
-import DelOrderModal from '@/components/backend/DelOrderModal.vue'
+import Pagination from '@/components/Pagination.vue';
+import OrderModal from '@/components/backend/OrderModal.vue';
+import DelOrderModal from '@/components/backend/DelOrderModal.vue';
 
 export default ({
   components: {
     Pagination,
     OrderModal,
-    DelOrderModal
+    DelOrderModal,
   },
-  data () {
+  data() {
     return {
       orders: [],
       tempOrder: {},
@@ -125,168 +150,171 @@ export default ({
       filterBy: '',
       filtedOrders: '',
       sortedOrders: '',
-      matchOrders: ''
-    }
+      matchOrders: '',
+    };
   },
   inject: ['$httpMessageState'],
   methods: {
-    getOrders (page = this.current_page, filter) {
-      if (this.pagination !== '' && filter === 'allOrders') return
-      this.isLoading = true
-      const api = `/api/${process.env.VUE_APP_APIPATH}/admin/orders?page=${page}`
+    getOrders(page = this.current_page, filter) {
+      if (this.pagination !== '' && filter === 'allOrders') return;
+      this.isLoading = true;
+      const api = `/api/${process.env.VUE_APP_APIPATH}/admin/orders?page=${page}`;
       this.$http.get(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '取得訂單')
-            this.isLoading = false
-            return
+            this.$httpMessageState(response, '取得訂單');
+            this.isLoading = false;
+            return;
           }
-          this.orders = response.data.orders
-          this.pagination = response.data.pagination
-          this.current_page = response.data.pagination.current_page
-          this.filterBy = ''
-          this.filtedOrders = ''
-          this.matchOrders = ''
-          this.allOrders = []
-          this.orders.forEach(order => {
-            this.allOrders.push(order)
-          })
+          this.orders = response.data.orders;
+          this.pagination = response.data.pagination;
+          this.current_page = response.data.pagination.current_page;
+          this.filterBy = '';
+          this.filtedOrders = '';
+          this.matchOrders = '';
+          this.allOrders = [];
+          this.orders.forEach((order) => {
+            this.allOrders.push(order);
+          });
           if (this.pagination.total_pages > 1) {
             for (let i = 2; i <= this.pagination.total_pages; i += 1) {
               this.$http.get(`/api/${process.env.VUE_APP_APIPATH}/admin/orders?page=${i}`)
-                .then(response => {
-                  if (!response.data.success) {
-                    this.$httpMessageState(response, '取得訂單')
-                    this.isLoading = false
-                    return
+                .then((res) => {
+                  if (!res.data.success) {
+                    this.$httpMessageState(response, '取得訂單');
+                    this.isLoading = false;
+                    return;
                   }
-                  const orders = response.data.orders
-                  orders.forEach(order => {
-                    this.allOrders.push(order)
-                  })
+                  const { orders } = res.data;
+                  orders.forEach((order) => {
+                    this.allOrders.push(order);
+                  });
                   if (this.orderSearchBar !== '') {
-                    this.searchOrders()
+                    this.searchOrders();
                   }
                   if (this.sortedOrders !== '') {
-                    this.sortOrders(this.sortBy)
+                    this.sortOrders(this.sortBy);
                   }
-                })
+                });
             }
           }
-          this.isLoading = false
+          this.isLoading = false;
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
     },
-    openModal (action, item) {
+    openModal(action, item) {
       switch (action) {
         case 'edit':
-          this.tempOrder = { ...item }
-          this.$refs.orderModal.openModal()
-          break
+          this.tempOrder = { ...item };
+          this.$refs.orderModal.openModal();
+          break;
         case 'delete':
-          this.tempOrder = { ...item }
-          this.$refs.delOrderModal.openModal()
-          break
+          this.tempOrder = { ...item };
+          this.$refs.delOrderModal.openModal();
+          break;
+        default:
+          break;
       }
     },
-    searchOrders () {
-      this.matchOrders = this.allOrders.filter(order => order.id.toLowerCase().includes(this.orderSearchBar.toLowerCase()))
+    searchOrders() {
+      this.matchOrders = this.allOrders
+        .filter((order) => order.id.toLowerCase().includes(this.orderSearchBar.toLowerCase()));
       if (this.matchOrders.length) {
-        this.searchResults = ''
-        this.orders = this.matchOrders
+        this.searchResults = '';
+        this.orders = this.matchOrders;
         if (this.sortedOrders) {
-          this.sortOrders(this.sortBy)
+          this.sortOrders(this.sortBy);
         } else {
-          this.sortBy = ''
-          this.sortedOrders = ''
+          this.sortBy = '';
+          this.sortedOrders = '';
         }
-        this.filterBy = ''
-        this.filtedOrders = ''
-        this.pagination = ''
+        this.filterBy = '';
+        this.filtedOrders = '';
+        this.pagination = '';
       } else {
-        this.searchResults = '無符合搜尋結果，請再試試其他關鍵字～'
+        this.searchResults = '無符合搜尋結果，請再試試其他關鍵字～';
       }
     },
-    sortOrders (sortBy) {
-      let orders = []
-      this.pagination = ''
+    sortOrders(sortBy) {
+      let orders = [];
+      this.pagination = '';
       if (this.filtedOrders) {
-        orders = this.filtedOrders
+        orders = this.filtedOrders;
       } else if (this.matchOrders) {
-        orders = this.matchOrders
+        orders = this.matchOrders;
       } else {
-        orders = this.allOrders
+        orders = this.allOrders;
       }
       switch (sortBy) {
         case 'totalFromLowest':
-          orders.sort((a, b) => a.total - b.total)
-          break
+          orders.sort((a, b) => a.total - b.total);
+          break;
         case 'totalFromHighest':
-          orders.sort((a, b) => b.total - a.total)
-          break
+          orders.sort((a, b) => b.total - a.total);
+          break;
         case 'createdFromOldest':
-          orders.sort((a, b) => a.create_at - b.create_at)
-          break
+          orders.sort((a, b) => a.create_at - b.create_at);
+          break;
         default:
-          break
+          break;
       }
-      this.sortedOrders = orders
-      this.orders = this.sortedOrders
+      this.sortedOrders = orders;
+      this.orders = this.sortedOrders;
     },
-    filterData (filterBy) {
-      if (this.filterBy === filterBy) return
-      this.pagination = ''
-      this.filterBy = filterBy
-      let orders = []
+    filterData(filterBy) {
+      if (this.filterBy === filterBy) return;
+      this.pagination = '';
+      this.filterBy = filterBy;
+      let orders = [];
       if (this.matchOrders) {
-        orders = this.matchOrders
+        orders = this.matchOrders;
       } else {
-        orders = this.allOrders
+        orders = this.allOrders;
       }
       switch (filterBy) {
         case 'paid':
-          this.filtedOrders = orders.filter(order => order.is_paid)
-          break
+          this.filtedOrders = orders.filter((order) => order.is_paid);
+          break;
         case 'unpaid':
-          this.filtedOrders = orders.filter(order => !order.is_paid)
-          break
+          this.filtedOrders = orders.filter((order) => !order.is_paid);
+          break;
         default:
-          break
+          break;
       }
       if (this.sortedOrders) {
-        this.sortOrders(this.sortBy)
+        this.sortOrders(this.sortBy);
       } else {
-        this.orders = this.filtedOrders
-      }
-    }
-  },
-  watch: {
-    sortBy (newSort, oldSort) {
-      if (newSort === oldSort) {
-        if (newSort === 'totalFromLowest' || newSort === 'totalFromHighest') {
-          this.sortOrders(newSort)
-        }
-      } else if (newSort === '') {
-        this.sortedOrders = ''
-        this.getOrders()
-      } else {
-        this.sortOrders(newSort)
+        this.orders = this.filtedOrders;
       }
     },
-    orderSearchBar (newValue) {
-      if (newValue !== '') {
-        this.searchOrders()
-      } else {
-        this.getOrders()
-      }
-    }
   },
-  mounted () {
-    this.$http.defaults.baseURL = process.env.VUE_APP_API
-    this.getOrders()
-  }
-})
+  watch: {
+    sortBy(newSort, oldSort) {
+      if (newSort === oldSort) {
+        if (newSort === 'totalFromLowest' || newSort === 'totalFromHighest') {
+          this.sortOrders(newSort);
+        }
+      } else if (newSort === '') {
+        this.sortedOrders = '';
+        this.getOrders();
+      } else {
+        this.sortOrders(newSort);
+      }
+    },
+    orderSearchBar(newValue) {
+      if (newValue !== '') {
+        this.searchOrders();
+      } else {
+        this.getOrders();
+      }
+    },
+  },
+  mounted() {
+    this.$http.defaults.baseURL = process.env.VUE_APP_API;
+    this.getOrders();
+  },
+});
 </script>

@@ -1,13 +1,23 @@
 <template>
   <Loading :active="isLoading"/>
-  <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true" ref="modal">
+  <div
+    class="modal fade"
+    id="orderModal"
+    tabindex="-1"
+    aria-labelledby="orderModalLabel"
+    aria-hidden="true"
+    ref="modal">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header border-0">
           <h5 class="modal-title" id="exampleModalLabel">
             訂單細節
           </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="row">
@@ -73,12 +83,27 @@
                 </table>
               </div>
               <h3 class="h5">付款狀態</h3>
-              <input type="checkbox" id="is_paid" :checked="tempOrder.is_paid" class="me-2" v-model="tempOrder.is_paid">
-              <label for="is_paid" class="form-label" :class="tempOrder.is_paid ? 'text-success' : 'text-muted'">{{ tempOrder.is_paid ? '已付款' : '未付款' }}</label>
+              <input
+                type="checkbox"
+                id="is_paid"
+                :checked="tempOrder.is_paid"
+                class="me-2"
+                v-model="tempOrder.is_paid">
+              <label
+                for="is_paid"
+                class="form-label"
+                :class="tempOrder.is_paid ? 'text-success' : 'text-muted'">
+                {{ tempOrder.is_paid ? '已付款' : '未付款' }}
+              </label>
             </div>
           </div>
           <div class="modal-footer border-0">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal">
+              取消
+            </button>
             <button type="button" class="btn btn-primary" @click="updateOrder">確認</button>
           </div>
         </div>
@@ -88,45 +113,45 @@
 </template>
 
 <script>
-import modalMixin from '@/mixins/modalMixin'
+import modalMixin from '@/mixins/modalMixin';
 
 export default {
   props: ['temp-order'],
   emits: ['update'],
   inject: ['$httpMessageState'],
   template: '#orderModal',
-  data () {
+  data() {
     return {
       modal: null,
-      isLoading: false
-    }
+      isLoading: false,
+    };
   },
   mixins: [modalMixin],
   methods: {
-    openModal () {
-      this.modal.show()
+    openModal() {
+      this.modal.show();
     },
-    updateOrder () {
-      this.isLoading = true
-      const id = this.tempOrder.id
-      const api = `/api/${process.env.VUE_APP_APIPATH}/admin/order/${id}`
+    updateOrder() {
+      this.isLoading = true;
+      const { id } = this.tempOrder;
+      const api = `/api/${process.env.VUE_APP_APIPATH}/admin/order/${id}`;
       this.$http.put(api, { data: this.tempOrder })
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '修改訂單')
-            this.isLoading = false
-            return
+            this.$httpMessageState(response, '修改訂單');
+            this.isLoading = false;
+            return;
           }
-          this.modal.hide()
-          this.$emit('update')
-          this.$httpMessageState(response, '修改訂單')
-          this.isLoading = false
+          this.modal.hide();
+          this.$emit('update');
+          this.$httpMessageState(response, '修改訂單');
+          this.isLoading = false;
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
-    }
-  }
-}
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
+    },
+  },
+};
 </script>

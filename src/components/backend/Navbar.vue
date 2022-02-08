@@ -12,7 +12,9 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/dashboard/products" class="nav-link d-flex align-items-center py-0 mb-3">
+          <router-link
+            to="/dashboard/products"
+            class="nav-link d-flex align-items-center py-0 mb-3">
             <div class="ps-4 icon">
               <i class="bi bi-handbag-fill rounded-circle p-3 d-block"></i>
             </div>
@@ -56,32 +58,32 @@
 export default ({
   inject: ['$httpMessageState', 'emitter'],
   methods: {
-    logOut () {
-      const api = '/logout'
+    logOut() {
+      const api = '/logout';
       this.$http.post(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
             this.emitter.emit('push-message', {
               style: 'danger',
               title: '登出失敗',
-              content: '登出失敗，請再試一次'
-            })
-            return
+              content: '登出失敗，請再試一次',
+            });
+            return;
           }
-          document.cookie = `token= ;expires=${new Date()}`
-          this.isLogin = false
-          this.$httpMessageState(response, '已登出')
+          document.cookie = `token= ;expires=${new Date()}`;
+          this.isLogin = false;
+          this.$httpMessageState(response, '已登出');
           setTimeout(() => {
-            this.$router.push('/')
-          }, 3000)
+            this.$router.push('/');
+          }, 3000);
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-        })
-    }
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+        });
+    },
   },
-  created () {
-    this.$http.defaults.baseURL = process.env.VUE_APP_API
-  }
-})
+  created() {
+    this.$http.defaults.baseURL = process.env.VUE_APP_API;
+  },
+});
 </script>

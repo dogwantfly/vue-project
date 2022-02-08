@@ -1,5 +1,11 @@
 <template>
-  <div class="modal fade" id="delProductModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="modal">
+  <div
+    class="modal fade"
+    id="delProductModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+    ref="modal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header border-0">
@@ -9,7 +15,11 @@
             <span v-else-if="tempCoupon">優惠券</span>
             <span v-else>文章</span>
           </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <p>確定要刪除 <span class="fw-bold" v-if="tempProduct">{{ tempProduct.title }}</span>
@@ -31,57 +41,57 @@
 </template>
 
 <script>
-import modalMixin from '@/mixins/modalMixin'
+import modalMixin from '@/mixins/modalMixin';
 
 export default {
   props: ['temp-product', 'temp-coupon', 'temp-article'],
   emits: ['delete'],
   template: '#delProductModal',
-  data () {
+  data() {
     return {
       modal: null,
       api: '',
-      data: {}
-    }
+      data: {},
+    };
   },
   inject: ['$httpMessageState'],
   mixins: [modalMixin],
   methods: {
-    openModal () {
-      this.modal.show()
+    openModal() {
+      this.modal.show();
     },
-    delete () {
-      this.isLoading = true
+    delete() {
+      this.isLoading = true;
       this.$http.delete(this.api, this.data)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '刪除')
-            this.isLoading = false
-            return
+            this.$httpMessageState(response, '刪除');
+            this.isLoading = false;
+            return;
           }
-          this.modal.hide()
-          this.$emit('delete')
-          this.$httpMessageState(response, '刪除')
-          this.isLoading = false
+          this.modal.hide();
+          this.$emit('delete');
+          this.$httpMessageState(response, '刪除');
+          this.isLoading = false;
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
     },
-    deleteItem () {
+    deleteItem() {
       if (this.tempProduct) {
-        this.api = `/api/${process.env.VUE_APP_APIPATH}/admin/product/${this.tempProduct.id}`
-        this.data = { data: this.tempProduct }
+        this.api = `/api/${process.env.VUE_APP_APIPATH}/admin/product/${this.tempProduct.id}`;
+        this.data = { data: this.tempProduct };
       } else if (this.tempCoupon) {
-        this.api = `/api/${process.env.VUE_APP_APIPATH}/admin/coupon/${this.tempCoupon.id}`
-        this.data = { data: this.tempCoupon }
+        this.api = `/api/${process.env.VUE_APP_APIPATH}/admin/coupon/${this.tempCoupon.id}`;
+        this.data = { data: this.tempCoupon };
       } else {
-        this.api = `/api/${process.env.VUE_APP_APIPATH}/admin/article/${this.tempArticle.id}`
-        this.data = { data: this.tempArticle }
+        this.api = `/api/${process.env.VUE_APP_APIPATH}/admin/article/${this.tempArticle.id}`;
+        this.data = { data: this.tempArticle };
       }
-      this.delete()
-    }
-  }
-}
+      this.delete();
+    },
+  },
+};
 </script>

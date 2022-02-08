@@ -1,6 +1,12 @@
 <template>
   <Loading :active="isLoading" :z-index="100"/>
-  <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true" ref="modal">
+  <div
+    class="modal fade"
+    id="productModal"
+    tabindex="-1"
+    aria-labelledby="productModalLabel"
+    aria-hidden="true"
+    ref="modal">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header border-0">
@@ -8,7 +14,11 @@
             <span v-if="isNew">新增</span>
             <span v-else>編輯</span>產品
           </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <Form @submit="updateProduct" v-slot="{ errors }" ref="form">
@@ -35,11 +45,18 @@
                     class="invalid-feedback"
                   />
                   <label for="customFile" class="form-label">或 上傳圖片
-                    <div class="spinner-border spinner-border-sm" role="status" v-if="loadingUploadImg === 'e'">
+                    <div
+                      class="spinner-border spinner-border-sm"
+                      role="status"
+                      v-if="loadingUploadImg === 'e'">
                       <span class="visually-hidden">Loading...</span>
                     </div>
                   </label>
-                  <input type="file" id="customFile" class="form-control mb-3" @change="uploadImg($event)">
+                  <input
+                    type="file"
+                    id="customFile"
+                    class="form-control mb-3"
+                    @change="uploadImg($event)">
                   <img :src="this.product.imageUrl" :alt="product.title" class="img-fluid mb-3">
                 </div>
                 <div class="form-group mb-3">
@@ -48,22 +65,47 @@
                     <div class="mb-3 pb-3 border-bottom">
                       <label :for="`imagesUrl${key}`" class="form-label small">輸入圖片網址</label>
                       <div class="input-group mb-3">
-                        <input type="text" v-model="product.imagesUrl[key]" :id="`imagesUrl${key}`" class="form-control">
-                        <button class="btn btn-outline-danger" type="button" id="button-addon2" @click="removeImage(key)">移除</button>
+                        <input
+                          type="text"
+                          v-model="product.imagesUrl[key]"
+                          :id="`imagesUrl${key}`"
+                          class="form-control">
+                        <button
+                          class="btn btn-outline-danger"
+                          type="button"
+                          id="button-addon2"
+                          @click="removeImage(key)">
+                          移除
+                        </button>
                       </div>
                       <label :for="`customFile${key}`" class="form-label small">或 上傳圖片
-                        <div class="spinner-border spinner-border-sm" role="status" v-if="loadingUploadImg === `${key}`">
+                        <div
+                          class="spinner-border spinner-border-sm"
+                          role="status"
+                          v-if="loadingUploadImg === `${key}`">
                           <span class="visually-hidden">Loading...</span>
                         </div>
                       </label>
-                      <input type="file" :id="`customFile${key}`" class="form-control mb-3" @change="uploadImg($event)">
+                      <input
+                        type="file"
+                        :id="`customFile${key}`"
+                        class="form-control mb-3"
+                        @change="uploadImg($event)">
                       <p v-if="!product.imagesUrl[key]" class="text-muted">請輸入圖片網址或上傳圖片！</p>
-                      <img :src="this.product.imagesUrl[key]" :alt="product.title + key" class="img-fluid">
+                      <img
+                        :src="this.product.imagesUrl[key]"
+                        :alt="product.title + key"
+                        class="img-fluid">
                     </div>
                   </template>
                 </div>
                 <div v-if="Array.isArray(product.imagesUrl)">
-                  <button type="button" class="w-100 mb-3 btn btn-outline-primary" v-if="!product.imagesUrl.length || product.imagesUrl[product.imagesUrl.length - 1]" @click="createImage">
+                  <button
+                    type="button"
+                    class="w-100 mb-3 btn btn-outline-primary"
+                    v-if="!product.imagesUrl.length || product.imagesUrl
+                    [product.imagesUrl.length - 1]"
+                    @click="createImage">
                     新增圖片
                   </button>
                 </div>
@@ -162,17 +204,42 @@
                 </div>
                 <div class="bg-light mb-3 rounded-3 p-3">
                   <label for="content" class="form-label">說明內容</label>
-                  <textarea class="form-control mb-3" id="content" rows="3" placeholder="說明內容" v-model="product.content"></textarea>
+                  <textarea
+                    class="form-control mb-3"
+                    id="content"
+                    rows="3"
+                    placeholder="說明內容"
+                    v-model="product.content"></textarea>
                   <label for="description" class="form-label">產品描述</label>
-                  <textarea class="form-control mb-3" id="description" rows="3" placeholder="產品描述" v-model="product.description"></textarea>
-                  <input type="checkbox" id="is_enabled" :checked="product.is_enabled" class="me-2" v-model="product.is_enabled">
+                  <textarea
+                    class="form-control mb-3"
+                    id="description"
+                    rows="3"
+                    placeholder="產品描述"
+                    v-model="product.description"></textarea>
+                  <input
+                    type="checkbox"
+                    id="is_enabled"
+                    :checked="product.is_enabled"
+                    class="me-2"
+                    v-model="product.is_enabled">
                   <label for="is_enabled" class="form-label">是否啟用</label>
                 </div>
               </div>
             </div>
             <div class="modal-footer border-0">
-              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
-              <button type="submit" class="btn btn-primary" :disabled="Object.keys(errors).length !== 0">確認</button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal">
+                取消
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                :disabled="Object.keys(errors).length !== 0">
+                確認
+              </button>
             </div>
           </Form>
         </div>
@@ -182,12 +249,12 @@
 </template>
 
 <script>
-import modalMixin from '@/mixins/modalMixin'
+import modalMixin from '@/mixins/modalMixin';
 
 export default {
   props: ['temp-product', 'isNew'],
   template: '#productModal',
-  data () {
+  data() {
     return {
       modal: null,
       isLoading: false,
@@ -201,16 +268,16 @@ export default {
         origin_price: '',
         price: '',
         title: '',
-        unit: ''
+        unit: '',
       },
-      loadingUploadImg: false
-    }
+      loadingUploadImg: false,
+    };
   },
   emits: ['update'],
   inject: ['emitter', '$httpMessageState'],
   mixins: [modalMixin],
   methods: {
-    openModal () {
+    openModal() {
       if (this.isNew) {
         this.product = {
           category: '',
@@ -222,93 +289,93 @@ export default {
           origin_price: '',
           price: '',
           title: '',
-          unit: ''
-        }
-        this.$refs.form.resetForm()
+          unit: '',
+        };
+        this.$refs.form.resetForm();
       } else {
         document.querySelectorAll('.is-valid').forEach((item) => {
-          item.classList.remove('is-valid')
-        })
+          item.classList.remove('is-valid');
+        });
       }
-      this.modal.show()
+      this.modal.show();
     },
-    updateProduct () {
-      this.isLoading = true
-      const id = this.tempProduct.id
-      let api
-      let httpMethod = 'post'
-      let httpMethodStr = '新增'
+    updateProduct() {
+      this.isLoading = true;
+      const { id } = this.tempProduct;
+      let api;
+      let httpMethod = 'post';
+      let httpMethodStr = '新增';
       if (this.tempProduct.origin_price < 0 || this.tempProduct.price < 0 || this.num < 0) {
         this.emitter.emit('push-message', {
           style: 'danger',
           title: `${httpMethodStr}失敗`,
-          content: '價錢 / 數量不得為負數'
-        })
-        return
+          content: '價錢 / 數量不得為負數',
+        });
+        return;
       }
       if (id) {
-        api = `/api/${process.env.VUE_APP_APIPATH}/admin/product/${id}`
-        httpMethod = 'put'
-        httpMethodStr = '更新'
+        api = `/api/${process.env.VUE_APP_APIPATH}/admin/product/${id}`;
+        httpMethod = 'put';
+        httpMethodStr = '更新';
       } else {
-        this.tempProduct.id = new Date().getTime()
-        api = `/api/${process.env.VUE_APP_APIPATH}/admin/product`
+        this.tempProduct.id = new Date().getTime();
+        api = `/api/${process.env.VUE_APP_APIPATH}/admin/product`;
       }
       this.$http[httpMethod](api, { data: this.product })
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, `${httpMethodStr}產品`)
-            this.isLoading = false
-            return
+            this.$httpMessageState(response, `${httpMethodStr}產品`);
+            this.isLoading = false;
+            return;
           }
-          this.modal.hide()
-          this.$emit('update')
-          this.$httpMessageState(response, `${httpMethodStr}產品`)
-          this.isLoading = false
+          this.modal.hide();
+          this.$emit('update');
+          this.$httpMessageState(response, `${httpMethodStr}產品`);
+          this.isLoading = false;
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
     },
-    uploadImg (e) {
-      const id = e.target.id
-      const key = id.split('')[id.length - 1]
-      this.loadingUploadImg = key
-      const uploadedFile = e.target.files[0]
-      const formData = new FormData()
-      formData.append('file-to-upload', uploadedFile)
-      const api = `/api/${process.env.VUE_APP_APIPATH}/admin/upload`
+    uploadImg(e) {
+      const { id } = e.target;
+      const key = id.split('')[id.length - 1];
+      this.loadingUploadImg = key;
+      const uploadedFile = e.target.files[0];
+      const formData = new FormData();
+      formData.append('file-to-upload', uploadedFile);
+      const api = `/api/${process.env.VUE_APP_APIPATH}/admin/upload`;
       this.$http.post(api, formData)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '上傳圖片')
-            this.loadingUploadImg = false
-            return
+            this.$httpMessageState(response, '上傳圖片');
+            this.loadingUploadImg = false;
+            return;
           }
-          if (isNaN(key)) {
-            this.product.imageUrl = response.data.imageUrl
+          if (Number.isNaN(key)) {
+            this.product.imageUrl = response.data.imageUrl;
           } else {
-            this.product.imagesUrl[key] = response.data.imageUrl
+            this.product.imagesUrl[key] = response.data.imageUrl;
           }
-          this.loadingUploadImg = false
+          this.loadingUploadImg = false;
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.loadingUploadImg = false
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.loadingUploadImg = false;
+        });
     },
-    createImage () {
-      this.product.imagesUrl.push('')
+    createImage() {
+      this.product.imagesUrl.push('');
     },
-    removeImage (key) {
-      this.product.imagesUrl.splice(key, 1)
-    }
+    removeImage(key) {
+      this.product.imagesUrl.splice(key, 1);
+    },
   },
   watch: {
-    tempProduct (item) {
-      this.product = item
-    }
-  }
-}
+    tempProduct(item) {
+      this.product = item;
+    },
+  },
+};
 </script>

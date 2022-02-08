@@ -20,11 +20,18 @@
                 placeholder="name@example.com"
                 rules="email|required"
                 v-model="userEmail"
-                :class="{ 'is-invalid': errors['email'] , 'is-valid': !errors['email'] && userEmail !== ''}"
+                :class="{
+                  'is-invalid': errors['email'] , 'is-valid': !errors['email'] && userEmail !== ''
+                }"
                 />
                 <ErrorMessage name="email" class="invalid-feedback"/>
               </div>
-              <button class="btn btn-primary btn-submit flex-shrink-0" type="submit" :disabled="errors['email'] || !userEmail">訂閱</button>
+              <button
+                class="btn btn-primary btn-submit flex-shrink-0"
+                type="submit"
+                :disabled="errors['email'] || !userEmail">
+                訂閱
+              </button>
             </div>
           </div>
         </div>
@@ -82,23 +89,23 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      userEmail: ''
-    }
+      userEmail: '',
+    };
   },
   inject: ['$httpMessageState'],
   methods: {
-    subscribe () {
+    subscribe() {
       this.$httpMessageState({
         data: {
           success: true,
-          message: '感謝您的訂閱，我們會不定期寄送優惠折扣'
-        }
-      }, '訂閱')
-      this.userEmail = ''
-      this.$refs.subscribeForm.resetForm()
-    }
-  }
-}
+          message: '感謝您的訂閱，我們會不定期寄送優惠折扣',
+        },
+      }, '訂閱');
+      this.userEmail = '';
+      this.$refs.subscribeForm.resetForm();
+    },
+  },
+};
 </script>

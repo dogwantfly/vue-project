@@ -15,8 +15,15 @@
       <div class="col-md-10 col-xl-8 mx-auto">
         <div class="input-group flex-nowrap mb-5">
           <span class="input-group-text bi bi-search border-0"></span>
-          <input type="search" name="searchOrder" class="d-block w-100 form-control border-0" id="searchOrder" placeholder="搜尋您的訂單編號" @keydown="searchOrder($event)" v-model="searchOrderId">
-          <button class="btn btn-primary flex-shrink-0" type="button" @click="searchOrder">搜尋</button>
+          <input type="search"
+            name="searchOrder"
+            class="d-block w-100 form-control border-0"
+            id="searchOrder"
+            placeholder="搜尋您的訂單編號"
+            @keydown="searchOrder($event)"
+            v-model="searchOrderId">
+          <button class="btn btn-primary flex-shrink-0"
+            type="button" @click="searchOrder">搜尋</button>
         </div>
         <template v-if="searchOrderResult && orderResult">
           <div class="bg-light rounded-3 text-primary p-3">
@@ -27,7 +34,9 @@
             <p :class="orderResult.is_paid ? 'text-success' : 'text-muted'">
               {{ orderResult.is_paid ? '已付款' : '未付款' }}
             </p>
-            <router-link :to="`/checkout/${orderResult.id}`" class="btn btn-outline-primary mb-3" v-if="!orderResult.is_paid">
+            <router-link :to="`/checkout/${orderResult.id}`"
+            class="btn btn-outline-primary mb-3"
+            v-if="!orderResult.is_paid">
               前往付款
             </router-link>
             <h3 class="fs-5">用戶資料</h3>
@@ -81,7 +90,9 @@
               <tbody>
                 <tr v-for="product in orderResult.products" :key="product.id">
                   <td>
-                    <img :src="product.product.imageUrl" :alt="product.product.title" class="img-fluid mb-3 img-size object-fit-cover">
+                    <img :src="product.product.imageUrl"
+                    :alt="product.product.title"
+                    class="img-fluid mb-3 img-size object-fit-cover">
                   </td>
                   <td>
                     {{ product.product.title }}
@@ -105,7 +116,8 @@
             </table>
           </div>
         </template>
-        <p v-else-if="searchOrderResult === false && searchOrderId" class="text-center bg-light rounded-3 py-3">無符合的訂單</p>
+        <p v-else-if="searchOrderResult === false && searchOrderId"
+        class="text-center bg-light rounded-3 py-3">無符合的訂單</p>
       </div>
     </div>
     <div class="row py-5">
@@ -114,20 +126,33 @@
           尚未付款的訂單共 <span class="text-danger fw-bold">{{ unpaidOrders.length }}</span>  筆
         </h3>
         <ul class="accordion bg-light" id="accordionOrders">
-          <li class="accordion-item rounded-3 border-0" v-for="order in unpaidOrders" :key="order.id">
+          <li class="accordion-item rounded-3 border-0"
+            v-for="order in unpaidOrders"
+            :key="order.id">
             <h2 class="accordion-header" :id="`heading${order.num}`">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="`#${order.id}`" aria-expanded="true" :aria-controls="`collapse${order.num}`">
+              <button class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                :data-bs-target="`#${order.id}`"
+                aria-expanded="true"
+                :aria-controls="`collapse${order.num}`">
                 {{ order.id }}
               </button>
             </h2>
-            <div :id="order.id" class="accordion-collapse collapse" :aria-labelledby="`heading${order.num}`" data-bs-parent="#accordionOrders">
+            <div :id="order.id"
+              class="accordion-collapse collapse"
+              :aria-labelledby="`heading${order.num}`"
+              data-bs-parent="#accordionOrders">
               <div class="accordion-body">
                 <div class="table-responsive">
                   <table class="table" v-if="order.products">
                     <tbody>
                       <tr v-for="product in order.products" :key="product.id">
                         <td>
-                          <img :src="product.product.imageUrl" :alt="product.product.title" class="img-fluid mb-3 img-size object-fit-cover">
+                          <img
+                            :src="product.product.imageUrl"
+                            :alt="product.product.title"
+                            class="img-fluid mb-3 img-size object-fit-cover">
                         </td>
                         <td>
                           {{ product.product.title }}
@@ -165,55 +190,55 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       orders: '',
       unpaidOrders: '',
       isLoading: false,
       searchOrderResult: '',
       orderResult: '',
-      searchOrderId: ''
-    }
+      searchOrderId: '',
+    };
   },
   inject: ['$httpMessageState'],
   methods: {
-    getOrders (page = 1) {
-      this.isLoading = true
-      const api = `/api/${process.env.VUE_APP_APIPATH}/orders?page=${page}`
+    getOrders(page = 1) {
+      this.isLoading = true;
+      const api = `/api/${process.env.VUE_APP_APIPATH}/orders?page=${page}`;
       this.$http.get(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '取得訂單列表')
-            this.isLoading = false
-            return
+            this.$httpMessageState(response, '取得訂單列表');
+            this.isLoading = false;
+            return;
           }
-          this.orders = response.data.orders
-          this.unpaidOrders = this.orders.filter(order => !order.is_paid)
-          this.isLoading = false
+          this.orders = response.data.orders;
+          this.unpaidOrders = this.orders.filter((order) => !order.is_paid);
+          this.isLoading = false;
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
     },
-    searchOrder (e) {
-      this.searchOrderResult = ''
-      this.orderResult = ''
-      if (e.type === 'keydown' && e.keyCode !== 13) return
-      this.orders.forEach(order => {
+    searchOrder(e) {
+      this.searchOrderResult = '';
+      this.orderResult = '';
+      if (e.type === 'keydown' && e.keyCode !== 13) return;
+      this.orders.forEach((order) => {
         if (order.id === this.searchOrderId) {
-          this.searchOrderResult = true
-          this.orderResult = { ...order }
+          this.searchOrderResult = true;
+          this.orderResult = { ...order };
         }
-      })
+      });
       if (!this.orderResult) {
-        this.searchOrderResult = false
+        this.searchOrderResult = false;
       }
-    }
+    },
   },
-  created () {
-    this.$http.defaults.baseURL = process.env.VUE_APP_API
-    this.getOrders()
-  }
-}
+  created() {
+    this.$http.defaults.baseURL = process.env.VUE_APP_API;
+    this.getOrders();
+  },
+};
 </script>

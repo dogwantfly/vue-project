@@ -48,10 +48,10 @@
 </template>
 
 <script>
-import Chart from 'chart.js/dist/chart.min.js'
+import Chart from 'chart.js/dist/chart.min';
 
 export default ({
-  data () {
+  data() {
     return {
       isLoading: false,
       orders: [],
@@ -66,74 +66,77 @@ export default ({
         blue: 'rgb(54, 162, 235)',
         darkBlue: 'rgb(75, 112, 192)',
         purple: 'rgb(153, 102, 255)',
-        grey: 'rgb(201, 203, 207)'
-      }
-    }
+        grey: 'rgb(201, 203, 207)',
+      },
+    };
   },
   inject: ['$httpMessageState'],
   methods: {
-    getAllOrders (page = 1) {
-      this.isLoading = true
-      const api = `/api/${process.env.VUE_APP_APIPATH}/admin/orders?page=${page}`
+    getAllOrders(page = 1) {
+      this.isLoading = true;
+      const api = `/api/${process.env.VUE_APP_APIPATH}/admin/orders?page=${page}`;
       this.$http.get(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.isLoading = false
-            return
+            this.isLoading = false;
+            return;
           }
-          this.orders = response.data.orders
-          this.pagination = response.data.pagination
-          this.allOrders = []
-          this.orders.forEach(order => {
-            this.allOrders.push(order)
-          })
+          this.orders = response.data.orders;
+          this.pagination = response.data.pagination;
+          this.allOrders = [];
+          this.orders.forEach((order) => {
+            this.allOrders.push(order);
+          });
           if (this.pagination.total_pages > 1) {
             for (let i = 2; i <= this.pagination.total_pages; i += 1) {
               this.$http.get(`/api/${process.env.VUE_APP_APIPATH}/admin/orders?page=${i}`)
-                .then(response => {
-                  if (!response.data.success) {
-                    this.isLoading = false
-                    return
+                .then((res) => {
+                  if (!res.data.success) {
+                    this.isLoading = false;
+                    return;
                   }
-                  const orders = response.data.orders
-                  orders.forEach(order => {
-                    this.allOrders.push(order)
-                  })
-                })
+                  const { orders } = res.data;
+                  orders.forEach((order) => {
+                    this.allOrders.push(order);
+                  });
+                });
             }
-            this.allOrders.forEach(order => {
-              this.revenue += order.total
-            })
-            this.getPieChart()
-            this.getBarChart()
-            this.isLoading = false
+            this.allOrders.forEach((order) => {
+              this.revenue += order.total;
+            });
+            this.getPieChart();
+            this.getBarChart();
+            this.isLoading = false;
           }
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
     },
-    organizePieData () {
-      const productRevenue = {}
-      this.allOrders.forEach((item, index) => {
-        const productsInOrder = this.allOrders[index].products
-        for (const product in productsInOrder) {
-          const productInOrder = productsInOrder[product]
+    organizePieData() {
+      const productRevenue = {};
+      this.allOrders.forEach((order, index) => {
+        const productsInOrder = this.allOrders[index].products;
+        Object.keys(productsInOrder).forEach((product) => {
+          const productInOrder = productsInOrder[product];
           if (productRevenue[productInOrder.product.title] === undefined) {
-            productRevenue[productInOrder.product.title] = (productInOrder.product.price) * (productInOrder.qty)
+            productRevenue[productInOrder.product.title] = (productInOrder.product.price)
+              * (productInOrder.qty);
           } else {
-            productRevenue[productInOrder.product.title] += (productInOrder.product.price) * (productInOrder.qty)
+            productRevenue[productInOrder.product.title]
+              += (productInOrder.product.price)
+              * (productInOrder.qty);
           }
-        }
-      })
-      return productRevenue
+        });
+      });
+      return productRevenue;
     },
-    getPieChart () {
-      let data = this.organizePieData()
-      const productRevenueLabels = Object.keys(data)
-      const productRevenueDatas = Object.values(data)
-      const pieCtx = this.$refs.pieChart
+    getPieChart() {
+      let data = this.organizePieData();
+      const productRevenueLabels = Object.keys(data);
+      const productRevenueDatas = Object.values(data);
+      const pieCtx = this.$refs.pieChart;
       const config = {
         type: 'pie',
         data: {
@@ -144,43 +147,43 @@ export default ({
               this.chartColors.orange,
               this.chartColors.yellow,
               this.chartColors.green,
-              this.chartColors.blue
+              this.chartColors.blue,
             ],
-            label: '各產品營收'
+            label: '各產品營收',
           }],
-          labels: productRevenueLabels
+          labels: productRevenueLabels,
         },
         options: {
-          responsive: true
-        }
-      }
+          responsive: true,
+        },
+      };
       if (this.pieChart) {
-        data = this.organizePieData()
-        this.pieChart.data.labels = Object.keys(data)
-        this.pieChart.data.datasets[0].data = Object.values(data)
-        this.pieChart.update()
+        data = this.organizePieData();
+        this.pieChart.data.labels = Object.keys(data);
+        this.pieChart.data.datasets[0].data = Object.values(data);
+        this.pieChart.update();
       } else {
-        this.pieChart = new Chart(pieCtx, config)
+        this.pieChart = new Chart(pieCtx, config);
       }
     },
-    organizeBarData () {
-      const productRevenue = {}
-      this.allOrders.sort((a, b) => a.create_at - b.create_at)
-      this.allOrders.forEach(order => {
-        const orderDate = this.$filters.date(order.create_at).toString()
+    organizeBarData() {
+      const productRevenue = {};
+      this.allOrders.sort((a, b) => a.create_at - b.create_at);
+      this.allOrders.forEach((order) => {
+        const orderDate = this.$filters.date(order.create_at).toString();
         if (productRevenue[orderDate] === undefined) {
-          productRevenue[orderDate] = order.total
+          productRevenue[orderDate] = order.total;
         } else {
-          productRevenue[orderDate] += order.total
+          productRevenue[orderDate] += order.total;
         }
-      })
-      return productRevenue
+      });
+      return productRevenue;
     },
-    getBarChart () {
-      let data = this.organizeBarData()
-      const productRevenueLabels = Object.keys(data)
-      const productRevenueDatas = Object.values(data)
-      const barCtx = this.$refs.barChart
+    getBarChart() {
+      let data = this.organizeBarData();
+      const productRevenueLabels = Object.keys(data);
+      const productRevenueDatas = Object.values(data);
+      const barCtx = this.$refs.barChart;
       const barConfig = {
         type: 'bar',
         data: {
@@ -191,44 +194,44 @@ export default ({
               this.chartColors.orange,
               this.chartColors.yellow,
               this.chartColors.green,
-              this.chartColors.blue
+              this.chartColors.blue,
             ],
-            label: '營收圖表'
+            label: '營收圖表',
           }],
-          labels: productRevenueLabels
+          labels: productRevenueLabels,
         },
         options: {
-          responsive: true
-        }
-      }
+          responsive: true,
+        },
+      };
       if (this.barChart) {
-        data = this.organizeBarData()
-        this.barChart.data.labels = Object.keys(data)
-        this.barChart.data.datasets[0].data = Object.values(data)
-        this.barChart.update()
+        data = this.organizeBarData();
+        this.barChart.data.labels = Object.keys(data);
+        this.barChart.data.datasets[0].data = Object.values(data);
+        this.barChart.update();
       } else {
-        this.barChart = new Chart(barCtx, barConfig)
+        this.barChart = new Chart(barCtx, barConfig);
       }
-    }
+    },
   },
   computed: {
-    allOrdersLength () {
-      return this.allOrders.length
-    }
+    allOrdersLength() {
+      return this.allOrders.length;
+    },
   },
   watch: {
-    allOrdersLength () {
-      this.revenue = 0
-      this.allOrders.forEach(order => {
-        this.revenue += order.total
-      })
-      this.getPieChart()
-      this.getBarChart()
-    }
+    allOrdersLength() {
+      this.revenue = 0;
+      this.allOrders.forEach((order) => {
+        this.revenue += order.total;
+      });
+      this.getPieChart();
+      this.getBarChart();
+    },
   },
-  created () {
-    this.$http.defaults.baseURL = process.env.VUE_APP_API
-    this.getAllOrders()
-  }
-})
+  created() {
+    this.$http.defaults.baseURL = process.env.VUE_APP_API;
+    this.getAllOrders();
+  },
+});
 </script>

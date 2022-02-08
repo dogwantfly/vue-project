@@ -12,53 +12,53 @@
 </template>
 
 <script>
-import 'bootstrap/dist/js/bootstrap.min.js'
-import $httpMessageState from '@/methods/pushMessageState'
-import emitter from '@/methods/emitter'
-import ToastMessages from '@/components/ToastMessages.vue'
-import Navbar from '@/components/frontend/Navbar.vue'
-import Footer from '@/components/frontend/Footer.vue'
+import 'bootstrap/dist/js/bootstrap.min';
+import $httpMessageState from '@/methods/pushMessageState';
+import emitter from '@/methods/emitter';
+import ToastMessages from '@/components/ToastMessages.vue';
+import Navbar from '@/components/frontend/Navbar.vue';
+import Footer from '@/components/frontend/Footer.vue';
 
 export default {
-  data () {
+  data() {
     return {
       isLoading: false,
-      isShowed: false
-    }
+      isShowed: false,
+    };
   },
-  provide () {
+  provide() {
     return {
       $httpMessageState,
-      emitter
-    }
+      emitter,
+    };
   },
   components: {
     ToastMessages,
     Navbar,
-    Footer
+    Footer,
   },
   methods: {
-    scrollToTop () {
+    scrollToTop() {
       window.scrollTo({
         top: 0,
-        behavior: 'smooth'
-      })
+        behavior: 'smooth',
+      });
     },
-    handleScroll () {
-      const rootElement = document.documentElement
-      const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight
+    handleScroll() {
+      const rootElement = document.documentElement;
+      const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;
       if ((rootElement.scrollTop / scrollTotal) > 0.10) {
-        this.isShowed = true
+        this.isShowed = true;
       } else {
-        this.isShowed = false
+        this.isShowed = false;
       }
-    }
+    },
   },
-  mounted () {
-    document.addEventListener('scroll', this.handleScroll)
+  mounted() {
+    document.addEventListener('scroll', this.handleScroll);
   },
-  unmounted () {
-    document.removeEventListener('scroll', this.handleScroll)
-  }
-}
+  unmounted() {
+    document.removeEventListener('scroll', this.handleScroll);
+  },
+};
 </script>

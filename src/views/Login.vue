@@ -40,7 +40,10 @@
                   required
                   rules="required"
                   name="密碼"
-                  :class="{ 'is-invalid': errors['密碼'], 'is-valid': user.password && user.password!== '' }"
+                  :class="{
+                    'is-invalid': errors['密碼'],
+                    'is-valid': user.password && user.password!== ''
+                  }"
                 />
                 <ErrorMessage
                   name="密碼"
@@ -61,98 +64,98 @@
 </template>
 
 <script>
-import emitter from '@/methods/emitter.js'
-import ToastMessages from '@/components/ToastMessages.vue'
+import emitter from '@/methods/emitter';
+import ToastMessages from '@/components/ToastMessages.vue';
 
 export default ({
-  data () {
+  data() {
     return {
       user: {},
       isLoading: false,
-      isLogin: false
-    }
+      isLogin: false,
+    };
   },
-  provide () {
+  provide() {
     return {
-      emitter
-    }
+      emitter,
+    };
   },
   components: {
-    ToastMessages
+    ToastMessages,
   },
   methods: {
-    checkLogin () {
-      this.isLoading = true
-      const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, '$1')
-      this.$http.defaults.headers.common.Authorization = token
-      const api = '/api/user/check'
+    checkLogin() {
+      this.isLoading = true;
+      const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, '$1');
+      this.$http.defaults.headers.common.Authorization = token;
+      const api = '/api/user/check';
       this.$http.post(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
             emitter.emit('push-message', {
               style: 'danger',
               title: '未登入',
-              content: response.data.message
-            })
-            this.isLoading = false
-            this.$router.push('/login')
-            return
+              content: response.data.message,
+            });
+            this.isLoading = false;
+            this.$router.push('/login');
+            return;
           }
-          this.isLogin = true
+          this.isLogin = true;
           emitter.emit('push-message', {
             style: 'success',
             title: '已登入',
-            content: ''
-          })
-          this.$router.push('/dashboard')
-          this.isLoading = false
+            content: '',
+          });
+          this.$router.push('/dashboard');
+          this.isLoading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           emitter.emit('push-message', {
             style: 'danger',
             title: '連線錯誤',
-            content: error
-          })
-          this.isLoading = false
-        })
+            content: error,
+          });
+          this.isLoading = false;
+        });
     },
-    login () {
-      this.isLoading = true
-      const api = '/admin/signin'
+    login() {
+      this.isLoading = true;
+      const api = '/admin/signin';
       this.$http.post(api, this.user)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
             emitter.emit('push-message', {
               style: 'danger',
               title: '登入失敗',
-              content: response.data.message
-            })
-            this.isLoading = false
-            return
+              content: response.data.message,
+            });
+            this.isLoading = false;
+            return;
           }
-          const { token, expired } = response.data
-          document.cookie = `token=${token};expires=${new Date(expired)};Secure`
+          const { token, expired } = response.data;
+          document.cookie = `token=${token};expires=${new Date(expired)};Secure`;
           emitter.emit('push-message', {
             style: 'success',
             title: '登入成功',
-            content: response.data.message
-          })
-          this.$router.push('/dashboard')
-          this.isLoading = false
+            content: response.data.message,
+          });
+          this.$router.push('/dashboard');
+          this.isLoading = false;
         })
-        .catch(error => {
+        .catch((error) => {
           emitter.emit('push-message', {
             style: 'danger',
             title: '連線錯誤',
-            content: error.message
-          })
-          this.isLoading = false
-        })
-    }
+            content: error.message,
+          });
+          this.isLoading = false;
+        });
+    },
   },
-  created () {
-    this.$http.defaults.baseURL = process.env.VUE_APP_API
-    this.checkLogin()
-  }
-})
+  created() {
+    this.$http.defaults.baseURL = process.env.VUE_APP_API;
+    this.checkLogin();
+  },
+});
 </script>

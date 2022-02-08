@@ -1,10 +1,10 @@
-import Modal from 'bootstrap/js/dist/modal'
+import Modal from 'bootstrap/js/dist/modal';
 
 export default {
-  mounted () {
+  mounted() {
     this.modal = new Modal(this.$refs.modal, {
       keyboard: false,
-      focus: false
-    })
-  }
-}
+      focus: false,
+    });
+  },
+};

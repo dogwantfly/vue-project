@@ -13,7 +13,10 @@
         <li class="col-lg-12 card border-0 mb-3 mb-md-5" v-if="articles.length">
           <div class="row g-0">
             <div class="col-md-7">
-              <img :src="articles[0].image" :alt="articles[0].title" class="img-fluid h-lg-100 object-fit-cover">
+              <img
+                :src="articles[0].image"
+                :alt="articles[0].title"
+                class="img-fluid h-lg-100 object-fit-cover">
             </div>
             <div class="col-md-5 d-flex align-items-center">
               <div class="card-body">
@@ -21,10 +24,13 @@
                 <p class="card-text">{{ articles[0].description }}</p>
                 <p class="card-text">
                   <small class="text-muted">
-                    {{ new Date((articles[0].create_at + 8 * 3600) * 1000).toISOString().split('T')[0] }}
+                    {{ new Date((articles[0].create_at + 8 * 3600) * 1000)
+                      .toISOString().split('T')[0] }}
                   </small>
                 </p>
-                <router-link :to="`/blog/${articles[0].id}`" class="btn btn-link stretched-link btn-zindex ps-0">
+                <router-link
+                  :to="`/blog/${articles[0].id}`"
+                  class="btn btn-link stretched-link btn-zindex ps-0">
                   查看內文
                   <i class="bi bi-chevron-right"></i>
                 </router-link>
@@ -40,9 +46,14 @@
             <div class="card-body">
               <h5 class="card-title">{{ article.title }}</h5>
               <p class="card-text text-truncate">{{ article.description }}</p>
-              <p class="card-text"><small class="text-muted">{{ new Date((article.create_at + 8 * 3600) * 1000)
-          .toISOString().split('T')[0] }}</small></p>
-              <router-link :to="`/blog/${article.id}`" class="btn btn-link stretched-link btn-zindex ps-0">
+              <p class="card-text">
+                <small class="text-muted">
+                  {{ new Date((article.create_at + 8 * 3600) * 1000).toISOString().split('T')[0] }}
+                </small>
+              </p>
+              <router-link
+                :to="`/blog/${article.id}`"
+                class="btn btn-link stretched-link btn-zindex ps-0">
                 查看內文
                 <i class="bi bi-chevron-right"></i>
               </router-link>
@@ -56,36 +67,36 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       articles: '',
-      isLoading: false
-    }
+      isLoading: false,
+    };
   },
   inject: ['$httpMessageState'],
   methods: {
-    getArticles (page = 1) {
-      this.isLoading = true
-      const api = `/api/${process.env.VUE_APP_APIPATH}/articles?page=${page}`
+    getArticles(page = 1) {
+      this.isLoading = true;
+      const api = `/api/${process.env.VUE_APP_APIPATH}/articles?page=${page}`;
       this.$http.get(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '取得文章')
-            this.isLoading = false
-            return
+            this.$httpMessageState(response, '取得文章');
+            this.isLoading = false;
+            return;
           }
-          this.articles = response.data.articles
-          this.isLoading = false
+          this.articles = response.data.articles;
+          this.isLoading = false;
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
-    }
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
+    },
   },
-  mounted () {
-    this.$http.defaults.baseURL = process.env.VUE_APP_API
-    this.getArticles()
-  }
-}
+  mounted() {
+    this.$http.defaults.baseURL = process.env.VUE_APP_API;
+    this.getArticles();
+  },
+};
 </script>

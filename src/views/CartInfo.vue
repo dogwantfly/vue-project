@@ -20,28 +20,46 @@
             </h2>
             <div class="accordion-item bg-transparent border-0">
               <h2 class="accordion-header order-info-header" id="headingOne">
-                <button class="accordion-button shadow-sm text-primary fw-bold fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <button
+                  class="accordion-button shadow-sm text-primary fw-bold fs-4"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseOne"
+                  aria-expanded="true"
+                  aria-controls="collapseOne">
                   <i class="bi bi-card-text me-2"></i>
                   訂單細節
                 </button>
               </h2>
-              <div id="collapseOne" class="order-info accordion-collapse collapse" aria-labelledby="headingOne" >
+              <div
+                id="collapseOne"
+                class="order-info accordion-collapse collapse"
+                aria-labelledby="headingOne" >
                 <div class="accordion-body px-0 py-lg-0">
                   <ul class="carts list-group list-group-flush" v-if="carts.carts">
                     <li class="list-group-item px-0" v-for="cart in carts.carts" :key="cart.id">
-                      <router-link class="d-flex w-100 flex-nowrap justify-content-between" :to="`/product/${cart.product.id}`">
-                        <img :src="cart.product.imageUrl" :alt="cart.product.title" class="img-fluid img-size">
+                      <router-link
+                        class="d-flex w-100 flex-nowrap justify-content-between"
+                        :to="`/product/${cart.product.id}`">
+                        <img
+                          :src="cart.product.imageUrl"
+                          :alt="cart.product.title"
+                          class="img-fluid img-size">
                         <div class="card-body d-flex flex-column justify-content-between py-0 pe-0">
                           <div class="d-flex justify-content-between align-items-center">
                             <h5 class="card-title h6">{{ cart.product.title }}</h5>
-                            <small class="text-primary bg-info rounded-pill py-1 px-2 badge" v-if="cart.coupon">
+                            <small
+                              class="text-primary bg-info rounded-pill py-1 px-2 badge"
+                              v-if="cart.coupon">
                               <i class="bi bi-tag-fill"></i>
                               {{ cart.coupon.code }}
                             </small>
                           </div>
                           <div class="d-flex justify-content-between">
                             <p class="card-text d-inline-block fw-bold mb-0">x {{ cart.qty }}</p>
-                            <p class="card-text d-inline-block fw-bold mb-0">${{ $filters.currency(cart.product.price) }}</p>
+                            <p class="card-text d-inline-block fw-bold mb-0">
+                              ${{ $filters.currency(cart.product.price) }}
+                            </p>
                           </div>
                         </div>
                       </router-link>
@@ -94,7 +112,9 @@
                   placeholder="請輸入 Email"
                   v-model="user.email"
                   rules="email|required"
-                  :class="{ 'is-invalid': errors['email'] , 'is-valid': !errors['email'] && user.email!== ''}"
+                  :class="{
+                    'is-invalid': errors['email'] , 'is-valid': !errors['email'] && user.email!== ''
+                  }"
                 />
                 <ErrorMessage
                   name="email"
@@ -113,7 +133,9 @@
                   class="form-control"
                   placeholder="請輸入姓名"
                   rules="required"
-                  :class="{ 'is-invalid': errors['姓名'] , 'is-valid': user.name!== '' && !errors['姓名']}"
+                  :class="{
+                    'is-invalid': errors['姓名'] , 'is-valid': user.name!== '' && !errors['姓名']
+                  }"
                   v-model="user.name"
                 />
                 <ErrorMessage
@@ -134,7 +156,9 @@
                   class="form-control"
                   placeholder="請輸入電話"
                   rules="required|numeric|min:8"
-                  :class="{ 'is-invalid': errors['電話'] , 'is-valid': !errors['電話'] && user.tel!== ''}"
+                  :class="{
+                    'is-invalid': errors['電話'] , 'is-valid': !errors['電話'] && user.tel!== ''
+                  }"
                 />
                 <ErrorMessage
                   class="invalid-feedback"
@@ -153,7 +177,9 @@
                   class="form-control"
                   placeholder="請輸入地址"
                   rules="required"
-                  :class="{ 'is-invalid': errors['地址'] , 'is-valid': user.address!== '' && !errors['地址']}"
+                  :class="{
+                    'is-invalid': errors['地址'] , 'is-valid': user.address!== '' && !errors['地址']
+                  }"
                   v-model="user.address"
                 />
                 <ErrorMessage
@@ -163,7 +189,12 @@
               </div>
               <div class="mb-3">
                 <label for="message" class="form-label">留言</label>
-                <textarea name="留言" class="form-control" id="message" placeholder="請輸入留言" rows="10" v-model="message"></textarea>
+                <textarea
+                  name="留言"
+                  class="form-control"
+                  id="message"
+                  placeholder="請輸入留言"
+                  rows="10" v-model="message"></textarea>
                 <span class="invalid-feedback"></span>
               </div>
               <template v-if="carts.carts">
@@ -176,7 +207,11 @@
                     <i class="bi bi-caret-left-fill"></i>
                     上一步
                   </router-link>
-                  <button class="btn btn-primary" type="submit" :disabled="!carts.carts.length || Object.keys(errors).length !== 0" :class="{ 'cursor-not-allowed' : isEmpty}">
+                  <button
+                    class="btn btn-primary"
+                    type="submit"
+                    :disabled="!carts.carts.length || Object.keys(errors).length !== 0"
+                    :class="{ 'cursor-not-allowed' : isEmpty}">
                     確認資料並送出
                     <i class="bi bi-caret-right-fill"></i>
                   </button>
@@ -192,99 +227,101 @@
 
 <script>
 export default ({
-  data () {
+  data() {
     return {
       user: {
         email: '',
         tel: '',
         name: '',
-        address: ''
+        address: '',
       },
       message: '',
       carts: {},
       isLoading: false,
-      isEmpty: true
-    }
+      isEmpty: true,
+    };
   },
   inject: ['$httpMessageState', 'emitter'],
   methods: {
-    getCart () {
-      this.isLoading = true
-      const api = `/api/${process.env.VUE_APP_APIPATH}/cart`
+    getCart() {
+      this.isLoading = true;
+      const api = `/api/${process.env.VUE_APP_APIPATH}/cart`;
       this.$http.get(api)
-        .then(response => {
+        .then((response) => {
           if (!response.data.success) {
-            this.$httpMessageState(response, '取得購物車列表')
-            this.isLoading = false
-            return
+            this.$httpMessageState(response, '取得購物車列表');
+            this.isLoading = false;
+            return;
           }
-          this.carts = response.data.data
-          this.isLoading = false
+          this.carts = response.data.data;
+          this.isLoading = false;
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
     },
-    createOrder (values, { resetForm }) {
-      const api = `/api/${process.env.VUE_APP_APIPATH}/order`
+    createOrder(values, { resetForm }) {
+      const api = `/api/${process.env.VUE_APP_APIPATH}/order`;
       const data = {
         user: this.user,
-        message: this.message
-      }
+        message: this.message,
+      };
       if (!this.carts.carts.length) {
         this.$httpMessageState({
           data: {
             success: false,
-            message: '購物車無內容'
-          }
-        }, '建立訂單')
-        return
+            message: '購物車無內容',
+          },
+        }, '建立訂單');
+        return;
       }
       this.$http.post(api, { data })
-        .then(response => {
+        .then((response) => {
           if (response.data.success) {
             this.user = {
               email: '',
               tel: '',
               name: '',
-              address: ''
-            }
-            this.message = ''
-            resetForm()
+              address: '',
+            };
+            this.message = '';
+            resetForm();
             if (this.carts.carts[0].coupon) {
-              let couponsGot = JSON.parse(localStorage.getItem('couponsGot'))
-              couponsGot = couponsGot.filter(coupon => coupon !== this.carts.carts[0].coupon.code)
-              localStorage.setItem('couponsGot', JSON.stringify(couponsGot))
+              let couponsGot = JSON.parse(localStorage.getItem('couponsGot'));
+              couponsGot = couponsGot.filter(
+                (coupon) => coupon !== this.carts.carts[0].coupon.code,
+              );
+              localStorage.setItem('couponsGot', JSON.stringify(couponsGot));
             }
-            this.getCart()
-            this.$httpMessageState(response, '建立訂單')
-            const { orderId } = response.data
-            this.emitter.emit('update-cart')
-            this.$router.push(`/checkout/${orderId}`)
+            this.getCart();
+            this.$httpMessageState(response, '建立訂單');
+            const { orderId } = response.data;
+            this.emitter.emit('update-cart');
+            this.$router.push(`/checkout/${orderId}`);
           } else {
-            this.$httpMessageState(response, '建立訂單')
+            this.$httpMessageState(response, '建立訂單');
           }
         })
-        .catch(error => {
-          this.$httpMessageState(error, '連線錯誤')
-          this.isLoading = false
-        })
-    }
+        .catch((error) => {
+          this.$httpMessageState(error, '連線錯誤');
+          this.isLoading = false;
+        });
+    },
   },
   watch: {
     user: {
-      handler (val) {
+      handler(val) {
         if (val.email && val.tel && val.name && val.address) {
-          this.isEmpty = false
+          this.isEmpty = false;
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
-  mounted () {
-    this.$http.defaults.baseURL = process.env.VUE_APP_API
-    this.getCart()
-  }
-})
+  mounted() {
+    this.$http.defaults.baseURL = process.env.VUE_APP_API;
+    this.getCart();
+  },
+});
 </script>
