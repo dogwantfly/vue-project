@@ -25,7 +25,7 @@
           value="percentFromHighest"
           :disabled="coupons.length ? false : true">
           折扣率由高至低
-        å</option>
+        </option>
         <option value="percentFromLowest" :disabled="coupons.length ? false : true">折扣率由低至高</option>
         <option value="expireFromNewest" :disabled="coupons.length ? false : true">到期日由新至舊</option>
         <option value="expireFromOldest" :disabled="coupons.length ? false : true">到期日由舊至新</option>
@@ -41,7 +41,7 @@
         class="nav-link rounded-pill"
         :class="{'active': filterBy === ''}"
         href="#"
-        ａ@click.prevent="getCoupons(1, 'allCoupons')">
+        @click.prevent="getCoupons(1, 'allCoupons')">
         所有優惠券
       </a>
     </li>
@@ -50,7 +50,7 @@
         class="nav-link rounded-pill"
         :class="{'active': filterBy === 'active'}"
         href="#"
-        ａ@click.prevent="filterData('active')">
+        @click.prevent="filterData('active')">
         已啟用
       </a>
     </li>
@@ -59,7 +59,7 @@
         class="nav-link rounded-pill"
         href="#"
         :class="{'active': filterBy === 'inactive'}"
-        ａ@click.prevent="filterData('inactive')">
+        @click.prevent="filterData('inactive')">
         未啟用
       </a>
     </li>
