@@ -15,7 +15,7 @@
         type="search"
         placeholder="搜尋優惠券名稱"
         class="form-control border-0"
-        åv-model.trim="couponSearchBar">
+        v-model.trim="couponSearchBar">
     </div>
     <div class="input-group w-auto align-items-center">
       <label for="sort" class="me-2">排序</label>
