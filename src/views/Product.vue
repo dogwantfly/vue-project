@@ -72,7 +72,7 @@
         <div class="h5 mb-3">NT${{ $filters.currency(product.price) }}</div>
         <div class="input-group mb-5">
           <input type="number" class="form-control" v-model.number="qty" min="1">
-          <button type="button" class="btn btn-primary" @click="addCart(product.id)">
+          <button type="button" class="btn btn-primary" @click="addCart(product.id, qty)">
             <div class="spinner-border spinner-border-sm"
             role="status"
             v-if="loadingStatus.loadingCart === product.id">
