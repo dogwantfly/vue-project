@@ -83,7 +83,7 @@
         </ul>
       </div>
     </div>
-    <p class="text-muted container">© 2021. All Rights Reserved.</p>
+    <p class="text-muted container">© 2022. All Rights Reserved.</p>
   </footer>
 </template>
 

@@ -130,11 +130,11 @@
           </p>
           <div>
             <p v-if="discountResult" class="fs-5 text-primary">
-              恭喜你獲得優惠碼
+              恭喜你獲得優惠碼  🎉
             </p>
-            <div class="coupon-code fs-2 d-md-flex rounded-3 shadow-sm px-md-4 mb-3 mx-auto"
+            <div class="coupon-code fs-4 d-md-flex rounded-3 shadow-sm px-md-4 mb-3 mx-auto"
             v-if="discountResult">
-              <div class="coupon-name p-3 mb-0 mx-auto">
+              <div class="coupon-name p-3 flex-shrink-0 mb-0 mx-auto">
                 <div class="bg-primary text-light p-1">
                   商品<br class="d-none d-md-inline-block">
                   <span v-if="discountResult === 'firstPrize50'"> 5 折</span>
@@ -143,11 +143,13 @@
                   <span v-else-if="discountResult === 'fourthPrize80'"> 8 折</span>
                 </div>
               </div>
-              <div class="user-select-all flex-grow-1 p-3">
+              <div class="user-select-all p-3">
                 <p v-if="this.couponsGot.indexOf(this.discountResult) < 0" class="mb-0">
                   {{ discountResult }}
                 </p>
-                <p class="text-muted mb-0" v-else>已領取</p>
+                <p class="text-muted mb-0 fs-6" v-else>
+                  折扣碼已紀錄至使用者帳戶囉，<br class="d-lg-none">您可於結帳時使用此優惠券
+                </p>
               </div>
             </div>
             <button
@@ -158,7 +160,9 @@
               ref="getDiscountBtn">
               <span v-if="this.couponsGot.indexOf(this.discountResult) < 0">點擊領取</span>
               <span v-else-if="this.time <= 0">優惠券已過期</span>
-              <span v-else>已領取</span>
+              <span v-else>
+                已領取
+              </span>
             </button>
           </div>
         </div>
@@ -698,7 +702,7 @@ export default ({
       articles: '',
       selected: [false, false, false, false, false, false],
       isShowed: false,
-      expires: 1646006400,
+      expires: 1651276800,
     };
   },
   inject: ['$httpMessageState'],

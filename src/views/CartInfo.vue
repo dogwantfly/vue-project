@@ -207,14 +207,16 @@
                     <i class="bi bi-caret-left-fill"></i>
                     上一步
                   </router-link>
-                  <button
+                  <div :class="{ 'cursor-not-allowed' : isEmpty}">
+                    <button
                     class="btn btn-primary"
                     type="submit"
-                    :disabled="!carts.carts.length || Object.keys(errors).length !== 0"
-                    :class="{ 'cursor-not-allowed' : isEmpty}">
+                    :disabled="!carts.carts.length || isEmpty || Object.keys(errors).length !== 0"
+                    >
                     確認資料並送出
                     <i class="bi bi-caret-right-fill"></i>
-                  </button>
+                    </button>
+                  </div>
                 </div>
               </template>
             </Form>
