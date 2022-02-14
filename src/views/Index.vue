@@ -134,7 +134,7 @@
             </p>
             <div class="coupon-code fs-4 d-md-flex rounded-3 shadow-sm px-md-4 mb-3 mx-auto"
             v-if="discountResult">
-              <div class="coupon-name p-3 flex-shrink-0 mb-0 mx-auto">
+              <div class="coupon-name flex-shrink-0 p-3 mb-0 mx-auto">
                 <div class="bg-primary text-light p-1">
                   商品<br class="d-none d-md-inline-block">
                   <span v-if="discountResult === 'firstPrize50'"> 5 折</span>
@@ -143,7 +143,7 @@
                   <span v-else-if="discountResult === 'fourthPrize80'"> 8 折</span>
                 </div>
               </div>
-              <div class="user-select-all p-3">
+              <div class="user-select-all flex-grow-1 p-3">
                 <p v-if="this.couponsGot.indexOf(this.discountResult) < 0" class="mb-0">
                   {{ discountResult }}
                 </p>
